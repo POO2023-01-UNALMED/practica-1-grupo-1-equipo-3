@@ -28,11 +28,11 @@ public class PruebaMainCarlos {
         Funcion funcion = new Funcion(pelicula, "2022-04-15 20:00");
 
         // crear una nueva sala
-        Sala sala = new Sala(funcion, 1);
+        Sala sala = new Sala(funcion, 1, 13, 13);
 
         // imprimir los asientos de la sala en el formato de una sala de cine
         for (int i = 0; i < sala.getAsientos().length; i++) {
-            if (i % 11 == 0 && i > 0) { // imprimir una nueva línea después de cada fila completa de asientos
+            if (i % sala.getNoFilas() == 0 && i > 0) { // imprimir una nueva línea después de cada fila completa de asientos
                 System.out.println();
             }
             System.out.print(sala.getAsientos()[i].getNoSilla() + " ");
