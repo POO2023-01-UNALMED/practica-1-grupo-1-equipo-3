@@ -22,5 +22,20 @@ public class PruebaMainCarlos {
         System.out.println(Cliente.clientes);
         System.out.println(Administrador.administradores);
         System.out.println("hola");
+
+        // crear una nueva función
+        Pelicula pelicula = new Pelicula("Matrix", 136);
+        Funcion funcion = new Funcion(pelicula, "2022-04-15 20:00");
+
+        // crear una nueva sala
+        Sala sala = new Sala(funcion, 1);
+
+        // imprimir los asientos de la sala en el formato de una sala de cine
+        for (int i = 0; i < sala.getAsientos().length; i++) {
+            if (i % 11 == 0 && i > 0) { // imprimir una nueva línea después de cada fila completa de asientos
+                System.out.println();
+            }
+            System.out.print(sala.getAsientos()[i].getNoSilla() + " ");
+        }
     }
 }

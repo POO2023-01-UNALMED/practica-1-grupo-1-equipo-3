@@ -16,6 +16,11 @@ public class Pelicula {
         this.id = id;
         this.formato = formato;
     }
+    //CODIGO SOLO DE PRUEBA
+    public Pelicula(String nombre, int duracion){
+        this.nombre = nombre;
+    }
+    //ACA TERMINA EL CODIGO SOLO DE PRUEBA
 
     public int getDuracion() {
         return duracion;
