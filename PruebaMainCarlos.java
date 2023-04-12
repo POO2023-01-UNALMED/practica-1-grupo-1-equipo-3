@@ -21,5 +21,6 @@ public class PruebaMainCarlos {
 
         System.out.println(Cliente.clientes);
         System.out.println(Administrador.administradores);
+        System.out.println("hola");
     }
 }
