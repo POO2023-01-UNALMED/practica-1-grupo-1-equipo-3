@@ -1,42 +1,16 @@
-import java.util.Map;
-import java.util.HashMap;
-import java.util.Map.Entry;
-import java.util.ArrayList;
+package cinema.src;
 
 public abstract class Usuario {
-	private String gmail;
-	private String contrasena;
-	private String nombre;
-	int noDoc;
-	static ArrayList<Usuario>  usuarios = new ArrayList<Usuario>();
+	public String Gmail;
+	protected String Contrasena;
+	protected String nombre;
+	protected int NoDoc;
+
 	public Usuario(String gmail, String contrasena, String nombre, int noDoc) {
-		this.gmail = gmail;
-		this.contrasena = contrasena;
+		this.Gmail = gmail;
+		this.Contrasena = contrasena;
 		this.nombre = nombre;
-		this.noDoc = noDoc;
+		this.NoDoc = noDoc;
 	}
-	public static boolean iniciarSecion(String gmail, String contrasena) {
-		boolean iniciar = false;
-		for(int i = 0; i< usuarios.size(); i++) {
-			if(usuarios.get(i).gmail.equals(gmail) && usuarios.get(i).contrasena.equals(contrasena)) {
-				iniciar = true;
-			}
-		}
-		return iniciar;
-	}
-	public static Usuario encontrarUsuario(String gmail) {
-		Usuario usuario = null;
-		for(int i = 0; i< usuarios.size(); i++) {
-			if(usuarios.get(i).gmail.equals(gmail)) {
-				usuario = usuarios.get(i);
-			}
-		}
-		return usuario;
-	}
-	public abstract boolean admin();
-	public abstract void reservar(Funcion funcion, int silla);
-	public String getGmail() {
-		return gmail;
-	}
-	
+	public abstract boolean iniciarSesion(String correo, String contrasena);
 }

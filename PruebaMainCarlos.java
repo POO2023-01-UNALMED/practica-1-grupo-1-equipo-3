@@ -19,7 +19,7 @@ public class PruebaMainCarlos {
         Administrador.administradores.add(new Administrador("admin2@gmail.com", "password2", "Admin 2", 222222));
         Administrador.administradores.add(new Administrador("admin3@gmail.com", "password3", "Admin 3", 333333));
 
-        System.out.println(Cliente.clientes);
+        System.out.println(Cliente.getClientes());
         System.out.println(Administrador.administradores);
         System.out.println("hola");
 

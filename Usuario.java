@@ -5,10 +5,10 @@ public abstract class Usuario {
     protected int NoDoc;
 
     public Usuario(String gmail, String contrasena, String nombre, int noDoc) {
-        Gmail = gmail;
-        Contrasena = contrasena;
+        this.Gmail = gmail;
+        this.Contrasena = contrasena;
         this.nombre = nombre;
-        NoDoc = noDoc;
+        this.NoDoc = noDoc;
     }
     public abstract boolean iniciarSesion(String correo, String contrasena);
 }

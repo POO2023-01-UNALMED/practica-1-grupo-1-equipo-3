@@ -1,83 +1,54 @@
+package cinema.src;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Scanner;
 import java.util.*;
 
 public class cinema {
 
-	public static void main(String[] args) {
-		Scanner input = new Scanner(System.in);
-		//Definiendo valores para ensallar
-		Pelicula pelicula = new Pelicula(60, "peli", "yo", "Genero", "clasificación", "formato");
-		DateTime mom = new DateTime(4, 4, 5, 5);
-		Sala sala = new Sala(1, 10);
-		Funcion.funciones.add(new Funcion(pelicula, mom, sala, 1300));
+	public static void main(String[] args) throws ParseException {
+		Cliente cliente = new Cliente("carlos@gmail.com", "1234", "Carlos Guarin", 123456, 20);
+		Cliente cliente2 = new Cliente("carlosasdf@gmail.com", "1234", "Carlos Guarin", 1234567, 20);
+		Cliente cliente3 = new Cliente("carlos1@gmail.com", "1234", "Carlos Guarin", 123456, 20);
+		Cliente cliente4 = new Cliente("carlosasdf@gmail.com", "1234", "Carlos Guarin", 12345678, 20);
+		Cliente.registrarse(cliente);
+		Cliente.registrarse(cliente2);
+		Cliente.registrarse(cliente3);
+		Cliente.registrarse(cliente4);
 
-		Cliente.registrarse("usuario", "111", "Usuario Por Defecto", 0, 0);
-		while(true) {
-			System.out.println("Ingrese 1 para iniciar sesión, ingrese 2 para crear usuario y x para salir");
-			String entrada = input.next();
-			if(entrada.equals("1")) {
-				System.out.println("Por favor, ingrese su correo");
-				String correo = input.next();
-				System.out.println("Por favor, ingrese su contraseña");
-				String contrasena = input.next();
-				if(Usuario.iniciarSecion(correo, contrasena) == false) {
-					System.out.println("Usuario o contraseña incorrecta");
-				} else {
-					Usuario usuario = Usuario.encontrarUsuario(correo);	 //Esta variable guarda el usuario que está usando el sistema
-					if(!usuario.admin()) {
-						while(true) {
-							System.out.println("Bienvenido cliente");
-							System.out.println("Presione 1 para ver nuestra programación");
-							System.out.println("Presione 2 para hacer una reserva");
-							System.out.println("Presione 3 para verificar su reserva");
-							System.out.println("Presione x para salir");
-							String entra = input.next();
-							if(entra.equals("1")) {
-								for(int i = 0; i< Funcion.funciones.size(); i++) {
-									System.out.println("Función número " + (i+1)+": " + Funcion.funciones.get(i));
-								}
-							}else if(entra.equals("2")) {
-								System.out.println("Por favor, ingrese el numero de la funcion que quiere ver");
-								int numPeli = input.nextInt()-1;
-								if(numPeli>Funcion.funciones.size()) {
-									System.out.println("El numero ingresado no corresponde a ninguna función");
-								}else {
-									System.out.println("Los asientos disponibles son los siguientes:");
-									String stringAsientos = "";
-									for(Asiento a : Funcion.funciones.get(numPeli).getSala().asientos) {
-										if(a.isDisponible()) {
-											stringAsientos += a.noSilla() + " ";
-										}
-									}
-									System.out.println(stringAsientos);
-									System.out.println("Ingrese el numero del asiento que desea reservar");
-									int numAsiento = input.nextInt()-1;
-									usuario.reservar(Funcion.funciones.get(numPeli), numAsiento);
-								}
-							}else if(entra.equals("3")) {
-								
-							}else if(entra.equals("x")) {
-								break;
-							}
-						}
-					}
-				}
-			} else if(entrada.equals("2")) {
-				System.out.println("ingrese su correo");
-				String correo = input.next();
-				System.out.println("Ingrese su contraseña");
-				String contrasena = input.next();
-				System.out.println("Ingrese su nombre de usuario");
-				String nombreUsuario = input.next();
-				System.out.println("Ingrese su número de documento");
-				int noDoc = input.nextInt();
-				System.out.println("Ingrese su edad");
-				int edad = input.nextInt();
-				Cliente.registrarse(correo, contrasena, nombreUsuario, noDoc, edad);
-			} else if (entrada.equals("x")) {
-				break;
+		// Iniciar sesión con credenciales correctas
+		cliente.iniciarSesion("carlos@gmail.com", "1234"); // debería imprimir "Bienvenido, Carlos Guarin!"
+
+		// Iniciar sesión con credenciales incorrectas
+		cliente.iniciarSesion("juan@gmail.com", "1234"); // debería imprimir "Correo electrónico o contraseña incorrectos."
+
+		Administrador.administradores.add(new Administrador("admin1@gmail.com", "password1", "Admin 1", 111111));
+		Administrador.administradores.add(new Administrador("admin2@gmail.com", "password2", "Admin 2", 222222));
+		Administrador.administradores.add(new Administrador("admin3@gmail.com", "password3", "Admin 3", 333333));
+
+		System.out.println(Cliente.getClientes());
+		System.out.println(Administrador.administradores);
+		System.out.println("hola");
+
+		// crear una nueva función
+		Pelicula pelicula = new Pelicula(60, "peli", "yo", "Genero", "clasificación", "formato");
+		String fechaString = "2022-04-15 20:00";
+		SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+		Date fecha = formato.parse(fechaString);
+		Funcion funcion = new Funcion(pelicula, fecha);
+		Funcion.funciones.add(funcion);
+		System.out.println(Funcion.funciones);
+
+		// crear una nueva sala
+		Sala sala = new Sala(funcion, 1, 13, 13);
+
+		// imprimir los asientos de la sala en el formato de una sala de cine
+		for (int i = 0; i < sala.getAsientos().length; i++) {
+			if (i % sala.getNoFilas() == 0 && i > 0) { // imprimir una nueva línea después de cada fila completa de asientos
+				System.out.println();
 			}
+			System.out.print(sala.getAsientos()[i].getNoSilla() + " ");
 		}
-		input.close();
 	}
 }

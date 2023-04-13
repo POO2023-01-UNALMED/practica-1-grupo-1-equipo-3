@@ -4,7 +4,7 @@ import java.util.Objects;
 
 public class Cliente extends Usuario{
     private int edad;
-    protected static List<Cliente> clientes = new ArrayList<>();
+    private static List<Cliente> clientes = new ArrayList<>();
 
     public Cliente(String gmail, String contrasena, String nombre, int noDoc, int edad) {
         super(gmail, contrasena, nombre, noDoc);
@@ -35,5 +35,9 @@ public class Cliente extends Usuario{
         }
         System.out.println("Correo electrónico o contraseña incorrectos.");
         return false;
+    }
+
+    public static List<Cliente> getClientes() {
+        return clientes;
     }
 }

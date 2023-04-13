@@ -1,3 +1,5 @@
+package cinema.src;
+
 public class Pelicula {
 	private int duracion;
 	private String nombre;
