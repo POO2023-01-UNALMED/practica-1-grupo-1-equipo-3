@@ -11,7 +11,7 @@ public class Sala {
         this.noDeSala = noDeSala;
         this.noFilas = noFilas;
         this.noColumnas = noColumnas;
-        this.asientos = new Asiento[noFilas*noColumnas]; // 15 asientos por fila, 11 filas en total
+        this.asientos = new Asiento[noFilas*noColumnas]; // Total de asientos en la sala
         int numeroSilla = 1;
         for (int i = 0; i < this.noColumnas; i++) { // recorre por columna
             for (int j = 0; j < this.noFilas; j++) { // recorre por fila
