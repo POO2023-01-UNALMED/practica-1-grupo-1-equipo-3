@@ -41,13 +41,11 @@ public class cinema {
 
 		// crear una nueva sala
 		Sala sala = new Sala(funcion, 1, 13, 13);
+		Sala sala2 = new Sala(funcion, 2, 10, 10);
 
-		// imprimir los asientos de la sala en el formato de una sala de cine
-		for (int i = 0; i < sala.getAsientos().length; i++) {
-			if (i % sala.getNoFilas() == 0 && i > 0) { // imprimir una nueva línea después de cada fila completa de asientos
-				System.out.println();
-			}
-			System.out.print(sala.getAsientos()[i].getNoSilla() + " ");
-		}
+		sala.asientosDisponibles(sala);
+		sala.getAsientos()[168].setDisponibilidad(false);
+		sala.asientosDisponibles(sala);
+		sala2.asientosDisponibles(sala2);
 	}
 }

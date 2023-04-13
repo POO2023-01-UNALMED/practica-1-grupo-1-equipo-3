@@ -1,4 +1,7 @@
 package Cinema.src;
+
+import java.util.Arrays;
+
 public class Sala {
 	private Funcion funcion;
 	private int noDeSala;
@@ -28,6 +31,18 @@ public class Sala {
 			}
 			numeroSilla = 1; // reinicia el número de silla al final de cada columna
 		}
+	}
+
+	public void asientosDisponibles(Sala sala){
+		for (int i = 0; i < sala.getAsientos().length; i++) {
+			if (i % sala.getNoFilas() == 0 && i > 0) { // imprimir una nueva línea después de cada fila completa de asientos
+				System.out.println();
+			}
+			if (sala.getAsientos()[i].getDisponibilidad()){
+				System.out.print(sala.getAsientos()[i].getNoSilla() + " ");
+			}
+		}
+		System.out.println();
 	}
 
 
@@ -62,4 +77,6 @@ public class Sala {
 	public int getNoColumnas() {
 		return noColumnas;
 	}
+
+
 }
