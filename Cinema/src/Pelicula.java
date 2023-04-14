@@ -14,7 +14,4 @@ public class Pelicula {
 		this.clasificacion = clasificacion;
 		this.formato = formato;
 	}
-	public String getNombre() {
-		return nombre;
-	}
 }

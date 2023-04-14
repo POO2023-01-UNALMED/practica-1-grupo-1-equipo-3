@@ -17,14 +17,6 @@ public class Asiento {
 		}
 	}
 
-	public String getTipo() {
-		return tipo;
-	}
-
-	public void setTipo(String tipo) {
-		this.tipo = tipo;
-	}
-
 	public Boolean getDisponibilidad() {
 		return disponibilidad;
 	}
@@ -35,17 +27,5 @@ public class Asiento {
 
 	public String getNoSilla() {
 		return noSilla;
-	}
-
-	public void setNoSilla(String noSilla) {
-		this.noSilla = noSilla;
-	}
-
-	public int getPrecio() {
-		return precio;
-	}
-
-	public void setPrecio(int precio) {
-		this.precio = precio;
 	}
 }

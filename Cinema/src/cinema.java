@@ -28,24 +28,23 @@ public class cinema {
 
 		System.out.println(Cliente.getClientes());
 		System.out.println(Administrador.administradores);
-		System.out.println("hola");
 
 		// crear una nueva función
 		Pelicula pelicula = new Pelicula(60, "peli", "yo", "Genero", "clasificación", "formato");
 		String fechaString = "2022-04-15 20:00";
 		SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 		Date fecha = formato.parse(fechaString);
-		Funcion funcion = new Funcion(pelicula, fecha);
+		Sala sala = new Sala(1, 13, 13);
+		Funcion funcion = new Funcion(pelicula, fecha, sala);
 		Funcion.funciones.add(funcion);
 		System.out.println(Funcion.funciones);
 
 		// crear una nueva sala
-		Sala sala = new Sala(funcion, 1, 13, 13);
-		Sala sala2 = new Sala(funcion, 2, 10, 10);
+		Sala sala2 = new Sala(2, 10, 10);
 
-		sala.asientosDisponibles(sala);
-		sala.getAsientos()[168].setDisponibilidad(false);
-		sala.asientosDisponibles(sala);
-		sala2.asientosDisponibles(sala2);
+		Reserva.reservar(cliente, funcion, 169);
+		Reserva.reservar(cliente, funcion, 10);
+		Reserva.reservar(cliente2, funcion, 1);
+		System.out.println(Reserva.getReservas());
 	}
 }

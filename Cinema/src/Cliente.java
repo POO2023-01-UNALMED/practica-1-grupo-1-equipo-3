@@ -35,15 +35,6 @@ public class Cliente extends Usuario {
 		System.out.println("Correo electrónico o contraseña incorrectos.");
 		return false;
 	}
-	
-//	public void reservar(Funcion funcion, int silla) {
-//		if(funcion.getSala().asientos.get(silla).isDisponible()) {
-//			Reserva.reservas.add(new Reserva(this, funcion, funcion.getSala().asientos.get(silla), funcion.getSala()));
-//			funcion.getSala().asientos.get(silla).setDisponibilidad(false);
-//		} else {
-//			System.out.println("No se pudo hacer la reserva, debido a que la silla ya está reservada");
-//		}
-//	}
 
 	public static List<Cliente> getClientes() {
 		return clientes;
