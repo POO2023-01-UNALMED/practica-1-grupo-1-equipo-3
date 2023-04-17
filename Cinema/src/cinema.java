@@ -38,13 +38,14 @@ public class cinema {
 		Funcion funcion = new Funcion(pelicula, fecha, sala);
 		Funcion.funciones.add(funcion);
 		System.out.println(Funcion.funciones);
-
-		// crear una nueva sala
-		Sala sala2 = new Sala(2, 10, 10);
+		Sala.asientosDisponibles(sala);
 
 		Reserva.reservar(cliente, funcion, 169);
 		Reserva.reservar(cliente, funcion, 10);
 		Reserva.reservar(cliente2, funcion, 1);
 		System.out.println(Reserva.getReservas());
+		Sala.asientosDisponibles(sala);
+
+		System.out.println(Reserva.clienteYaReservo(cliente));
 	}
 }
