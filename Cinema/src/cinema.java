@@ -5,7 +5,6 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class cinema {
-
 	public static void main(String[] args) throws ParseException {
 		Cliente cliente = new Cliente("carlos@gmail.com", "1234", "Carlos Guarin", 123456, 20);
 		Cliente cliente2 = new Cliente("carlosasdf@gmail.com", "1234", "Carlos Guarin", 1234567, 20);
@@ -30,14 +29,14 @@ public class cinema {
 		System.out.println(Administrador.administradores);
 
 		// crear una nueva función
-		Pelicula pelicula = new Pelicula(60, "peli", "yo", "Genero", "clasificación", "formato");
+		Pelicula pelicula = new Pelicula(60, "peli", "yo", "Genero", 0);
 		String fechaString = "2022-04-15 20:00";
 		SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 		Date fecha = formato.parse(fechaString);
 		Sala sala = new Sala(1, 13, 13);
-		Funcion funcion = new Funcion(pelicula, fecha, sala);
-		Funcion.funciones.add(funcion);
-		System.out.println(Funcion.funciones);
+		Funcion funcion = new Funcion(pelicula, fecha, sala, "2D");
+		Funcion.getFunciones().add(funcion);
+		System.out.println(Funcion.getFunciones());
 		Sala.asientosDisponibles(sala);
 
 		Reserva.reservar(cliente, funcion, 169);
@@ -47,5 +46,25 @@ public class cinema {
 		Sala.asientosDisponibles(sala);
 
 		System.out.println(Reserva.clienteYaReservo(cliente));
+		//Creacion del input
+		Scanner input = new Scanner(System.in);
+
+		//Creacion de 5 salas
+		Sala sala1 = new Sala(4, 8, 10);
+		Sala sala2 = new Sala(2, 10, 10);
+		Sala sala4 = new Sala(1, 10, 13);
+		Sala sala3 = new Sala(3, 12, 12);
+		Sala sala5 = new Sala(5, 15, 15);
+
+		//Creacion de 5 peliculas
+		Pelicula Super_Mario_Bros = new Pelicula(92,"Super Mario Bros", "Aaron Horvath, Michael Jelenic", "Acción, Comedia", 0);
+		Pelicula John_Wick_4 = new Pelicula(169, "John Wick 4", "Chad Stahelski","Acción, Crimen, Suspenso", 12 );
+		Pelicula Evil_Dead_El_Despertar = new Pelicula(96, "Evil Dead: El Despertar", "Lee Cronin", "Terror", 18);
+		Pelicula El_Exorcista_del_Papa = new Pelicula(105, "El Exorcista del Papa", "Julius Avery", "Terror, Thriller", 15);
+		Pelicula Dragones_Honor_entre_ladrones = new Pelicula(134, "Dragones: Honor entre ladrones", "John Francis Daley, Jonathan Goldstein", "Acción, Aventura, Drama", 7);
+
+		//
+		Funcion funcion1 = new Funcion(Super_Mario_Bros, new Date(123, Calendar.APRIL, 25, 8, 0), sala1, "2D");
+		System.out.println(funcion1.getMomento().toString());
 	}
 }
