@@ -1,4 +1,4 @@
-package Cinema.src;
+package src.gestorAplicacion.usuarios;
 public abstract class Usuario {
 	public String Gmail;
 	protected String Contrasena;
