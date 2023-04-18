@@ -1,8 +1,14 @@
-package Cinema.src;
+package src.gestorAplicacion.compras;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+
+import src.gestorAplicacion.cine.Asiento;
+import src.gestorAplicacion.cine.Funcion;
+import src.gestorAplicacion.cine.Pelicula;
+import src.gestorAplicacion.usuarios.Cliente;
 
 public class Reserva {
 	private Cliente cliente;

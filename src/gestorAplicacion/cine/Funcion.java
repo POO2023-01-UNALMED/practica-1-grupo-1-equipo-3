@@ -1,4 +1,4 @@
-package Cinema.src;
+package src.gestorAplicacion.cine;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Objects;

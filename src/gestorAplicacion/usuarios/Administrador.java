@@ -22,4 +22,15 @@ public class Administrador extends Usuario{
         System.out.println("Correo electrónico o contraseña incorrectos.");
         return false;
     }
+    
+    //Getters y Setters
+	public static List<Administrador> getAdministradores() {
+		return administradores;
+	}
+
+	public static void setAdministradores(List<Administrador> administradores) {
+		Administrador.administradores = administradores;
+	}
+    
+    
 }

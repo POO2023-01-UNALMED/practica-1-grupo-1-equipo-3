@@ -7,10 +7,12 @@ import java.util.Objects;
 public class Cliente extends Usuario {
 	private int edad;
 	private static List<Cliente> clientes = new ArrayList<>();
+	
 	public Cliente(String gmail, String contrasena, String nombre, int noDoc, int edad) {
 		super(gmail, contrasena, nombre, noDoc);
 		this.edad = edad;
 	}
+	
 	public static void registrarse(Cliente cliente){
 		for (Cliente c: Cliente.clientes) {
 			if(Objects.equals(c.Gmail, cliente.Gmail)){

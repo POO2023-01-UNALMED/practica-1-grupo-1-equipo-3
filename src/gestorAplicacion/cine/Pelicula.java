@@ -1,4 +1,5 @@
-package Cinema.src;
+package src.gestorAplicacion.cine;
+
 public class Pelicula {
 	private int duracion;
 	private String nombre;

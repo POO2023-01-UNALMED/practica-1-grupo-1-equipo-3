@@ -1,10 +1,14 @@
-package Cinema.src;
+package src.gestorAplicacion.cine;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-public class cinema {
+import src.gestorAplicacion.compras.Reserva;
+import src.gestorAplicacion.usuarios.Administrador;
+import src.gestorAplicacion.usuarios.Cliente;
+
+public class Cinema {
 	public static void main(String[] args) throws ParseException {
 		Cliente cliente = new Cliente("carlos@gmail.com", "1234", "Carlos Guarin", 123456, 20);
 		Cliente cliente2 = new Cliente("carlosasdf@gmail.com", "1234", "Carlos Guarin", 1234567, 20);
@@ -21,12 +25,12 @@ public class cinema {
 		// Iniciar sesión con credenciales incorrectas
 		cliente.iniciarSesion("juan@gmail.com", "1234"); // debería imprimir "Correo electrónico o contraseña incorrectos."
 
-		Administrador.administradores.add(new Administrador("admin1@gmail.com", "password1", "Admin 1", 111111));
-		Administrador.administradores.add(new Administrador("admin2@gmail.com", "password2", "Admin 2", 222222));
-		Administrador.administradores.add(new Administrador("admin3@gmail.com", "password3", "Admin 3", 333333));
+		Administrador.getAdministradores().add(new Administrador("admin1@gmail.com", "password1", "Admin 1", 111111));
+		Administrador.getAdministradores().add(new Administrador("admin2@gmail.com", "password2", "Admin 2", 222222));
+		Administrador.getAdministradores().add(new Administrador("admin3@gmail.com", "password3", "Admin 3", 333333));
 
 		System.out.println(Cliente.getClientes());
-		System.out.println(Administrador.administradores);
+		System.out.println(Administrador.getAdministradores());
 
 		// crear una nueva función
 		Pelicula pelicula = new Pelicula(60, "peli", "yo", "Genero", 0);
