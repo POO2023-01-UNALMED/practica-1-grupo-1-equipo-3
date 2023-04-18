@@ -63,8 +63,37 @@ public class cinema {
 		Pelicula El_Exorcista_del_Papa = new Pelicula(105, "El Exorcista del Papa", "Julius Avery", "Terror, Thriller", 15);
 		Pelicula Dragones_Honor_entre_ladrones = new Pelicula(134, "Dragones: Honor entre ladrones", "John Francis Daley, Jonathan Goldstein", "Acción, Aventura, Drama", 7);
 
-		//
+		//Funciones
 		Funcion funcion1 = new Funcion(Super_Mario_Bros, new Date(123, Calendar.APRIL, 25, 8, 0), sala1, "2D");
-		System.out.println(funcion1.getMomento().toString());
+		Funcion funcion2 = new Funcion(Super_Mario_Bros, new Date(123, Calendar.APRIL, 25, 8, 0), sala2, "3D");
+		Funcion funcion3= new Funcion(Super_Mario_Bros, new Date(123, Calendar.APRIL, 25, 8, 0), sala3, "4D");
+		Funcion funcion4 = new Funcion(Super_Mario_Bros, new Date(123, Calendar.APRIL, 25, 8, 0), sala5, "IMAX");
+
+		Funcion funcion5 = new Funcion(John_Wick_4,new Date(123, Calendar.APRIL, 25, 10, 0),sala1, "2D");
+		Funcion funcion6 = new Funcion(John_Wick_4,new Date(123, Calendar.APRIL, 25, 10, 0),sala2, "3D");
+		Funcion funcion7 = new Funcion(John_Wick_4,new Date(123, Calendar.APRIL, 25, 10, 0),sala4, "4D");
+		Funcion funcion8 = new Funcion(John_Wick_4,new Date(123, Calendar.APRIL, 25, 10, 0),sala5, "IMAX");
+
+		Funcion funcion9 = new Funcion(Evil_Dead_El_Despertar,new Date(123, Calendar.APRIL, 25, 13, 0),sala1, "2D");
+		Funcion funcion10 = new Funcion(Evil_Dead_El_Despertar,new Date(123, Calendar.APRIL, 25, 13, 0),sala3, "3D");
+		Funcion funcion11 = new Funcion(Evil_Dead_El_Despertar,new Date(123, Calendar.APRIL, 25, 13, 0),sala4, "4D");
+		Funcion funcion12 = new Funcion(Evil_Dead_El_Despertar,new Date(123, Calendar.APRIL, 25, 13, 0),sala5, "IMAX");
+
+		Funcion funcion13 = new Funcion(El_Exorcista_del_Papa,new Date(123, Calendar.APRIL, 25, 15, 0),sala1, "2D");
+		Funcion funcion14 = new Funcion(El_Exorcista_del_Papa,new Date(123, Calendar.APRIL, 25, 15, 0),sala3, "3D");
+		Funcion funcion15 = new Funcion(El_Exorcista_del_Papa,new Date(123, Calendar.APRIL, 25, 15, 0),sala4, "4D");
+		Funcion funcion16 = new Funcion(El_Exorcista_del_Papa,new Date(123, Calendar.APRIL, 25, 15, 0),sala5, "IMAX");
+
+		Funcion funcion17 = new Funcion(El_Exorcista_del_Papa,new Date(123, Calendar.APRIL, 25, 17, 0),sala1, "2D");
+		Funcion funcion18 = new Funcion(El_Exorcista_del_Papa,new Date(123, Calendar.APRIL, 25, 17, 0),sala2, "3D");
+		Funcion funcion19 = new Funcion(El_Exorcista_del_Papa,new Date(123, Calendar.APRIL, 25, 17, 0),sala3, "4D");
+		Funcion funcion20 = new Funcion(El_Exorcista_del_Papa,new Date(123, Calendar.APRIL, 25, 17, 0),sala4, "IMAX");
+
+		Funcion funcion21 = new Funcion(Dragones_Honor_entre_ladrones,new Date(123, Calendar.APRIL, 25, 19, 0),sala1, "2D");
+		Funcion funcion22 = new Funcion(Dragones_Honor_entre_ladrones,new Date(123, Calendar.APRIL, 25, 19, 0),sala1, "3D");
+		Funcion funcion23 = new Funcion(Dragones_Honor_entre_ladrones,new Date(123, Calendar.APRIL, 25, 19, 0),sala1, "4D");
+		Funcion funcion24 = new Funcion(Dragones_Honor_entre_ladrones,new Date(123, Calendar.APRIL, 25, 19, 0),sala1, "IMAX");
+
+
 	}
 }
