@@ -7,12 +7,12 @@ import java.util.Objects;
 public class Cliente extends Usuario {
 	private int edad;
 	private static List<Cliente> clientes = new ArrayList<>();
-	
-	public Cliente(String gmail, String contrasena, String nombre, int noDoc, int edad) {
+
+	public Cliente(String gmail, String contrasena, String nombre, long noDoc, int edad) {
 		super(gmail, contrasena, nombre, noDoc);
 		this.edad = edad;
 	}
-	
+
 	public static void registrarse(Cliente cliente){
 		for (Cliente c: Cliente.clientes) {
 			if(Objects.equals(c.Gmail, cliente.Gmail)){
@@ -25,10 +25,11 @@ public class Cliente extends Usuario {
 			}
 		}
 		Cliente.clientes.add(cliente);
+		System.out.println("Se ha registrado exitosamente");
 	}
 
-	@Override
-	public boolean iniciarSesion(String correo, String contrasena) {
+
+	public static boolean iniciarSesion(String correo, String contrasena) {
 		for (Cliente cliente : clientes) {
 			if (Objects.equals(cliente.Gmail, correo) && Objects.equals(cliente.Contrasena, contrasena)) {
 				System.out.println("Bienvenido, " + cliente.nombre + "!");

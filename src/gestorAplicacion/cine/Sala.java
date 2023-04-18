@@ -1,6 +1,7 @@
 package src.gestorAplicacion.cine;
 
 import java.util.Arrays;
+import java.util.Objects;
 
 public class Sala {
 	private Funcion funcion;
@@ -9,6 +10,7 @@ public class Sala {
 
 	private final int noFilas;
 	private final int noColumnas;
+	private String formato = "2D";
 
 	public Sala(int noDeSala, int noFilas, int noColumnas) {
 		this.noDeSala = noDeSala;
@@ -56,5 +58,13 @@ public class Sala {
 
 	public int getNoFilas() {
 		return noFilas;
+	}
+
+	public void setFormato(String formato) {
+		this.formato = formato;
+	}
+
+	public String getFormato() {
+		return formato;
 	}
 }

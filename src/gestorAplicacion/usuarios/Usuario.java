@@ -3,13 +3,12 @@ public abstract class Usuario {
 	public String Gmail;
 	protected String Contrasena;
 	protected String nombre;
-	protected int NoDoc;
+	protected long NoDoc;
 
-	public Usuario(String gmail, String contrasena, String nombre, int noDoc) {
+	public Usuario(String gmail, String contrasena, String nombre, long noDoc) {
 		this.Gmail = gmail;
 		this.Contrasena = contrasena;
 		this.nombre = nombre;
 		this.NoDoc = noDoc;
 	}
-	public abstract boolean iniciarSesion(String correo, String contrasena);
 }

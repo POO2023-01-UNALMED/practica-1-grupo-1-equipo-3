@@ -38,7 +38,7 @@ public class Cinema {
 		SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 		Date fecha = formato.parse(fechaString);
 		Sala sala = new Sala(1, 13, 13);
-		Funcion funcion = new Funcion(pelicula, fecha, sala, "2D");
+		Funcion funcion = new Funcion(pelicula, fecha, sala);
 		Funcion.getFunciones().add(funcion);
 		System.out.println(Funcion.getFunciones());
 		Sala.asientosDisponibles(sala);
@@ -56,9 +56,11 @@ public class Cinema {
 		//Creacion de 5 salas
 		Sala sala1 = new Sala(4, 8, 10);
 		Sala sala2 = new Sala(2, 10, 10);
-		Sala sala4 = new Sala(1, 10, 13);
-		Sala sala3 = new Sala(3, 12, 12);
+		Sala sala3 = new Sala(1, 10, 13);
+		Sala sala4 = new Sala(3, 12, 12);
+		sala4.setFormato("4D");
 		Sala sala5 = new Sala(5, 15, 15);
+		sala5.setFormato("IMAX");
 
 		//Creacion de 5 peliculas
 		Pelicula Super_Mario_Bros = new Pelicula(92,"Super Mario Bros", "Aaron Horvath, Michael Jelenic", "Acción, Comedia", 0);
@@ -68,36 +70,69 @@ public class Cinema {
 		Pelicula Dragones_Honor_entre_ladrones = new Pelicula(134, "Dragones: Honor entre ladrones", "John Francis Daley, Jonathan Goldstein", "Acción, Aventura, Drama", 7);
 
 		//Funciones
-		Funcion funcion1 = new Funcion(Super_Mario_Bros, new Date(123, Calendar.APRIL, 25, 8, 0), sala1, "2D");
-		Funcion funcion2 = new Funcion(Super_Mario_Bros, new Date(123, Calendar.APRIL, 25, 8, 0), sala2, "3D");
-		Funcion funcion3= new Funcion(Super_Mario_Bros, new Date(123, Calendar.APRIL, 25, 8, 0), sala3, "4D");
-		Funcion funcion4 = new Funcion(Super_Mario_Bros, new Date(123, Calendar.APRIL, 25, 8, 0), sala5, "IMAX");
+		Funcion funcion1 = new Funcion(Super_Mario_Bros, new Date(123, Calendar.APRIL, 25, 8, 0), sala1);
+		Funcion funcion2 = new Funcion(Super_Mario_Bros, new Date(123, Calendar.APRIL, 25, 8, 0), sala2);
+		Funcion funcion3= new Funcion(Super_Mario_Bros, new Date(123, Calendar.APRIL, 25, 8, 0), sala3);
+		Funcion funcion4 = new Funcion(Super_Mario_Bros, new Date(123, Calendar.APRIL, 25, 8, 0), sala5);
 
-		Funcion funcion5 = new Funcion(John_Wick_4,new Date(123, Calendar.APRIL, 25, 10, 0),sala1, "2D");
-		Funcion funcion6 = new Funcion(John_Wick_4,new Date(123, Calendar.APRIL, 25, 10, 0),sala2, "3D");
-		Funcion funcion7 = new Funcion(John_Wick_4,new Date(123, Calendar.APRIL, 25, 10, 0),sala4, "4D");
-		Funcion funcion8 = new Funcion(John_Wick_4,new Date(123, Calendar.APRIL, 25, 10, 0),sala5, "IMAX");
+		Funcion funcion5 = new Funcion(John_Wick_4,new Date(123, Calendar.APRIL, 25, 10, 0),sala1);
+		Funcion funcion6 = new Funcion(John_Wick_4,new Date(123, Calendar.APRIL, 25, 10, 0),sala2);
+		Funcion funcion7 = new Funcion(John_Wick_4,new Date(123, Calendar.APRIL, 25, 10, 0),sala4);
+		Funcion funcion8 = new Funcion(John_Wick_4,new Date(123, Calendar.APRIL, 25, 10, 0),sala5);
 
-		Funcion funcion9 = new Funcion(Evil_Dead_El_Despertar,new Date(123, Calendar.APRIL, 25, 13, 0),sala1, "2D");
-		Funcion funcion10 = new Funcion(Evil_Dead_El_Despertar,new Date(123, Calendar.APRIL, 25, 13, 0),sala3, "3D");
-		Funcion funcion11 = new Funcion(Evil_Dead_El_Despertar,new Date(123, Calendar.APRIL, 25, 13, 0),sala4, "4D");
-		Funcion funcion12 = new Funcion(Evil_Dead_El_Despertar,new Date(123, Calendar.APRIL, 25, 13, 0),sala5, "IMAX");
+		Funcion funcion9 = new Funcion(Evil_Dead_El_Despertar,new Date(123, Calendar.APRIL, 25, 13, 0),sala1);
+		Funcion funcion10 = new Funcion(Evil_Dead_El_Despertar,new Date(123, Calendar.APRIL, 25, 13, 0),sala3);
+		Funcion funcion11 = new Funcion(Evil_Dead_El_Despertar,new Date(123, Calendar.APRIL, 25, 13, 0),sala4);
+		Funcion funcion12 = new Funcion(Evil_Dead_El_Despertar,new Date(123, Calendar.APRIL, 25, 13, 0),sala5);
 
-		Funcion funcion13 = new Funcion(El_Exorcista_del_Papa,new Date(123, Calendar.APRIL, 25, 15, 0),sala1, "2D");
-		Funcion funcion14 = new Funcion(El_Exorcista_del_Papa,new Date(123, Calendar.APRIL, 25, 15, 0),sala3, "3D");
-		Funcion funcion15 = new Funcion(El_Exorcista_del_Papa,new Date(123, Calendar.APRIL, 25, 15, 0),sala4, "4D");
-		Funcion funcion16 = new Funcion(El_Exorcista_del_Papa,new Date(123, Calendar.APRIL, 25, 15, 0),sala5, "IMAX");
+		Funcion funcion13 = new Funcion(El_Exorcista_del_Papa,new Date(123, Calendar.APRIL, 25, 15, 0),sala1);
+		Funcion funcion14 = new Funcion(El_Exorcista_del_Papa,new Date(123, Calendar.APRIL, 25, 15, 0),sala3);
+		Funcion funcion15 = new Funcion(El_Exorcista_del_Papa,new Date(123, Calendar.APRIL, 25, 15, 0),sala4);
+		Funcion funcion16 = new Funcion(El_Exorcista_del_Papa,new Date(123, Calendar.APRIL, 25, 15, 0),sala5);
 
-		Funcion funcion17 = new Funcion(El_Exorcista_del_Papa,new Date(123, Calendar.APRIL, 25, 17, 0),sala1, "2D");
-		Funcion funcion18 = new Funcion(El_Exorcista_del_Papa,new Date(123, Calendar.APRIL, 25, 17, 0),sala2, "3D");
-		Funcion funcion19 = new Funcion(El_Exorcista_del_Papa,new Date(123, Calendar.APRIL, 25, 17, 0),sala3, "4D");
-		Funcion funcion20 = new Funcion(El_Exorcista_del_Papa,new Date(123, Calendar.APRIL, 25, 17, 0),sala4, "IMAX");
+		Funcion funcion17 = new Funcion(El_Exorcista_del_Papa,new Date(123, Calendar.APRIL, 25, 17, 0),sala1);
+		Funcion funcion18 = new Funcion(El_Exorcista_del_Papa,new Date(123, Calendar.APRIL, 25, 17, 0),sala2);
+		Funcion funcion19 = new Funcion(El_Exorcista_del_Papa,new Date(123, Calendar.APRIL, 25, 17, 0),sala3);
+		Funcion funcion20 = new Funcion(El_Exorcista_del_Papa,new Date(123, Calendar.APRIL, 25, 17, 0),sala4);
 
-		Funcion funcion21 = new Funcion(Dragones_Honor_entre_ladrones,new Date(123, Calendar.APRIL, 25, 19, 0),sala1, "2D");
-		Funcion funcion22 = new Funcion(Dragones_Honor_entre_ladrones,new Date(123, Calendar.APRIL, 25, 19, 0),sala1, "3D");
-		Funcion funcion23 = new Funcion(Dragones_Honor_entre_ladrones,new Date(123, Calendar.APRIL, 25, 19, 0),sala1, "4D");
-		Funcion funcion24 = new Funcion(Dragones_Honor_entre_ladrones,new Date(123, Calendar.APRIL, 25, 19, 0),sala1, "IMAX");
+		Funcion funcion21 = new Funcion(Dragones_Honor_entre_ladrones,new Date(123, Calendar.APRIL, 25, 19, 0),sala1);
+		Funcion funcion22 = new Funcion(Dragones_Honor_entre_ladrones,new Date(123, Calendar.APRIL, 25, 19, 0),sala1);
+		Funcion funcion23 = new Funcion(Dragones_Honor_entre_ladrones,new Date(123, Calendar.APRIL, 25, 19, 0),sala1);
+		Funcion funcion24 = new Funcion(Dragones_Honor_entre_ladrones,new Date(123, Calendar.APRIL, 25, 19, 0),sala1);
 
+		System.out.println(Funcion.getFunciones());
 
+		Sala salaprueba = new Sala(10, 10, 10);
+		salaprueba.setFormato("4D");
+		Funcion funcionPrueba = new Funcion(Super_Mario_Bros,new Date(123, Calendar.APRIL, 25, 20, 0),salaprueba);
+		System.out.println("ACAAAAAAAAA: " + funcionPrueba.getPrecioSinSilla());
+
+		while (true){
+			System.out.println("1. Para iniciar sesion\n2. Para registrarse\n3. Para ver la cartelera");
+			int eleccion1 = input.nextInt();
+			if (eleccion1 == 1){
+				System.out.println("Digite su correo electronico");
+				String mail = input.nextLine();
+				System.out.println("digite su contraseña");
+				String contrasena = input.nextLine();
+				Cliente.iniciarSesion(mail, contrasena);
+			} else if (eleccion1 == 2) {
+				System.out.println("Ingrese el correo electronico");
+				String mail = input.nextLine();
+				System.out.println("Ingrese la contraseña");
+				String contrasena = input.nextLine();
+				System.out.println("Ingrese su nombre");
+				String nombre = input.nextLine();
+				System.out.println("Ingrese su numero de documento");
+				long nodoc = input.nextLong();
+				System.out.println("Ingrese su edad");
+				int edad = input.nextInt();
+				Cliente registrandose = new Cliente(mail, contrasena, nombre, nodoc, edad);
+				Cliente.registrarse(registrandose);
+			} else if (eleccion1 == 3) {
+				System.out.println(Funcion.getFunciones());
+			}
+			break;
+		}
 	}
 }

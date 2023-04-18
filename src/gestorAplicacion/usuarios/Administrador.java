@@ -11,8 +11,8 @@ public class Administrador extends Usuario{
         super(gmail, contrasena, nombre, noDoc);
     }
 
-    @Override
-    public boolean iniciarSesion(String correo, String contrasena) {
+
+    public static boolean iniciarSesion(String correo, String contrasena) {
         for (Administrador admin : administradores) {
             if (Objects.equals(admin.Gmail, correo) && Objects.equals(admin.Contrasena, contrasena)) {
                 System.out.println("Bienvenido, " + admin.nombre + "!");
