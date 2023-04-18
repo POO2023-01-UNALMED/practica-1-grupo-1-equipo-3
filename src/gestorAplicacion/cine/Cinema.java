@@ -41,13 +41,13 @@ public class Cinema {
 		Funcion funcion = new Funcion(pelicula, fecha, sala);
 		Funcion.getFunciones().add(funcion);
 		System.out.println(Funcion.getFunciones());
-		Sala.asientosDisponibles(sala);
+		asientosDisponibles(sala);
 
 		Reserva.reservar(cliente, funcion, 169);
 		Reserva.reservar(cliente, funcion, 10);
 		Reserva.reservar(cliente2, funcion, 1);
 		System.out.println(Reserva.getReservas());
-		Sala.asientosDisponibles(sala);
+		asientosDisponibles(sala);
 
 		System.out.println(Reserva.clienteYaReservo(cliente));
 		//Creacion del input
@@ -134,5 +134,18 @@ public class Cinema {
 			}
 			break;
 		}
+	}
+	public static void asientosDisponibles(Sala sala){
+		for (int i = 0; i < sala.getAsientos().length; i++) {
+			if (i % sala.getNoFilas() == 0 && i > 0) { // imprimir una nueva línea después de cada fila completa de asientos
+				System.out.println();
+			}
+			if (sala.getAsientos()[i].getDisponibilidad()){
+				System.out.print(sala.getAsientos()[i].getNoSilla() + " ");
+			}else {
+				System.out.print("\033[31m" + sala.getAsientos()[i].getNoSilla() + "\033[0m" + " ");
+			}
+		}
+		System.out.println();
 	}
 }

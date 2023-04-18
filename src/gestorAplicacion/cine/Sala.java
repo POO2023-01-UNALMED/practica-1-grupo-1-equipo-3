@@ -34,20 +34,6 @@ public class Sala {
 		}
 	}
 
-	public static void asientosDisponibles(Sala sala){
-		for (int i = 0; i < sala.getAsientos().length; i++) {
-			if (i % sala.getNoFilas() == 0 && i > 0) { // imprimir una nueva línea después de cada fila completa de asientos
-				System.out.println();
-			}
-			if (sala.getAsientos()[i].getDisponibilidad()){
-				System.out.print(sala.getAsientos()[i].getNoSilla() + " ");
-			}else {
-				System.out.print("\033[31m" + sala.getAsientos()[i].getNoSilla() + "\033[0m" + " ");
-			}
-		}
-		System.out.println();
-	}
-
 	public int getNoDeSala() {
 		return noDeSala;
 	}
