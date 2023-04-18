@@ -4,14 +4,12 @@ public class Pelicula {
 	private String nombre;
 	private String director;
 	private String genero;
-	private String clasificacion;
-	private String formato;
-	public Pelicula(int duracion, String nombre, String director, String genero, String clasificacion, String formato) {
+	private int clasificacion;
+	public Pelicula(int duracion, String nombre, String director, String genero, int clasificacion) {
 		this.duracion = duracion;
 		this.nombre = nombre;
 		this.director = director;
 		this.genero = genero;
 		this.clasificacion = clasificacion;
-		this.formato = formato;
 	}
 }
