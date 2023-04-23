@@ -25,7 +25,7 @@ public class Asiento {
 		this.disponibilidad = disponibilidad;
 	}
 
-	public String getNoSilla() {
+	public String getNoSilla(){
 		return noSilla;
 	}
 }

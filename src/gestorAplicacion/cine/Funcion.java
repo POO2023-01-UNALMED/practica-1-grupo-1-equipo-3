@@ -1,5 +1,7 @@
 package src.gestorAplicacion.cine;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Objects;
 
@@ -27,6 +29,16 @@ public class Funcion {
 			this.precioSinSilla += 5000;
 		}
 		funciones.add(this);
+	}
+
+	public static String verFunciones(){
+		String mensaje = "";
+		for(Funcion f: funciones){
+			SimpleDateFormat formatoFecha = new SimpleDateFormat("dd/MM/yyyy");
+			SimpleDateFormat formatoHora = new SimpleDateFormat("HH:mm:ss");
+			mensaje += funciones.indexOf(f)+1 + ". En la sala " + f.sala.getNoDeSala() + " el día " + formatoFecha.format(f.momento) + " a las " + formatoHora.format(f.momento) + " tenemos la película " + f.pelicula.getNombre() + "\n";
+		}
+		return mensaje;
 	}
 
 	public Sala getSala() {

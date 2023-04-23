@@ -13,4 +13,8 @@ public class Pelicula {
 		this.genero = genero;
 		this.clasificacion = clasificacion;
 	}
+
+	public String getNombre(){
+		return nombre;
+	}
 }
