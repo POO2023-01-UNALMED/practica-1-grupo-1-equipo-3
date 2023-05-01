@@ -3,6 +3,8 @@ package gestorAplicacion.entidades_de_negocio;
 import java.util.Scanner;
 
 import gestorAplicacion.infraestructura.Banco;
+import gestorAplicacion.tarjetas.Tarjeta;
+import gestorAplicacion.tarjetas.TarjetaDebito;
 
 import java.util.ArrayList;
 

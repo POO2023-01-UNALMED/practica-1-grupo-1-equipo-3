@@ -1,4 +1,6 @@
-package gestorAplicacion.entidades_de_negocio;
+package gestorAplicacion.tarjetas;
+
+import gestorAplicacion.entidades_de_negocio.Divisa;
 
 public class TarjetaDebito extends Tarjeta{
 	private double saldo;

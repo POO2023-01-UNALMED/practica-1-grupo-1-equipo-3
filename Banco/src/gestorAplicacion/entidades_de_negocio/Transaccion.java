@@ -2,6 +2,9 @@ package gestorAplicacion.entidades_de_negocio;
 
 import java.util.ArrayList;
 
+import gestorAplicacion.tarjetas.Tarjeta;
+import gestorAplicacion.tarjetas.TarjetaDebito;
+
 public class Transaccion {
 	private Cliente clienteOrigen;
 	private Cliente clienteObjetivo;

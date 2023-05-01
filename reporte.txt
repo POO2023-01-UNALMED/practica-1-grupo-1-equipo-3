@@ -1,6 +1,7 @@
 //Este archivo fue creado con el fin de describir de mejor manera los cambios realizados en los commits
 
-commit 4640819
-Se crearon los packages baseData, gestorAplicacion y uiMain
-Las clases que ya existian fueron movidas a gestorAplicacion, donde se crearon dos sub paquetes con el dividir el proyecto
-conforme a lo solicitado.
+
+Se creó el subpaquete tarjetas, donde se almacenaran las clases 
+referentes a las tarjetas. Con el fin de darle un acceso protegido a
+la clase tarjeta, en busca de cumplir con lo solicitado en el documento del proyecto.
+

@@ -1,5 +1,7 @@
-package gestorAplicacion.entidades_de_negocio;
+package gestorAplicacion.tarjetas;
 import java.util.ArrayList;
+
+import gestorAplicacion.entidades_de_negocio.Divisa;
 
 
 
