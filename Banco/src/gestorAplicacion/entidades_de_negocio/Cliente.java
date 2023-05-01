@@ -1,6 +1,9 @@
-package Banco;
+package gestorAplicacion.entidades_de_negocio;
 
 import java.util.Scanner;
+
+import gestorAplicacion.infraestructura.Banco;
+
 import java.util.ArrayList;
 
 public class Cliente {

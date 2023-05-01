@@ -1,4 +1,4 @@
-package Banco;
+package gestorAplicacion.entidades_de_negocio;
 import java.util.ArrayList;
 
 

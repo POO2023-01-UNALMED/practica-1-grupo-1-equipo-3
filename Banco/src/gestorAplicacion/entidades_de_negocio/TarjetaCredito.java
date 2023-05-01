@@ -1,4 +1,4 @@
-package Banco;
+package gestorAplicacion.entidades_de_negocio;
 
 public class TarjetaCredito extends Tarjeta {
 	private double creditoMaximo; // Es el límite de dinero que se puede prestar mediante esta tarjeta
