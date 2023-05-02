@@ -9,27 +9,73 @@ public class Factura {
 	private Divisa divisa; //Las facturas deben ser pagada en una determinada divisa
 	private double total;
 	private double valorPagado;
-	private int transfeTotales; //El tope maximo de transferencias antes de que la factura venza
+	private int transfeRestantes; //El tope maximo de transferencias antes de que la factura venza
 	private TarjetaDebito tarjetaDestino;
 	private ArrayList<Transaccion> transfeActuales = new ArrayList<Transaccion>();
 	private boolean facturaVencida;
 	private boolean facturaPagada;
-	public Factura(Cliente cliente, Divisa divisa, double total, double valorPagado, int transfeTotales,
-			TarjetaDebito tarjetaDestino, ArrayList<Transaccion> transfeActuales, boolean facturaVencida,
-			boolean facturaPagada) {
+
+	public Factura(Cliente cliente, double total, int transfeRestantes, TarjetaDebito tarjetaDestino) {
 		this.cliente = cliente;
-		this.divisa = divisa;
+		this.divisa = tarjetaDestino.getDivisa();
 		this.total = total;
-		this.valorPagado = valorPagado;
-		this.transfeTotales = transfeTotales;
+		this.valorPagado = 0;
+		this.transfeRestantes = transfeRestantes;
 		this.tarjetaDestino = tarjetaDestino;
-		this.transfeActuales = transfeActuales;
+		this.facturaVencida = false;
+		this.facturaPagada = false;
+		cliente.agregarFactura(this);
+	}
+
+	public Factura(double total, int transfeRestantes, TarjetaDebito tarjetaDestino, boolean facturaPagada, boolean facturaVencida) { //crea una factura sin cliente
+		this.divisa = tarjetaDestino.getDivisa();
+		this.total = total;
+		this.valorPagado = 0;
+		this.transfeRestantes = transfeRestantes;
+		this.tarjetaDestino = tarjetaDestino;
 		this.facturaVencida = facturaVencida;
 		this.facturaPagada = facturaPagada;
 	}
+
+	public int getTransfeRestantes(){
+		return transfeRestantes;
+	}
+	public boolean isFacturaVencida(){
+		return facturaVencida;
+	}
+	public boolean isFacturaPagada(){
+		return facturaPagada;
+	}
+
+	public double getPendiente(){
+		return total-valorPagado;
+	}
+
+	public Divisa getDivisa(){
+		return divisa;
+	}
 	
-	
-	
+	public String toString(){
+		String retorno = "";
+		if(facturaPagada && !facturaVencida){
+			retorno = "Factura pagada antes de vencer. Tarjeta objetivo es: " + tarjetaDestino.getNoTarjeta();
+		} else if (facturaPagada && facturaVencida){
+			retorno = "Factura pagada después de vencer. Tarjeta objetivo es: " + tarjetaDestino.getNoTarjeta();
+		}else if(facturaVencida){
+			retorno = "Factura vencida por pagar. Tarjeta objetivo es: " + tarjetaDestino.getNoTarjeta() + " faltan " + (total-valorPagado) + " " + divisa.getMoneda() + " por pagar en " + transfeRestantes + " transferencias";
+		} else {
+			retorno = "Factura no vencida por pagar. Tarjeta objetivo es: " + tarjetaDestino.getNoTarjeta() + " faltan " + (total-valorPagado) + " " + divisa.getMoneda() + " por pagar en " + transfeRestantes + " transferencias";
+		}
+		return retorno;
+	}
+
+	public Transaccion generarTransaccion(double monto, Tarjeta tarjetaOrigen){
+		boolean valido = false;
+		if(tarjetaOrigen.poderTransferir(monto) && tarjetaOrigen.getDivisa().equals(this.tarjetaDestino.getDivisa())){
+			valido = true;
+		}
+		return new Transaccion(cliente, tarjetaOrigen, tarjetaDestino, monto, this, !valido);
+	}
 	
 	
 }

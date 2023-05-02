@@ -14,7 +14,7 @@ public class TarjetaCredito extends Tarjeta {
 		this.interes = interes;
 	}
 	
-	public String verTarjeta() {
+	public String toString() {
 		return "Tarjeta de crédito con número" + super.getNoTarjeta() + ", límite: " + creditoMaximo + " y credito " + credito + " " + super.getDivisa().getMoneda() + " con una taza de interés de " + interes;
 	}
 
@@ -27,4 +27,19 @@ public class TarjetaCredito extends Tarjeta {
 			return false;
 		}
 	}
+
+	public boolean poderTransferir(double monto){
+		if((creditoMaximo-credito)>=monto){
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	public void sacarDinero(double monto){
+		if(this.credito+monto <= this.creditoMaximo){
+			this.credito += monto;
+		}
+	}
+
 }

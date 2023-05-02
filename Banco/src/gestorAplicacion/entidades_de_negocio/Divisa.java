@@ -1,7 +1,5 @@
 package gestorAplicacion.entidades_de_negocio;
 
-import java.util.ArrayList;
-
 
 public class Divisa {
 	private String moneda;

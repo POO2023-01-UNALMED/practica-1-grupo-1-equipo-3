@@ -10,7 +10,7 @@ public class TarjetaDebito extends Tarjeta{
 		this.saldo = saldo;
 	}
 	
-	public String verTarjeta() {
+	public String toString() {
 		return "Tarjeta de débito con número " + super.getNoTarjeta() + " y saldo " + saldo + " " + super.getDivisa().getMoneda();
 	}
 	
@@ -29,5 +29,18 @@ public class TarjetaDebito extends Tarjeta{
 	}
 	public void setSaldo(double saldo) {
 		this.saldo = saldo;
+	}
+
+	public boolean poderTransferir(double monto){
+		if(monto <= saldo){
+			return true;
+		} else {
+			return false;
+		}
+	}
+	public void sacarDinero(double monto){
+		if(saldo >= monto){
+			saldo -= monto;
+		}
 	}
 }

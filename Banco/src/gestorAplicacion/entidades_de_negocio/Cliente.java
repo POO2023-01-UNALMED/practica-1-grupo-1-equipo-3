@@ -91,6 +91,34 @@ public class Cliente {
 		this.bonoActual = bonoActual;
 	}
 	
+	public ArrayList<Factura> listarFacturas(){
+		ArrayList<Factura> retorno = new ArrayList<Factura>();
+		for(Factura f : this.facturas){
+			if(f.isFacturaVencida() && !f.isFacturaPagada()){
+				retorno.add(f);
+			}
+		}
+		for(Factura f : this.facturas){
+			if(!f.isFacturaVencida() && !f.isFacturaPagada()){
+				retorno.add(f);
+			}
+		}
+		return retorno;
+	}
+	public ArrayList<Tarjeta> listarTarjetas(Factura f){
+		ArrayList<Tarjeta> retorno = new ArrayList<Tarjeta>();
+			for(Tarjeta t : tarjetasDebito){
+				if(t.getDivisa().equals(f.getDivisa())){
+					retorno.add(t);
+				}
+			}
+			for(Tarjeta t : tarjetasCredito){
+				if(t.getDivisa().equals(f.getDivisa())){
+					retorno.add(t);
+				}
+			}
+		return retorno;
+	}
 	
 	//Metodos de las instancias
 	
