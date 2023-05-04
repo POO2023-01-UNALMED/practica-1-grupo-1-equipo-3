@@ -62,9 +62,9 @@ public class Factura {
 		} else if (facturaPagada && facturaVencida){
 			retorno = "Factura pagada después de vencer.\nTarjeta objetivo es: " + tarjetaDestino.getNoTarjeta() + "\n";
 		}else if(facturaVencida){
-			retorno = "Factura vencida por pagar.1\nTarjeta objetivo es: " + tarjetaDestino.getNoTarjeta() + " faltan " + (total-valorPagado) + " " + divisa.getMoneda() + " por pagar en " + transfeRestantes + " transferencias" + "\n";
+			retorno = "Factura vencida por pagar.1\nTarjeta objetivo es: " + tarjetaDestino.getNoTarjeta() + " faltan " + (total-valorPagado) + " " + divisa.name() + " por pagar en " + transfeRestantes + " transferencias" + "\n";
 		} else {
-			retorno = "Factura no vencida por pagar.\nTarjeta objetivo es: " + tarjetaDestino.getNoTarjeta() + " faltan " + (total-valorPagado) + " " + divisa.getMoneda() + " por pagar en " + transfeRestantes + " transferencias" + "\n";
+			retorno = "Factura no vencida por pagar.\nTarjeta objetivo es: " + tarjetaDestino.getNoTarjeta() + " faltan " + (total-valorPagado) + " " + divisa.name() + " por pagar en " + transfeRestantes + " transferencias" + "\n";
 		}
 		return retorno;
 	}

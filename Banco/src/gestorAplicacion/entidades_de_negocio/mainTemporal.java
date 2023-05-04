@@ -108,16 +108,15 @@ public class mainTemporal {
 		Cliente cliente2 = new Cliente("Esteban", 2);
 		Cliente cliente3 = new Cliente("Marta", 3);
 
-		TarjetaDebito tarjetafac = new TarjetaDebito(666, Divisa.getDivisas()[0], 10);
-		TarjetaDebito tarjeta1 = new TarjetaDebito(1, Divisa.getDivisas()[0], 1000);
-		TarjetaDebito tarjeta2 = new TarjetaDebito(1, Divisa.getDivisas()[0], 10);
-		TarjetaCredito tarjetaCredito = new TarjetaCredito(2145, Divisa.getDivisas()[0], 3000, (float) 1.5);
+		TarjetaDebito tarjetafac = new TarjetaDebito(666, Divisa.DOLAR, 10);
+		TarjetaDebito tarjeta1 = new TarjetaDebito(1, Divisa.DOLAR, 1000);
+		TarjetaDebito tarjeta2 = new TarjetaDebito(1, Divisa.EURO, 10);
+		TarjetaCredito tarjetaCredito = new TarjetaCredito(2145, Divisa.DOLAR, 3000, (float) 1.5);
 		cliente1.agregarTarjetasDebito(tarjeta1, tarjeta2);
 		cliente1.agregarTarjetasCredito(tarjetaCredito);
 
 		Factura factura1 = new Factura(cliente1, 100.0, 5, tarjetafac);
 		Factura factura2 = new Factura(cliente1, 90, 8, tarjetafac);
-
 	}
 
 }

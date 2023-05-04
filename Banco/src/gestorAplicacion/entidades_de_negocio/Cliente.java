@@ -160,14 +160,14 @@ public class Cliente {
 	//Ademas que no tenga fondos en 0 o creditoMaximo alcanzado
 	//La tarjeta para ser listada también debe tener un estado "Activo"
 	public ArrayList<Tarjeta> listarTarjetas(Factura factura){
-		ArrayList<Tarjeta> retorno = new ArrayList<Tarjeta>();
+		ArrayList<Tarjeta> tarjetasDisponibles = new ArrayList<Tarjeta>();
 			for(TarjetaDebito tarjeta : tarjetasDebito){
 				if(!tarjeta.isActiva())
 					continue;
 				if(!tarjeta.tieneSaldo())
 					continue;
 				if(tarjeta.getDivisa().equals(factura.getDivisa())){
-					retorno.add(tarjeta);
+					tarjetasDisponibles.add(tarjeta);
 				}
 			}
 			for(TarjetaCredito tarjeta : tarjetasCredito){
@@ -176,10 +176,10 @@ public class Cliente {
 				if(!tarjeta.tieneSaldo())
 					continue;
 				if(tarjeta.getDivisa().equals(factura.getDivisa())){
-					retorno.add(tarjeta);
+					tarjetasDisponibles.add(tarjeta);
 				}
 			}
-		return retorno;
+		return tarjetasDisponibles;
 	}
 	
 	//Metodos de las instancias

@@ -20,15 +20,15 @@ public class TarjetaDebito extends Tarjeta{
 	
 	//Metodos de las instancias
 	public String toString() {
-		return "Tipo de tarjeta: Débito\nNúmero de tarjeta: %s\nSaldo: %s %s\n".formatted(getNoTarjeta(), saldo, getDivisa().getMoneda());
+		return "Tipo de tarjeta: Débito\nNúmero de tarjeta: %s\nSaldo: %s %s\n".formatted(getNoTarjeta(), saldo, divisa.name());
 	}
 	
 	//
 
-	public boolean transaccion(double cantidad, TarjetaDebito t) {
-		if(saldo >= cantidad && t.getDivisa().equals(getDivisa())) {
+	public boolean transaccion(double cantidad, TarjetaDebito tarjeta) {
+		if(saldo >= cantidad && tarjeta.getDivisa().equals(getDivisa())) {
 			this.saldo -= cantidad;
-			t.setSaldo(t.getSaldo() + cantidad);
+			tarjeta.setSaldo(tarjeta.getSaldo() + cantidad);
 			return true;
 		} else {
 			return false;

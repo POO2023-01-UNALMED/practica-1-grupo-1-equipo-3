@@ -15,7 +15,7 @@ public class TarjetaCredito extends Tarjeta {
 	}
 	
 	public String toString() {
-		return "Tipo de tarjeta: Crédito\nNúmero de tarjeta: %s\nLímite: %s %s\nCrédito: %s %s\nTaza de interés: %s\n".formatted(noTarjeta, creditoMaximo, getDivisa().getMoneda(), credito, getDivisa().getMoneda(), interes);
+		return "Tipo de tarjeta: Crédito\nNúmero de tarjeta: %s\nLímite: %s %s\nCrédito: %s %s\nTaza de interés: %s\n".formatted(noTarjeta, creditoMaximo, divisa.name(), credito, divisa.name(), interes);
 	}
 
 	public boolean transaccion(double cantidad, TarjetaDebito t) {
