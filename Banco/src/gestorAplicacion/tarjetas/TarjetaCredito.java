@@ -5,9 +5,9 @@ import gestorAplicacion.entidades_de_negocio.Divisa;
 public class TarjetaCredito extends Tarjeta {
 	private double creditoMaximo; // Es el límite de dinero que se puede prestar mediante esta tarjeta
 	private double credito; //Es la cantidad de dinero que el usuario está debiendo en este momento
-	private double interes;
+	private float interes;
 	
-	public TarjetaCredito(int noTarjeta, Divisa divisa, float creditoMaximo, float interes) {
+	public TarjetaCredito(int noTarjeta, Divisa divisa, double creditoMaximo, float interes) {
 		super(noTarjeta, divisa);
 		this.creditoMaximo = creditoMaximo;
 		this.credito = 0;
@@ -15,11 +15,11 @@ public class TarjetaCredito extends Tarjeta {
 	}
 	
 	public String toString() {
-		return "Tarjeta de crédito con número" + super.getNoTarjeta() + ", límite: " + creditoMaximo + " y credito " + credito + " " + super.getDivisa().getMoneda() + " con una taza de interés de " + interes;
+		return "Tipo de tarjeta: Crédito\nNúmero de tarjeta: %s\nLímite: %s %s\nCrédito: %s %s\nTaza de interés: %s\n".formatted(noTarjeta, creditoMaximo, getDivisa().getMoneda(), credito, getDivisa().getMoneda(), interes);
 	}
 
 	public boolean transaccion(double cantidad, TarjetaDebito t) {
-		if(creditoMaximo - credito >= cantidad && t.getDivisa().equals(super.getDivisa())) {
+		if(creditoMaximo - credito >= cantidad && t.getDivisa().equals(getDivisa())) {
 			credito += cantidad;
 			t.setSaldo(t.getSaldo() + cantidad);
 			return true;
@@ -28,12 +28,18 @@ public class TarjetaCredito extends Tarjeta {
 		}
 	}
 
-	public boolean poderTransferir(double monto){
+	public boolean puedeTransferir(double monto){
 		if((creditoMaximo-credito)>=monto){
 			return true;
 		} else {
 			return false;
 		}
+	}
+	
+	public boolean tieneSaldo() {
+		if (credito == creditoMaximo)
+			return false;
+		return true;
 	}
 
 	public void sacarDinero(double monto){

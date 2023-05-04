@@ -58,23 +58,24 @@ public class Factura {
 	public String toString(){
 		String retorno = "";
 		if(facturaPagada && !facturaVencida){
-			retorno = "Factura pagada antes de vencer. Tarjeta objetivo es: " + tarjetaDestino.getNoTarjeta();
+			retorno = "Factura pagada antes de vencer.\nTarjeta objetivo es: " + tarjetaDestino.getNoTarjeta() + "\n";
 		} else if (facturaPagada && facturaVencida){
-			retorno = "Factura pagada después de vencer. Tarjeta objetivo es: " + tarjetaDestino.getNoTarjeta();
+			retorno = "Factura pagada después de vencer.\nTarjeta objetivo es: " + tarjetaDestino.getNoTarjeta() + "\n";
 		}else if(facturaVencida){
-			retorno = "Factura vencida por pagar. Tarjeta objetivo es: " + tarjetaDestino.getNoTarjeta() + " faltan " + (total-valorPagado) + " " + divisa.getMoneda() + " por pagar en " + transfeRestantes + " transferencias";
+			retorno = "Factura vencida por pagar.1\nTarjeta objetivo es: " + tarjetaDestino.getNoTarjeta() + " faltan " + (total-valorPagado) + " " + divisa.getMoneda() + " por pagar en " + transfeRestantes + " transferencias" + "\n";
 		} else {
-			retorno = "Factura no vencida por pagar. Tarjeta objetivo es: " + tarjetaDestino.getNoTarjeta() + " faltan " + (total-valorPagado) + " " + divisa.getMoneda() + " por pagar en " + transfeRestantes + " transferencias";
+			retorno = "Factura no vencida por pagar.\nTarjeta objetivo es: " + tarjetaDestino.getNoTarjeta() + " faltan " + (total-valorPagado) + " " + divisa.getMoneda() + " por pagar en " + transfeRestantes + " transferencias" + "\n";
 		}
 		return retorno;
 	}
 
 	public Transaccion generarTransaccion(double monto, Tarjeta tarjetaOrigen){
-		boolean valido = false;
-		if(tarjetaOrigen.poderTransferir(monto) && tarjetaOrigen.getDivisa().equals(this.tarjetaDestino.getDivisa())){
-			valido = true;
+		boolean validez = false;
+		if(tarjetaOrigen.puedeTransferir(monto) && tarjetaOrigen.getDivisa().equals(this.tarjetaDestino.getDivisa())){
+			validez = true;
 		}
-		return new Transaccion(cliente, tarjetaOrigen, tarjetaDestino, monto, this, !valido);
+		
+		return new Transaccion(cliente, tarjetaOrigen, tarjetaDestino, monto, this, !validez);
 	}
 	
 	

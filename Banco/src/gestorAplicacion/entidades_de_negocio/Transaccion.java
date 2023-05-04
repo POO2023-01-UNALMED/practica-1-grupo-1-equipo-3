@@ -52,11 +52,13 @@ public class Transaccion {
 	}
 
 	public Factura pagarFactura(){
+		if(rechazado) tarjetaOrigen.anadirTransaccionRechazada();
+		
 		if(this.pendiente && !this.rechazado){
-			if(factura.getPendiente()-cantidad < 0){
-				cantidad += factura.getPendiente()-cantidad;
+			if(factura.getPendiente() - cantidad < 0){
+				cantidad += factura.getPendiente()- cantidad;//ajusta el monto a pagar para que sea igual al monto pendiente de la factura.
 			}
-			double pendiente = factura.getPendiente()-cantidad;
+			double pendiente = factura.getPendiente()- cantidad;
 			boolean pagado = factura.getPendiente() == cantidad;
 			boolean vencido = !(factura.getTransfeRestantes() >= 1);
 			this.tarjetaOrigen.sacarDinero(cantidad);

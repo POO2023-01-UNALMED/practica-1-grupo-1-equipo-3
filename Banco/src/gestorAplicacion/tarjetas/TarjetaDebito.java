@@ -10,12 +10,23 @@ public class TarjetaDebito extends Tarjeta{
 		this.saldo = saldo;
 	}
 	
-	public String toString() {
-		return "Tarjeta de débito con número " + super.getNoTarjeta() + " y saldo " + saldo + " " + super.getDivisa().getMoneda();
+	//Getters y Setters
+	public double getSaldo() {
+		return saldo;
+	}
+	public void setSaldo(double saldo) {
+		this.saldo = saldo;
 	}
 	
+	//Metodos de las instancias
+	public String toString() {
+		return "Tipo de tarjeta: Débito\nNúmero de tarjeta: %s\nSaldo: %s %s\n".formatted(getNoTarjeta(), saldo, getDivisa().getMoneda());
+	}
+	
+	//
+
 	public boolean transaccion(double cantidad, TarjetaDebito t) {
-		if(saldo >= cantidad && t.getDivisa().equals(super.getDivisa())) {
+		if(saldo >= cantidad && t.getDivisa().equals(getDivisa())) {
 			this.saldo -= cantidad;
 			t.setSaldo(t.getSaldo() + cantidad);
 			return true;
@@ -24,20 +35,20 @@ public class TarjetaDebito extends Tarjeta{
 		}
 	}
 	
-	public double getSaldo() {
-		return saldo;
-	}
-	public void setSaldo(double saldo) {
-		this.saldo = saldo;
+	public boolean tieneSaldo() {
+		if (saldo == 0.0)
+			return false;
+		return true;
 	}
 
-	public boolean poderTransferir(double monto){
+	public boolean puedeTransferir(double monto){
 		if(monto <= saldo){
 			return true;
 		} else {
 			return false;
 		}
 	}
+	
 	public void sacarDinero(double monto){
 		if(saldo >= monto){
 			saldo -= monto;

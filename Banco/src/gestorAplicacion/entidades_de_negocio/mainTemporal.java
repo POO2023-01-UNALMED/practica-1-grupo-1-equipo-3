@@ -6,6 +6,7 @@ import java.util.Scanner;
 import gestorAplicacion.infraestructura.Banco;
 import gestorAplicacion.tarjetas.TarjetaDebito;
 import gestorAplicacion.tarjetas.Tarjeta;
+import gestorAplicacion.tarjetas.TarjetaCredito;
 
 public class mainTemporal {
 
@@ -109,9 +110,13 @@ public class mainTemporal {
 
 		TarjetaDebito tarjetafac = new TarjetaDebito(666, Divisa.getDivisas()[0], 10);
 		TarjetaDebito tarjeta1 = new TarjetaDebito(1, Divisa.getDivisas()[0], 1000);
-		cliente1.agregarTarjetasDebito(tarjeta1);
+		TarjetaDebito tarjeta2 = new TarjetaDebito(1, Divisa.getDivisas()[0], 10);
+		TarjetaCredito tarjetaCredito = new TarjetaCredito(2145, Divisa.getDivisas()[0], 3000, (float) 1.5);
+		cliente1.agregarTarjetasDebito(tarjeta1, tarjeta2);
+		cliente1.agregarTarjetasCredito(tarjetaCredito);
 
 		Factura factura1 = new Factura(cliente1, 100.0, 5, tarjetafac);
+		Factura factura2 = new Factura(cliente1, 90, 8, tarjetafac);
 
 	}
 

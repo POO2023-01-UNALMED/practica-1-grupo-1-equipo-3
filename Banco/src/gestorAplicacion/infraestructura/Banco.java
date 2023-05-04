@@ -28,13 +28,14 @@ public class Banco {
 		Banco.clientes.add(cliente);
 	}
 	
-	public static void agregarClientes(Cliente[] clientes) {//Agregar varios clientes de un array Normal
+	
+	public static void agregarClientes(ArrayList<Cliente> clientes) {//Agregar varios clientes de un arrayList
 		for(Cliente cliente: clientes) {
 			Banco.clientes.add(cliente);
 		}
 	}
 	
-	public static void agregarClientes(ArrayList<Cliente> clientes) {//Agregar varios clientes de un arrayList
+	public static void agregarClientes(Cliente... clientes) {//Agregar varios clientes de un array
 		for(Cliente cliente: clientes) {
 			Banco.clientes.add(cliente);
 		}
@@ -60,12 +61,12 @@ public class Banco {
 		return canales;
 	}
 	
-	public static void agregarCanal(Canal canal) {//Agregar un solo canal
+	public static void agregarCanales(Canal canal) {//Agregar un solo canal
 		Banco.canales.add(canal);
 	}
 	
 	
-	public static void agregarCanales(Canal[] canales) {//Agregar varios canales de un array normal
+	public static void agregarCanales(Canal... canales) {//Agregar varios canales de un array normal
 		for(Canal canal: canales) {
 			Banco.canales.add(canal);
 		}
@@ -82,7 +83,7 @@ public class Banco {
 		Banco.canales.remove(canal);
 	}
 	
-	public static void eliminarCanales(Canal[] canales) {//Eliminar varios canales de un Array normal
+	public static void eliminarCanales(Canal... canales) {//Eliminar varios canales de un Array normal
 		for(Canal canalPorEliminar: canales) {
 			Banco.canales.remove(canalPorEliminar);
 		}		

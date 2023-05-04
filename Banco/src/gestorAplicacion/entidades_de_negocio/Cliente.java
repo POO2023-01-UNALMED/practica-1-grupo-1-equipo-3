@@ -51,12 +51,36 @@ public class Cliente {
 		return tarjetasDebito;
 	}
 
-	public void agregarTarjetasDebito(TarjetaDebito tarjetaDebito) {
+	public void agregarTarjetDebito(TarjetaDebito tarjetaDebito) {
 		this.tarjetasDebito.add(tarjetaDebito);
 	}
 	
-	public void eliminarTarjetasDebito(TarjetaDebito tarjetaDebito) {
+	public void agregarTarjetasDebito(ArrayList<TarjetaDebito> tarjetasDebito) {//Agregar varias tarjetas de un arrayList
+		for(TarjetaDebito tarjetaDebito: tarjetasDebito) {
+			this.tarjetasDebito.add(tarjetaDebito);
+		}
+	}
+	
+	public void agregarTarjetasDebito(TarjetaDebito... tarjetasDebito) {//Agregar varios tarjetas una por una Ej. (tarjeta1, tarjeta2, etc)
+		for(TarjetaDebito tarjetaDebito: tarjetasDebito) {
+			this.tarjetasDebito.add(tarjetaDebito);
+		}
+	}
+	
+	public void eliminarTarjetaDebito(TarjetaDebito tarjetaDebito) {
 		this.tarjetasDebito.remove(tarjetaDebito);
+	}
+	
+	public  void eliminarTarjetaDebito(ArrayList<TarjetaDebito> tarjetasDebito) {//Eliminar varias tarjetas de un ArrayList
+		for(TarjetaDebito tarjetaDebito: tarjetasDebito) {
+			this.tarjetasDebito.remove(tarjetaDebito);
+		}			
+	}
+	
+	public void eliminarTarjetaDebito(TarjetaDebito[] tarjetasDebito) {//Eliminar varias tarjetas de un Array Ej (tarjeta1, tarjeta2, etc)
+		for(TarjetaDebito tarjetaDebito: tarjetasDebito) {
+			this.tarjetasDebito.remove(tarjetaDebito);
+		}			
 	}
 
 	public ArrayList<TarjetaCredito> getTarjetasCredito() {
@@ -67,8 +91,32 @@ public class Cliente {
 		this.tarjetasCredito.add(tarjetaCredito);
 	}
 	
-	public void eliminarTarjetasCredito(TarjetaCredito tarjetaCredito) {
-		this.tarjetasCredito.add(tarjetaCredito);
+	public void agregarTarjetasCredito(ArrayList<TarjetaCredito> tarjetasCredito) {//Agregar varias tarjetas de un arrayList
+		for(TarjetaCredito tarjetaCredito: tarjetasCredito) {
+			this.tarjetasCredito.add(tarjetaCredito);
+		}
+	}
+	
+	public void agregarTarjetasCredito(TarjetaCredito... tarjetasCredito) {//Agregar varios tarjetas una por una Ej. (tarjeta1, tarjeta2, etc)
+		for(TarjetaCredito tarjetaCredito: tarjetasCredito) {
+			this.tarjetasCredito.add(tarjetaCredito);
+		}
+	}
+	
+	public void eliminarTarjetaCredito(TarjetaCredito tarjetaCredito) {
+		this.tarjetasCredito.remove(tarjetaCredito);
+	}
+	
+	public  void eliminarTarjetasCredito(ArrayList<TarjetaCredito> tarjetasCredito) {//Eliminar varias tarjetas de un ArrayList
+		for(TarjetaCredito tarjetaCredito: tarjetasCredito) {
+			this.tarjetasCredito.remove(tarjetaCredito);
+		}			
+	}
+	
+	public void eliminarTarjetasCredito(TarjetaCredito[] tarjetasCredito) {//Eliminar varias tarjetas de un Array Ej (tarjeta1, tarjeta2, etc)
+		for(TarjetaCredito tarjetaCredito: tarjetasCredito) {
+			this.tarjetasCredito.remove(tarjetaCredito);
+		}			
 	}
 
 	public ArrayList<Factura> getFactura() {
@@ -91,7 +139,9 @@ public class Cliente {
 		this.bonoActual = bonoActual;
 	}
 	
-	public ArrayList<Factura> listarFacturas(){
+	//Metodos de las intancias
+	
+	public ArrayList<Factura> listarFacturas(){//Este metodo solo retorna facturas pendientes
 		ArrayList<Factura> retorno = new ArrayList<Factura>();
 		for(Factura f : this.facturas){
 			if(f.isFacturaVencida() && !f.isFacturaPagada()){
@@ -105,16 +155,28 @@ public class Cliente {
 		}
 		return retorno;
 	}
-	public ArrayList<Tarjeta> listarTarjetas(Factura f){
+	
+	//Retorna las tarjetas de credito y debito que sean compatibles con la divisa de la factura
+	//Ademas que no tenga fondos en 0 o creditoMaximo alcanzado
+	//La tarjeta para ser listada también debe tener un estado "Activo"
+	public ArrayList<Tarjeta> listarTarjetas(Factura factura){
 		ArrayList<Tarjeta> retorno = new ArrayList<Tarjeta>();
-			for(Tarjeta t : tarjetasDebito){
-				if(t.getDivisa().equals(f.getDivisa())){
-					retorno.add(t);
+			for(TarjetaDebito tarjeta : tarjetasDebito){
+				if(!tarjeta.isActiva())
+					continue;
+				if(!tarjeta.tieneSaldo())
+					continue;
+				if(tarjeta.getDivisa().equals(factura.getDivisa())){
+					retorno.add(tarjeta);
 				}
 			}
-			for(Tarjeta t : tarjetasCredito){
-				if(t.getDivisa().equals(f.getDivisa())){
-					retorno.add(t);
+			for(TarjetaCredito tarjeta : tarjetasCredito){
+				if(!tarjeta.isActiva())
+					continue;
+				if(!tarjeta.tieneSaldo())
+					continue;
+				if(tarjeta.getDivisa().equals(factura.getDivisa())){
+					retorno.add(tarjeta);
 				}
 			}
 		return retorno;

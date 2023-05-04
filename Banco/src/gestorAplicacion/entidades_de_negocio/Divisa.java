@@ -1,6 +1,6 @@
 package gestorAplicacion.entidades_de_negocio;
 
-
+//pendiente pasar esta clase a tipo enum
 public class Divisa {
 	private String moneda;
 	private double valor;
