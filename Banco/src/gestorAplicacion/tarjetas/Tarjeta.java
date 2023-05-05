@@ -1,7 +1,7 @@
 package gestorAplicacion.tarjetas;
 import java.util.ArrayList;
 
-import gestorAplicacion.entidades_de_negocio.Divisa;
+import gestorAplicacion.entidades_de_negocio.*;
 
 
 
@@ -61,4 +61,20 @@ public abstract class Tarjeta {
 	public abstract boolean puedeTransferir(double monto); 
 	
 	public abstract void sacarDinero(double monto);
+
+	public static ArrayList<Tarjeta> TarjetasBloqueadas(Cliente cliente){
+		ArrayList<Tarjeta> retorno = new ArrayList<Tarjeta>();
+		for(Tarjeta t : cliente.getTarjetasCredito()){
+			if(!t.isActiva()){
+				retorno.add(t);
+			}
+		}
+		for(Tarjeta t : cliente.getTarjetasDebito()){
+			if(!t.isActiva()){
+				retorno.add(t);
+			}
+		}
+		return retorno;
+	}
+
 }

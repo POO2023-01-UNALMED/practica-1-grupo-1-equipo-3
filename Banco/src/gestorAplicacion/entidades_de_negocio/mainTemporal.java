@@ -36,8 +36,8 @@ public class mainTemporal {
 				continue; //Si el valor ingresado no corresponde a un cliente, el programa vuelve al principio
 			}
 			while(true) { // el loop principal que se ejecuta para cada cliente
-				System.out.println("1. Para ver facturas\n2. Para ver las tarjetas disponibles\n3. Para pagar una factura\n4. Cambiar Divisas\n5. Salir");
-				String entrada2 = scanner.nextLine();
+				System.out.println("1. Para ver facturas\n2. Para ver las tarjetas disponibles\n3. Para pagar una factura\n4. Cambiar Divisas\n5. Solicitar una tarjeta de crédito\n6. Salir");
+				String entrada2 = scanner.nextLine();//Se lee la elección del usuario
 				if(entrada2.equals("1")){
 					if(clienteActual.listarFacturas().isEmpty()){
 						System.out.println("No hay facturas por pagar");
@@ -122,6 +122,12 @@ public class mainTemporal {
 						break;
 					}
 				}else if(entrada2.equals("5")){
+					System.out.println("Viendo transferencias del usuario...");
+					ArrayList<Transaccion> historial = clienteActual.revisarHistorialCreditos();
+					int puntajeTentativo = Banco.calcularPuntaje(historial);
+					
+					
+				} else if(entrada2.equals("6")){
 					break;
 				}
 			}

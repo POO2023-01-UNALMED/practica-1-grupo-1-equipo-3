@@ -262,6 +262,16 @@ public class Cliente {
 		ArrayList<Canal> canalesOrdenados = Banco.ordenarCanalesPorImpuestos(canales);
 		return canalesOrdenados;
 	}
+
+	public ArrayList<Transaccion> revisarHistorialCreditos(){
+		ArrayList<Transaccion> retorno = new ArrayList<Transaccion>();
+		for(Transaccion t : Transaccion.getTransacciones()){
+			if(t.getClienteOrigen().equals(this) && t.getTarjetaOrigen() instanceof TarjetaCredito && !t.isRechazado() && !t.isPendiente()){
+				retorno.add(t);
+			}
+		}
+		return retorno;
+	}
 //	public void sesion() {
 //		Scanner scanner = new Scanner(System.in);
 //		while(true) {

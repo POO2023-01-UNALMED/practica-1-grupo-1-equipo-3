@@ -27,7 +27,8 @@ public class Factura {
 		cliente.agregarFactura(this);
 	}
 
-	public Factura(double total, int transfeRestantes, TarjetaDebito tarjetaDestino, boolean facturaPagada, boolean facturaVencida) { //crea una factura sin cliente
+	public Factura(Cliente cliente, double total, int transfeRestantes, TarjetaDebito tarjetaDestino, boolean facturaPagada, boolean facturaVencida) { //Se utiliza en el contexto de pagarFactura (método de Transaccion)
+		this.cliente = cliente;
 		this.divisa = tarjetaDestino.getDivisa();
 		this.total = total;
 		this.valorPagado = 0;

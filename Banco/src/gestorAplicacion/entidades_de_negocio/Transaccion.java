@@ -7,33 +7,38 @@ import gestorAplicacion.tarjetas.TarjetaDebito;
 
 public class Transaccion {
 	private Cliente clienteObjetivo;
+	private Cliente clienteOrigen;
 	private Tarjeta tarjetaOrigen;
 	private TarjetaDebito tarjetaObjetivo;
 	private double cantidad;
 	private boolean rechazado;
 	private boolean pendiente;
 	private Factura factura;
+	private Divisa divisa;
 	private static ArrayList<Transaccion> transacciones = new ArrayList<Transaccion>();
 
 	
-	public Transaccion(Cliente clienteObjetivo, Tarjeta tarjetaOrigen, TarjetaDebito tarjetaObjetivo, double cantidad) {
+	public Transaccion(Cliente clienteObjetivo, Cliente clienteOrigen, Tarjeta tarjetaOrigen, TarjetaDebito tarjetaObjetivo, double cantidad) {
 		this.clienteObjetivo = clienteObjetivo;
+		this.clienteOrigen = clienteOrigen;
 		this.tarjetaOrigen = tarjetaOrigen;
 		this.tarjetaObjetivo = tarjetaObjetivo;
 		this.cantidad = cantidad;
 		rechazado = !tarjetaOrigen.transaccion(cantidad, tarjetaObjetivo);
 		pendiente = false;
+		divisa = tarjetaOrigen.getDivisa();
 		transacciones.add(this);
 	}
 
-	public Transaccion(Cliente clienteObjetivo, Tarjeta tarjetaOrigen, TarjetaDebito tarjetaObjetivo, double cantidad, Factura factura, boolean rechazado) {
-		this.clienteObjetivo = clienteObjetivo;
+	public Transaccion(Cliente clienteOrigen, Tarjeta tarjetaOrigen, TarjetaDebito tarjetaObjetivo, double cantidad, Factura factura, boolean rechazado) {
+		this.clienteOrigen = clienteOrigen;
 		this.tarjetaOrigen = tarjetaOrigen;
 		this.tarjetaObjetivo = tarjetaObjetivo;
 		this.cantidad = cantidad;
 		this.rechazado = rechazado;
 		this.factura = factura;
 		pendiente = true;
+		divisa = tarjetaOrigen.getDivisa();
 		transacciones.add(this);
 	}
 	
@@ -41,13 +46,37 @@ public class Transaccion {
 		return rechazado;
 	}
 
+	public boolean isPendiente(){
+		return pendiente;
+	}
+
+	public Divisa getDivisa(){
+		return divisa;
+	}
+
+	public Cliente getClienteOrigen(){
+		return clienteOrigen;
+	}
+
+	public double getCantidad(){
+		return cantidad;
+	}
+
+	public static ArrayList<Transaccion> getTransacciones(){
+		return transacciones;
+	}
+
+	public Tarjeta getTarjetaOrigen(){
+		return tarjetaOrigen;
+	}
+
 	public String toString(){
 		if(rechazado){
-			return "Transacción rechazada por un monto de " + cantidad + " desde la tarjeta " + tarjetaOrigen.getNoTarjeta() + " Hacia la tarjeta " + tarjetaObjetivo.getNoTarjeta();
+			return "Transacción rechazada por un monto de " + cantidad + " desde la tarjeta " + tarjetaOrigen.getNoTarjeta() + " Hacia la tarjeta " + tarjetaObjetivo.getNoTarjeta() + " por parte de " + clienteOrigen.getNombre();
 		} else if (pendiente){
-			return "Transacción pendiente aprobada por un monto de " + cantidad + " desde la tarjeta " + tarjetaOrigen.getNoTarjeta() + " Hacia la tarjeta " + tarjetaObjetivo.getNoTarjeta();
+			return "Transacción pendiente aprobada por un monto de " + cantidad + " desde la tarjeta " + tarjetaOrigen.getNoTarjeta() + " Hacia la tarjeta " + tarjetaObjetivo.getNoTarjeta() + " por parte de " + clienteOrigen.getNombre();
 		} else {
-			return "Transacción aprobada por un monto de " + cantidad + " desde la tarjeta " + tarjetaOrigen.getNoTarjeta() + " Hacia la tarjeta " + tarjetaObjetivo.getNoTarjeta();
+			return "Transacción aprobada por un monto de " + cantidad + " desde la tarjeta " + tarjetaOrigen.getNoTarjeta() + " Hacia la tarjeta " + tarjetaObjetivo.getNoTarjeta() + " por parte de " + clienteOrigen.getNombre();
 		}
 	}
 
@@ -58,11 +87,12 @@ public class Transaccion {
 			if(factura.getPendiente() - cantidad < 0){
 				cantidad += factura.getPendiente()- cantidad;//ajusta el monto a pagar para que sea igual al monto pendiente de la factura.
 			}
+			pendiente = false;
 			double pendiente = factura.getPendiente()- cantidad;
 			boolean pagado = factura.getPendiente() == cantidad;
 			boolean vencido = !(factura.getTransfeRestantes() >= 1);
 			this.tarjetaOrigen.sacarDinero(cantidad);
-			return new Factura(pendiente, factura.getTransfeRestantes()-1, tarjetaObjetivo, pagado, vencido);
+			return new Factura(clienteOrigen, pendiente, factura.getTransfeRestantes()-1, tarjetaObjetivo, pagado, vencido);
 
 		}
 		return null;

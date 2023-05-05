@@ -1,7 +1,5 @@
 package gestorAplicacion.infraestructura;
 
-import java.util.Scanner;
-
 import gestorAplicacion.entidades_de_negocio.*;
 import gestorAplicacion.tarjetas.*;
 
@@ -107,6 +105,13 @@ public class Banco {
 		}			
 	}
 	
+	public static int calcularPuntaje(ArrayList<Transaccion> trans){
+		int puntaje = 0;
+		for(Transaccion t : trans){
+			puntaje += (int) 2*t.getCantidad()*t.getDivisa().getValor();
+		}
+		return puntaje;
+	}
 	
 //	public static ArrayList<Cliente> otrosUsuarios(Cliente usuario) {
 //		ArrayList<Cliente> otrosUsuarios = new ArrayList<Cliente>(); //Usa esta lista para guardar todos los clientes que no sean el que llama la función (usuario)
