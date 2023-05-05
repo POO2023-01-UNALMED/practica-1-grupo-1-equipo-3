@@ -157,7 +157,7 @@ public class Cliente {
 	}
 	
 	//Retorna las tarjetas de credito y debito que sean compatibles con la divisa de la factura
-	//Ademas que no tenga fondos en 0 o creditoMaximo alcanzado
+	//Ademas que no tengan fondos en 0 o creditoMaximo alcanzado
 	//La tarjeta para ser listada también debe tener un estado "Activo"
 	public ArrayList<Tarjeta> listarTarjetas(Factura factura){
 		ArrayList<Tarjeta> tarjetasDisponibles = new ArrayList<Tarjeta>();
@@ -180,6 +180,41 @@ public class Cliente {
 				}
 			}
 		return tarjetasDisponibles;
+	}
+	
+	//El usuario debe tener tarjetas con la divisa de origen que escoja
+	//Dichas tarjetas deben tener saldo o credito, y estar activas
+	public ArrayList<Divisa> escogerDivisas(Divisa origen, Divisa destino) {
+		ArrayList<Divisa> divisas = new ArrayList<Divisa>();
+		divisas.add(origen);
+		divisas.add(destino);
+		
+		//Verificar que el cliente tenga una tarjeta de origen con la divisa que escogió
+		for(TarjetaDebito tarjetaDebito: this.getTarjetasDebito()) {
+			if(!tarjetaDebito.isActiva())
+				continue;
+			if(!tarjetaDebito.tieneSaldo())
+				continue;
+			if(!tarjetaDebito.getDivisa().equals(origen))
+				continue;
+			//Si existe al menos una tarjeta que cumpla con lo requerido, retornamos.
+			return divisas;
+		}
+		
+		//Si no existen aun tarjetas con dicha divisa (ya que no se retornó) se recorren las tarjetas de credito
+		for(TarjetaCredito tarjetaCredito: this.getTarjetasCredito()) {
+			if(!tarjetaCredito.isActiva())
+				continue;
+			if(!tarjetaCredito.tieneSaldo())
+				continue;
+			if(!tarjetaCredito.getDivisa().equals(origen))
+				continue;
+			//Si existe al menos una tarjeta que cumpla con lo requerido, retornamos.
+			return divisas;
+		}
+		
+		//Si no se retornó anteriormente, es porque el cliente no tiene tarjetas con dicha divisa
+		return null;
 	}
 	
 	//Metodos de las instancias

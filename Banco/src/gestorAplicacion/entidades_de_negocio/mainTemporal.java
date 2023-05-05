@@ -1,6 +1,7 @@
 package gestorAplicacion.entidades_de_negocio;
 
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.Scanner;
 
 import gestorAplicacion.infraestructura.Banco;
@@ -34,7 +35,7 @@ public class mainTemporal {
 				continue; //Si el valor ingresado no corresponde a un cliente, el programa vuelve al principio
 			}
 			while(true) { // el loop principal que se ejecuta para cada cliente
-				System.out.println("1. Para ver facturas\n2. Para ver las tarjetas disponibles\n3. Para pagar una factura\n4. Para salir");
+				System.out.println("1. Para ver facturas\n2. Para ver las tarjetas disponibles\n3. Para pagar una factura\n4. Cambiar Divisas\n5. Salir");
 				String entrada2 = scanner.nextLine();
 				if(entrada2.equals("1")){
 					if(clienteActual.listarFacturas().isEmpty()){
@@ -92,8 +93,34 @@ public class mainTemporal {
 					}
 					Factura facturaNueva = transaccion.pagarFactura();
 					clienteActual.getFactura().set(clienteActual.getFactura().indexOf(factura), facturaNueva); //Remplaza la factura anterior con la factura nueva
-
+					
 				}else if(entrada2.equals("4")){
+					System.out.println("Escoja las divisas que desea cambiar");
+					System.out.println("Escoja la divisa de origen:");
+					
+					for(Divisa divisa : Divisa.values()){//Recorre un array de las divisas
+						System.out.println(divisa.ordinal() + 1 + ". " + divisa);
+					}
+					int entrada6 = scanner.nextInt() - 1;//Obtiene el numero de la divisa escogida
+					Divisa divisaOrigen = Divisa.values()[entrada6]; //Almacena la referencia de la divisa escogida
+					
+					System.out.println("Escoja la divisa de destino:");
+					for(Divisa divisa : Divisa.values()){
+						System.out.println(divisa.ordinal() + 1 + ". " + divisa);
+					}
+					int entrada7 = scanner.nextInt() - 1;
+					Divisa divisaDestino = Divisa.values()[entrada7];
+					
+					//Si el valor de retorno es null
+					if(Objects.isNull(clienteActual.escogerDivisas(divisaOrigen, divisaDestino))) {
+						System.out.println("No tiene tarjetas que cumplan con la divisa de origen");
+						break;
+					}
+					else {
+						System.out.println(clienteActual.escogerDivisas(divisaOrigen, divisaDestino));
+						break;
+					}
+				}else if(entrada2.equals("5")){
 					break;
 				}
 			}
