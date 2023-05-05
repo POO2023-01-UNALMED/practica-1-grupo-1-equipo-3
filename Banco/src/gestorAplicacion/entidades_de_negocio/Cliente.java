@@ -184,7 +184,7 @@ public class Cliente {
 	
 	//El usuario debe tener tarjetas con la divisa de origen que escoja
 	//Dichas tarjetas deben tener saldo o credito, y estar activas
-	public ArrayList<Divisa> escogerDivisas(Divisa origen, Divisa destino) {
+	public ArrayList<Divisa> escogerDivisas(Divisa origen, Divisa destino) {//Retorna un ArrayList
 		ArrayList<Divisa> divisas = new ArrayList<Divisa>();
 		divisas.add(origen);
 		divisas.add(destino);
@@ -216,8 +216,52 @@ public class Cliente {
 		return null;
 	}
 	
-	//Metodos de las instancias
+	public Divisa[] escogerDivisas2(Divisa origen, Divisa destino) {//Retorna un Array normal
+		Divisa[] divisas = new Divisa[2];
+		divisas[0] = origen;
+		divisas[1] = destino;
+		
+		//Verificar que el cliente tenga una tarjeta de origen con la divisa que escogió
+		for(TarjetaDebito tarjetaDebito: this.getTarjetasDebito()) {
+			if(!tarjetaDebito.isActiva())
+				continue;
+			if(!tarjetaDebito.tieneSaldo())
+				continue;
+			if(!tarjetaDebito.getDivisa().equals(origen))
+				continue;
+			//Si existe al menos una tarjeta que cumpla con lo requerido, retornamos.
+			return divisas;
+		}
+		
+		//Si no existen aun tarjetas con dicha divisa (ya que no se retornó) se recorren las tarjetas de credito
+		for(TarjetaCredito tarjetaCredito: this.getTarjetasCredito()) {
+			if(!tarjetaCredito.isActiva())
+				continue;
+			if(!tarjetaCredito.tieneSaldo())
+				continue;
+			if(!tarjetaCredito.getDivisa().equals(origen))
+				continue;
+			return divisas;
+		}
+		
+		//Si no se retornó anteriormente, es porque el cliente no tiene tarjetas con dicha divisa
+		return null;
+	}
 	
+	public ArrayList<Canal> listarCanales(Divisa divisaDestino) {
+		ArrayList<Canal> canales = new ArrayList<Canal>();  
+		for(Canal canal: Banco.getCanales()) {
+			if(!canal.tieneDivisa(divisaDestino))
+				continue;
+			if(!canal.tieneFondosDeDivisa(divisaDestino))
+				continue;
+			canales.add(canal);
+		}
+		
+		//ordenar por menos impuestos de menor a mayor
+		ArrayList<Canal> canalesOrdenados = Banco.ordenarCanalesPorImpuestos(canales);
+		return canalesOrdenados;
+	}
 //	public void sesion() {
 //		Scanner scanner = new Scanner(System.in);
 //		while(true) {

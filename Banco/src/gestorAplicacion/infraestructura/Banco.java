@@ -6,6 +6,9 @@ import gestorAplicacion.entidades_de_negocio.*;
 import gestorAplicacion.tarjetas.*;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 import java.util.Objects;
 
 
@@ -15,6 +18,15 @@ public class Banco {
 	private static ArrayList<Canal> canales = new ArrayList<Canal>();
 	
 	//Metodos de la clase
+	
+	public static ArrayList<Canal> ordenarCanalesPorImpuestos(List<Canal> canales) {//De menor a mayor
+	    Collections.sort(canales, new Comparator<Canal>() {
+	        public int compare(Canal canal1, Canal canal2) {
+	            return Double.compare(canal1.getImpuesto(), canal2.getImpuesto());
+	        }
+	    });
+	    return new ArrayList<>(canales);
+	}
 	
 	//Getters & Setters
 	/*Los getters y los setters contienen metodos que permiten, por ejemplo
@@ -61,7 +73,7 @@ public class Banco {
 		return canales;
 	}
 	
-	public static void agregarCanales(Canal canal) {//Agregar un solo canal
+	public static void agregarCanal(Canal canal) {//Agregar un solo canal
 		Banco.canales.add(canal);
 	}
 	
