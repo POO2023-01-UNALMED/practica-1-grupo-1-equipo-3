@@ -5,6 +5,7 @@ import java.util.Objects;
 import java.util.Scanner;
 
 import gestorAplicacion.infraestructura.Banco;
+import gestorAplicacion.infraestructura.Canal;
 import gestorAplicacion.tarjetas.TarjetaDebito;
 import gestorAplicacion.tarjetas.Tarjeta;
 import gestorAplicacion.tarjetas.TarjetaCredito;
@@ -144,6 +145,8 @@ public class mainTemporal {
 
 		Factura factura1 = new Factura(cliente1, 100.0, 5, tarjetafac);
 		Factura factura2 = new Factura(cliente1, 90, 8, tarjetafac);
+		Canal canal = new Canal("Cajero", 1000.0, 2000.0, 800.0, 700.0, 5000.0);
+		System.out.println(canal.getFondos());
 	}
 
 }
