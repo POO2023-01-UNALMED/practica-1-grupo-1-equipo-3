@@ -209,7 +209,6 @@ public class Cliente {
 				continue;
 			if(!tarjetaCredito.getDivisa().equals(origen))
 				continue;
-			//Si existe al menos una tarjeta que cumpla con lo requerido, retornamos.
 			return divisas;
 		}
 		

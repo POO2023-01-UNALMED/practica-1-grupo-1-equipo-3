@@ -1,6 +1,5 @@
 package gestorAplicacion.entidades_de_negocio;
 
-//pendiente pasar esta clase a tipo enum
 public enum Divisa {
 	EURO(1.11),
 	DOLAR(1.0),
