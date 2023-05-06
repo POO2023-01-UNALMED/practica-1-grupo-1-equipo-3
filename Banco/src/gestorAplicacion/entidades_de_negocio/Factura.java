@@ -27,11 +27,11 @@ public class Factura {
 		cliente.agregarFactura(this);
 	}
 
-	public Factura(Cliente cliente, double total, int transfeRestantes, TarjetaDebito tarjetaDestino, boolean facturaPagada, boolean facturaVencida) { //Se utiliza en el contexto de pagarFactura (método de Transaccion)
+	public Factura(Cliente cliente, double total, double valorPagado, int transfeRestantes, TarjetaDebito tarjetaDestino, boolean facturaPagada, boolean facturaVencida) { //Se utiliza en el contexto de pagarFactura (método de Transaccion)
 		this.cliente = cliente;
 		this.divisa = tarjetaDestino.getDivisa();
 		this.total = total;
-		this.valorPagado = 0;
+		this.valorPagado = valorPagado;
 		this.transfeRestantes = transfeRestantes;
 		this.tarjetaDestino = tarjetaDestino;
 		this.facturaVencida = facturaVencida;
@@ -52,6 +52,10 @@ public class Factura {
 		return total-valorPagado;
 	}
 
+	public double getTotal(){
+		return total;
+	}
+
 	public Divisa getDivisa(){
 		return divisa;
 	}
@@ -63,7 +67,7 @@ public class Factura {
 		} else if (facturaPagada && facturaVencida){
 			retorno = "Factura pagada después de vencer.\nTarjeta objetivo es: " + tarjetaDestino.getNoTarjeta() + "\n";
 		}else if(facturaVencida){
-			retorno = "Factura vencida por pagar.1\nTarjeta objetivo es: " + tarjetaDestino.getNoTarjeta() + " faltan " + (total-valorPagado) + " " + divisa.name() + " por pagar en " + transfeRestantes + " transferencias" + "\n";
+			retorno = "Factura vencida por pagar.1\nTarjeta objetivo es: " + tarjetaDestino.getNoTarjeta() + " faltan " + (total-valorPagado) + " " + divisa.name() + " por pagar" + "\n";
 		} else {
 			retorno = "Factura no vencida por pagar.\nTarjeta objetivo es: " + tarjetaDestino.getNoTarjeta() + " faltan " + (total-valorPagado) + " " + divisa.name() + " por pagar en " + transfeRestantes + " transferencias" + "\n";
 		}
@@ -79,5 +83,24 @@ public class Factura {
 		return new Transaccion(cliente, tarjetaOrigen, tarjetaDestino, monto, this, !validez);
 	}
 	
+	static int modificarPuntaje(ArrayList<Tarjeta> tarjetasBloqueadas, ArrayList<Tarjeta> tarjetasActivas, Cliente cliente, int puntaje){
+		for(Factura f : cliente.getFactura()){
+			if(f.facturaVencida){
+				puntaje -= 50;
+			}
+			if(f.facturaPagada && !f.facturaVencida){
+				puntaje += 0.5 * f.total*f.divisa.getValor();
+			}
+		}
+		for(Tarjeta t : tarjetasActivas){
+			System.out.println(t);
+			if(t instanceof TarjetaDebito){
+				puntaje += (int) 0.1*(((TarjetaDebito) t).getSaldo()*t.getDivisa().getValor());
+			}
+		}
+		puntaje -= (int) 100*(tarjetasBloqueadas.size())/(tarjetasActivas.size() + tarjetasBloqueadas.size())
+
+		return puntaje;
+	}
 	
 }

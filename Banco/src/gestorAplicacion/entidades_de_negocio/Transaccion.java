@@ -84,16 +84,19 @@ public class Transaccion {
 		if(rechazado) tarjetaOrigen.anadirTransaccionRechazada();
 		
 		if(this.pendiente && !this.rechazado){
-			if(factura.getPendiente() - cantidad < 0){
+			boolean vencido;
+			if(factura.getPendiente() - cantidad <= 0){
 				cantidad += factura.getPendiente()- cantidad;//ajusta el monto a pagar para que sea igual al monto pendiente de la factura.
+				vencido = factura.isFacturaVencida();
+			}else{
+				vencido = !(factura.getTransfeRestantes() > 1);
 			}
 			pendiente = false;
-			double pendiente = factura.getPendiente()- cantidad;
+			double montoPagado = factura.getTotal() - factura.getPendiente() + cantidad;
 			boolean pagado = factura.getPendiente() == cantidad;
-			boolean vencido = !(factura.getTransfeRestantes() >= 1);
 			tarjetaOrigen.sacarDinero(cantidad);
 			tarjetaObjetivo.introducirDinero(cantidad);
-			return new Factura(clienteOrigen, pendiente, factura.getTransfeRestantes()-1, tarjetaObjetivo, pagado, vencido);
+			return new Factura(clienteOrigen, factura.getTotal(), montoPagado, factura.getTransfeRestantes()-1, tarjetaObjetivo, pagado, vencido);
 
 		}
 		return null;

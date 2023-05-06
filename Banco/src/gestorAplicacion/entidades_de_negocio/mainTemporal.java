@@ -125,7 +125,9 @@ public class mainTemporal {
 					System.out.println("Viendo transferencias del usuario...");
 					ArrayList<Transaccion> historial = clienteActual.revisarHistorialCreditos();
 					int puntajeTentativo = Banco.calcularPuntaje(historial);
-					
+					ArrayList<Tarjeta> TarjetasBloqueadas = Tarjeta.TarjetasBloqueadas(clienteActual);
+					ArrayList<Tarjeta> TarjetasActivas = Tarjeta.TarjetasNoBloqueadas(clienteActual);
+					System.out.println(Factura.modificarPuntaje(TarjetasBloqueadas, TarjetasActivas, clienteActual, puntajeTentativo));
 					
 				} else if(entrada2.equals("6")){
 					break;

@@ -77,15 +77,15 @@ public abstract class Tarjeta {
 		}
 		return retorno;
 	}
-	public static ArrayList<Tarjeta> TarjetasNoCanceladas(Cliente cliente){
+	public static ArrayList<Tarjeta> TarjetasNoBloqueadas(Cliente cliente){
 		ArrayList<Tarjeta> retorno = new ArrayList<Tarjeta>();
 		for(Tarjeta t : cliente.getTarjetasCredito()){
-			if(!t.estado.equals("CANCELADA")){
+			if(t.isActiva()){
 				retorno.add(t);
 			}
 		}
 		for(Tarjeta t : cliente.getTarjetasDebito()){
-			if(!t.estado.equals("CANCELADA")){
+			if(t.isActiva()){
 				retorno.add(t);
 			}
 		}
