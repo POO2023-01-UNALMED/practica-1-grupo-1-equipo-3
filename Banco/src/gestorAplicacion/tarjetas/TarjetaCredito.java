@@ -47,5 +47,10 @@ public class TarjetaCredito extends Tarjeta {
 			this.credito += monto;
 		}
 	}
+	public void introducirDinero(double monto){
+		if(this.credito - monto >= 0){
+			this.credito -= monto;
+		}
+	}
 
 }

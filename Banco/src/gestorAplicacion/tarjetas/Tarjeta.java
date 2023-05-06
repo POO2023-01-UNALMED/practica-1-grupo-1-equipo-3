@@ -61,6 +61,7 @@ public abstract class Tarjeta {
 	public abstract boolean puedeTransferir(double monto); 
 	
 	public abstract void sacarDinero(double monto);
+	public abstract void introducirDinero(double monto);
 
 	public static ArrayList<Tarjeta> TarjetasBloqueadas(Cliente cliente){
 		ArrayList<Tarjeta> retorno = new ArrayList<Tarjeta>();
@@ -71,6 +72,20 @@ public abstract class Tarjeta {
 		}
 		for(Tarjeta t : cliente.getTarjetasDebito()){
 			if(!t.isActiva()){
+				retorno.add(t);
+			}
+		}
+		return retorno;
+	}
+	public static ArrayList<Tarjeta> TarjetasNoCanceladas(Cliente cliente){
+		ArrayList<Tarjeta> retorno = new ArrayList<Tarjeta>();
+		for(Tarjeta t : cliente.getTarjetasCredito()){
+			if(!t.estado.equals("CANCELADA")){
+				retorno.add(t);
+			}
+		}
+		for(Tarjeta t : cliente.getTarjetasDebito()){
+			if(!t.estado.equals("CANCELADA")){
 				retorno.add(t);
 			}
 		}

@@ -91,7 +91,8 @@ public class Transaccion {
 			double pendiente = factura.getPendiente()- cantidad;
 			boolean pagado = factura.getPendiente() == cantidad;
 			boolean vencido = !(factura.getTransfeRestantes() >= 1);
-			this.tarjetaOrigen.sacarDinero(cantidad);
+			tarjetaOrigen.sacarDinero(cantidad);
+			tarjetaObjetivo.introducirDinero(cantidad);
 			return new Factura(clienteOrigen, pendiente, factura.getTransfeRestantes()-1, tarjetaObjetivo, pagado, vencido);
 
 		}

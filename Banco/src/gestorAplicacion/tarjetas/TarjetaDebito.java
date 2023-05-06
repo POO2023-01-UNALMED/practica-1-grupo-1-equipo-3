@@ -54,4 +54,7 @@ public class TarjetaDebito extends Tarjeta{
 			saldo -= monto;
 		}
 	}
+	public void introducirDinero(double monto){
+		saldo += monto;
+	}
 }
