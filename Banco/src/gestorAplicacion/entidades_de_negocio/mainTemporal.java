@@ -132,6 +132,9 @@ public class mainTemporal {
 					for(Divisa d : Divisa.getDivisas()){
 						System.out.println(Divisa.getDivisas().indexOf(d)+1 + ". " + d.name());
 					}
+					int entrada3 = scanner.nextInt();
+					Divisa divisa = Divisa.getDivisas().get(entrada3);
+
 					
 				} else if(entrada2.equals("6")){
 					break;
@@ -151,7 +154,7 @@ public class mainTemporal {
 		TarjetaDebito tarjetafac = new TarjetaDebito(666, Divisa.DOLAR, 10);
 		TarjetaDebito tarjeta1 = new TarjetaDebito(1, Divisa.DOLAR, 1000);
 		TarjetaDebito tarjeta2 = new TarjetaDebito(1, Divisa.EURO, 10);
-		TarjetaCredito tarjetaCredito = new TarjetaCredito(2145, Divisa.DOLAR, 3000, (float) 1.5);
+		TarjetaCredito tarjetaCredito = new TarjetaCredito(2145, Divisa.DOLAR, 3000, 1.5);
 		cliente1.agregarTarjetasDebito(tarjeta1, tarjeta2);
 		cliente1.agregarTarjetasCredito(tarjetaCredito);
 

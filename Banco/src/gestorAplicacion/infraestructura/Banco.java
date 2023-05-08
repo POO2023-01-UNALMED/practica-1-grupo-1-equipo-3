@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Objects;
 
 
 public class Banco {
@@ -113,6 +112,17 @@ public class Banco {
 		return puntaje;
 	}
 	
+	public static boolean numeroExistente(int num) { // Evalua si un número de tarjeta corresponde a algúna tarjeta de algún cliente
+		boolean valor = false;
+		for(Tarjeta t : Tarjeta.getTarjetas()) {
+			if(num == t.getNoTarjeta()) {
+				valor = true;
+			}
+		}
+		return valor;
+	}
+
+
 //	public static ArrayList<Cliente> otrosUsuarios(Cliente usuario) {
 //		ArrayList<Cliente> otrosUsuarios = new ArrayList<Cliente>(); //Usa esta lista para guardar todos los clientes que no sean el que llama la función (usuario)
 //		for(Cliente c: Cliente.getClientes()) {
@@ -133,14 +143,6 @@ public class Banco {
 //		return tarjetas;
 //	}
 //	
-//	public static boolean numeroExistente(int num) { // Evalua si un número de tarjeta corresponde a algúna tarjeta de algún cliente
-//		boolean valor = false;
-//		for(Tarjeta t : Tarjeta.getTarjetas()) {
-//			if(num == t.getNoTarjeta()) {
-//				valor = true;
-//			}
-//		}
-//		return valor;
-//	}
+
 
 }
