@@ -137,7 +137,14 @@ public class mainTemporal {
 					int puntajeTentativo = Banco.calcularPuntaje(historial);
 					ArrayList<Tarjeta> TarjetasBloqueadas = Tarjeta.TarjetasBloqueadas(clienteActual);
 					ArrayList<Tarjeta> TarjetasActivas = Tarjeta.TarjetasNoBloqueadas(clienteActual);
-					System.out.println(Factura.modificarPuntaje(TarjetasBloqueadas, TarjetasActivas, clienteActual, puntajeTentativo));
+					int puntajeDefinitivo = Factura.modificarPuntaje(TarjetasBloqueadas, TarjetasActivas, clienteActual, puntajeTentativo);
+					System.out.println("Escoga la divisa que quiere para su tarjeta de crédito:");
+					for(Divisa d : Divisa.getDivisas()){
+						System.out.println(Divisa.getDivisas().indexOf(d)+1 + ". " + d.name());
+					}
+					int entrada3 = scanner.nextInt();
+					Divisa divisa = Divisa.getDivisas().get(entrada3);
+
 					
 				} else if(entrada2.equals("6")){
 					break;
@@ -168,21 +175,25 @@ public class mainTemporal {
 		TarjetaDebito tarjetaDebito10 = new TarjetaDebito(123456789, Divisa.PESO_COLOMBIANO, 2000);
 		
 		//TARJETAS CREDITO
-		TarjetaCredito tarjetaCredito1 = new TarjetaCredito(987456, Divisa.DOLAR, 3000, (float) 1.5);
-		TarjetaCredito tarjetaCredito2 = new TarjetaCredito(876543, Divisa.EURO, 2000, (float) 2.0);
-		TarjetaCredito tarjetaCredito3 = new TarjetaCredito(765432, Divisa.RUBLO_RUSO, 1500, (float) 0.8);
-		TarjetaCredito tarjetaCredito4 = new TarjetaCredito(654321, Divisa.YEN_JAPONES, 1850, (float) 0.2);
-		TarjetaCredito tarjetaCredito5 = new TarjetaCredito(543210, Divisa.PESO_COLOMBIANO, 6000, (float) 1.25);
-		TarjetaCredito tarjetaCredito6 = new TarjetaCredito(432109, Divisa.DOLAR, 500, (float) 0.75);
-		TarjetaCredito tarjetaCredito7 = new TarjetaCredito(321098, Divisa.EURO, 1750, (float) 0.1);
-		TarjetaCredito tarjetaCredito8 = new TarjetaCredito(210987, Divisa.RUBLO_RUSO, 700, (float) 0.3);
-		TarjetaCredito tarjetaCredito9 = new TarjetaCredito(109876, Divisa.YEN_JAPONES, 300, (float) 0.99);
-		TarjetaCredito tarjetaCredito10 = new TarjetaCredito(987654321, Divisa.PESO_COLOMBIANO, 1000, (float) 5.0);
+		TarjetaCredito tarjetaCredito1 = new TarjetaCredito(987456, Divisa.DOLAR, 3000, 1.5);
+		TarjetaCredito tarjetaCredito2 = new TarjetaCredito(876543, Divisa.EURO, 2000, 2.0);
+		TarjetaCredito tarjetaCredito3 = new TarjetaCredito(765432, Divisa.RUBLO_RUSO, 1500, 0.8);
+		TarjetaCredito tarjetaCredito4 = new TarjetaCredito(654321, Divisa.YEN_JAPONES, 1850, 0.2);
+		TarjetaCredito tarjetaCredito5 = new TarjetaCredito(543210, Divisa.PESO_COLOMBIANO, 6000, 1.25);
+		TarjetaCredito tarjetaCredito6 = new TarjetaCredito(432109, Divisa.DOLAR, 500, 0.75);
+		TarjetaCredito tarjetaCredito7 = new TarjetaCredito(321098, Divisa.EURO, 1750, 0.1);
+		TarjetaCredito tarjetaCredito8 = new TarjetaCredito(210987, Divisa.RUBLO_RUSO, 700, 0.3);
+		TarjetaCredito tarjetaCredito9 = new TarjetaCredito(109876, Divisa.YEN_JAPONES, 300, 0.99);
+		TarjetaCredito tarjetaCredito10 = new TarjetaCredito(987654321, Divisa.PESO_COLOMBIANO, 1000, 5.0);
 		
 		TarjetaDebito tarjetafac = new TarjetaDebito(666, Divisa.DOLAR, 10);
-		TarjetaCredito tarjetaCredito = new TarjetaCredito(2145, Divisa.DOLAR, 3000, (float) 1.5);
+
 		cliente1.agregarTarjetasDebito(tarjetaDebito1, tarjetaDebito2, tarjetaDebito3, tarjetaDebito5);
 		cliente1.agregarTarjetasCredito(tarjetaCredito1, tarjetaCredito2, tarjetaCredito7, tarjetaCredito9);
+
+		TarjetaDebito tarjeta1 = new TarjetaDebito(1, Divisa.DOLAR, 1000);
+		TarjetaDebito tarjeta2 = new TarjetaDebito(1, Divisa.EURO, 10);
+		cliente1.agregarTarjetasDebito(tarjeta1, tarjeta2);
 
 		Factura factura1 = new Factura(cliente1, 100.0, 5, tarjetafac);
 		Factura factura2 = new Factura(cliente1, 90, 8, tarjetafac);
