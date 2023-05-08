@@ -248,9 +248,14 @@ public class Cliente {
 		return null;
 	}
 	
-	public ArrayList<Canal> listarCanales(Divisa divisaDestino) {
+	public ArrayList<Canal> listarCanales(Divisa[] divisas) {//Recibe un array normal
+		Divisa divisaOrigen = divisas[0];
+		Divisa divisaDestino = divisas[1];
+		
 		ArrayList<Canal> canales = new ArrayList<Canal>();  
 		for(Canal canal: Banco.getCanales()) {
+			if(!canal.tieneDivisa(divisaOrigen))
+				continue;
 			if(!canal.tieneDivisa(divisaDestino))
 				continue;
 			if(!canal.tieneFondosDeDivisa(divisaDestino))
@@ -263,6 +268,26 @@ public class Cliente {
 		return canalesOrdenados;
 	}
 
+	public ArrayList<Canal> listarCanales(ArrayList<Divisa> divisas) {//recibe un arrayList
+		Divisa divisaOrigen = divisas.get(0);
+		Divisa divisaDestino = divisas.get(1);
+		
+		ArrayList<Canal> canales = new ArrayList<Canal>();  
+		for(Canal canal: Banco.getCanales()) {
+			if(!canal.tieneDivisa(divisaOrigen))
+				continue;
+			if(!canal.tieneDivisa(divisaDestino))
+				continue;
+			if(!canal.tieneFondosDeDivisa(divisaDestino))
+				continue;
+			canales.add(canal);
+		}
+		
+		//ordenar por menos impuestos de menor a mayor
+		ArrayList<Canal> canalesOrdenados = Banco.ordenarCanalesPorImpuestos(canales);
+		return canalesOrdenados;
+	}
+	
 	public ArrayList<Transaccion> revisarHistorialCreditos(){
 		ArrayList<Transaccion> retorno = new ArrayList<Transaccion>();
 		for(Transaccion t : Transaccion.getTransacciones()){

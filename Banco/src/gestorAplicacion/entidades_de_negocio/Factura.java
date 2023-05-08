@@ -98,8 +98,7 @@ public class Factura {
 				puntaje += (int) 0.1*(((TarjetaDebito) t).getSaldo()*t.getDivisa().getValor());
 			}
 		}
-		puntaje -= (int) 100*(tarjetasBloqueadas.size())/(tarjetasActivas.size() + tarjetasBloqueadas.size())
-
+		puntaje -= (int) 100*(tarjetasBloqueadas.size())/(tarjetasActivas.size() + tarjetasBloqueadas.size());
 		return puntaje;
 	}
 	

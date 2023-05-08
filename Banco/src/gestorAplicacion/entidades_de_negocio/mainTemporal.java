@@ -102,15 +102,15 @@ public class mainTemporal {
 					for(Divisa divisa : Divisa.values()){//Recorre un array de las divisas
 						System.out.println(divisa.ordinal() + 1 + ". " + divisa);
 					}
-					int entrada6 = scanner.nextInt() - 1;//Obtiene el numero de la divisa escogida
-					Divisa divisaOrigen = Divisa.values()[entrada6]; //Almacena la referencia de la divisa escogida
+					int entrada3 = scanner.nextInt() - 1;//Obtiene el numero de la divisa escogida
+					Divisa divisaOrigen = Divisa.values()[entrada3]; //Almacena la referencia de la divisa escogida
 					
 					System.out.println("Escoja la divisa de destino:");
 					for(Divisa divisa : Divisa.values()){
 						System.out.println(divisa.ordinal() + 1 + ". " + divisa);
 					}
-					int entrada7 = scanner.nextInt() - 1;
-					Divisa divisaDestino = Divisa.values()[entrada7];
+					int entrada4 = scanner.nextInt() - 1;
+					Divisa divisaDestino = Divisa.values()[entrada4];
 					
 					//Si el valor de retorno es null
 					if(Objects.isNull(clienteActual.escogerDivisas(divisaOrigen, divisaDestino))) {
@@ -118,7 +118,17 @@ public class mainTemporal {
 						break;
 					}
 					else {
-						System.out.println(clienteActual.escogerDivisas(divisaOrigen, divisaDestino));
+						ArrayList<Divisa> divisas = clienteActual.escogerDivisas(divisaOrigen, divisaDestino);
+						ArrayList<Canal> listaCanales = clienteActual.listarCanales(divisas);
+						System.out.println("Escoja el canal donde realizará el proceso");
+						for(Canal canal: listaCanales) {
+							System.out.println(listaCanales.indexOf(canal) + 1 + ". " + canal);
+						}
+						
+						int entrada5 = scanner.nextInt() - 1;
+						Canal canalEscogido = listaCanales.get(entrada5);
+						System.out.println(canalEscogido);
+						
 						break;
 					}
 				}else if(entrada2.equals("5")){
@@ -140,23 +150,74 @@ public class mainTemporal {
 	}
 
 	public static void setup(){ //Función que inicializa algunos objetos para comenzar a experimentar
+		//CLIENTES
 		Cliente cliente1 = new Cliente("Dario", 1);
 		Cliente cliente2 = new Cliente("Esteban", 2);
 		Cliente cliente3 = new Cliente("Marta", 3);
-
+		
+		//TARJETAS DEBITO
+		TarjetaDebito tarjetaDebito1 = new TarjetaDebito(123456, Divisa.DOLAR, 3000);
+		TarjetaDebito tarjetaDebito2 = new TarjetaDebito(234567, Divisa.EURO, 0);
+		TarjetaDebito tarjetaDebito3 = new TarjetaDebito(345678, Divisa.RUBLO_RUSO, 200);
+		TarjetaDebito tarjetaDebito4 = new TarjetaDebito(456789, Divisa.YEN_JAPONES, 970);
+		TarjetaDebito tarjetaDebito5 = new TarjetaDebito(567890, Divisa.PESO_COLOMBIANO, 8000);
+		TarjetaDebito tarjetaDebito6 = new TarjetaDebito(678901, Divisa.DOLAR, 7000);
+		TarjetaDebito tarjetaDebito7 = new TarjetaDebito(789012, Divisa.EURO, 2450);
+		TarjetaDebito tarjetaDebito8 = new TarjetaDebito(890123, Divisa.RUBLO_RUSO, 1370);
+		TarjetaDebito tarjetaDebito9 = new TarjetaDebito(901234, Divisa.YEN_JAPONES, 480);
+		TarjetaDebito tarjetaDebito10 = new TarjetaDebito(123456789, Divisa.PESO_COLOMBIANO, 2000);
+		
+		//TARJETAS CREDITO
+		TarjetaCredito tarjetaCredito1 = new TarjetaCredito(987456, Divisa.DOLAR, 3000, (float) 1.5);
+		TarjetaCredito tarjetaCredito2 = new TarjetaCredito(876543, Divisa.EURO, 2000, (float) 2.0);
+		TarjetaCredito tarjetaCredito3 = new TarjetaCredito(765432, Divisa.RUBLO_RUSO, 1500, (float) 0.8);
+		TarjetaCredito tarjetaCredito4 = new TarjetaCredito(654321, Divisa.YEN_JAPONES, 1850, (float) 0.2);
+		TarjetaCredito tarjetaCredito5 = new TarjetaCredito(543210, Divisa.PESO_COLOMBIANO, 6000, (float) 1.25);
+		TarjetaCredito tarjetaCredito6 = new TarjetaCredito(432109, Divisa.DOLAR, 500, (float) 0.75);
+		TarjetaCredito tarjetaCredito7 = new TarjetaCredito(321098, Divisa.EURO, 1750, (float) 0.1);
+		TarjetaCredito tarjetaCredito8 = new TarjetaCredito(210987, Divisa.RUBLO_RUSO, 700, (float) 0.3);
+		TarjetaCredito tarjetaCredito9 = new TarjetaCredito(109876, Divisa.YEN_JAPONES, 300, (float) 0.99);
+		TarjetaCredito tarjetaCredito10 = new TarjetaCredito(987654321, Divisa.PESO_COLOMBIANO, 1000, (float) 5.0);
+		
 		TarjetaDebito tarjetafac = new TarjetaDebito(666, Divisa.DOLAR, 10);
-		TarjetaDebito tarjeta1 = new TarjetaDebito(1, Divisa.DOLAR, 1000);
-		TarjetaDebito tarjeta2 = new TarjetaDebito(1, Divisa.EURO, 10);
 		TarjetaCredito tarjetaCredito = new TarjetaCredito(2145, Divisa.DOLAR, 3000, (float) 1.5);
-		cliente1.agregarTarjetasDebito(tarjeta1, tarjeta2);
-		cliente1.agregarTarjetasCredito(tarjetaCredito);
+		cliente1.agregarTarjetasDebito(tarjetaDebito1, tarjetaDebito2, tarjetaDebito3, tarjetaDebito5);
+		cliente1.agregarTarjetasCredito(tarjetaCredito1, tarjetaCredito2, tarjetaCredito7, tarjetaCredito9);
 
 		Factura factura1 = new Factura(cliente1, 100.0, 5, tarjetafac);
 		Factura factura2 = new Factura(cliente1, 90, 8, tarjetafac);
-		Canal canal = new Canal("Sucursal",(float)1.0, 1000.0, 2000.0, 800.0, 700.0, 5000.0);
-		Canal canal2 = new Canal("Cajero",(float)7.0, 1000.0, 2000.0, 800.0);
-		Canal canal3 = new Canal("corresponsal",(float)2.0, 1000.0, 0.0, 800.0);
-		System.out.println(cliente1.listarCanales(Divisa.DOLAR));
+		
+		//CANALES
+		
+		//Sucursal fisica
+		Canal sucursalFisica1 = new Canal("Sucursal Fisica",(float)2.0, 22500, 12370, 800, 700, 30000);
+		
+		//Cajero Automático
+		Canal cajero1 = new Canal("Cajero",(float)0.5);
+		cajero1.setFondos(Divisa.PESO_COLOMBIANO, 12000.0);
+		
+		//Corresponal Bancario
+		Canal corresponsal1 = new Canal("Corresponsal Bancario", (float)1.0);
+		corresponsal1.setFondos(Divisa.DOLAR, 20000.0);
+		corresponsal1.setFondos(Divisa.EURO, 10000.0);
+		corresponsal1.setFondos(Divisa.PESO_COLOMBIANO, 40000.0);
+		
+		//Canal tipo Cajero Automático
+		Canal cajero2 = new Canal("Cajero", (float) 1.0);
+		cajero2.setFondos(Divisa.DOLAR, 8000.0);
+
+		//Canal tipo Sucursal Física
+		Canal sucursalFisica2 = new Canal("Sucursal Física", (float) 1.5, 4000.0, 6000.0, 2000.0, 1500.0, 8000.0);
+
+		//Canal tipo Sucursal en Línea
+		Canal sucursalVirtual1 = new Canal("Sucursal en Línea", (float) 2.5, 5100.0, 8900.0, 0.0, 1200.0, 3700.0);
+
+		//Canal tipo Corresponsal Bancario
+		Canal corresponsal2 = new Canal("Corresponsal Bancario", (float) 0.8);
+		corresponsal2.setFondos(Divisa.DOLAR, 15000.0);
+		corresponsal2.setFondos(Divisa.EURO, 8000.0);
+		corresponsal2.setFondos(Divisa.RUBLO_RUSO, 35000.0);
+		
 	}
 
 }

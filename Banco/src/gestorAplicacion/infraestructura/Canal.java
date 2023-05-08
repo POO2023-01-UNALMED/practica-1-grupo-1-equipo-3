@@ -6,11 +6,11 @@ import gestorAplicacion.entidades_de_negocio.*;
 public class Canal {
 	private String tipoCanal;
 	/*	Tipos de Canales:
-	 *	- Cajero Automatico: Solo tienen una divisa disponible
-	 *	- Sucursal Fisica: Tienen todas las divisas disponibles
-	 *	- Sucursal en Linea: Tienen todas las divisas disponibles
-	 *	- Corresponsal Bancario: Solo tiene divisa del pais de origen(Peso colombiano) y las divisas internacionales mas importantes
-	 *	(Dolar y Euro)
+	 *	- Cajero Automatico: Solo tienen una divisa disponible. Estos canales no pueden cambiar divisas. Solo se puede retirar de ellos
+	 *	- Sucursal Fisica: Tienen todas las divisas disponibles. Pueden cambiar todas las divisas.
+	 *	- Sucursal en Linea: Tienen todas las divisas disponibles. Pueden cambiar todas las divisas. 
+	 *	- Corresponsal Bancario: Solo tienen 3 divisas, dos de ellas son las monedas internacionales mas importantes (DOLAR y EURO) y una tercera que puede ser cualquier otra.
+	 *	Por lo que solo se pueden cambiar esas 3 divisas en estos canales
 	 * */
 	private float impuesto;
 	private EnumMap<Divisa, Double> fondosPorDivisa = new EnumMap<>(Divisa.class); 
@@ -29,7 +29,7 @@ public class Canal {
     	Banco.agregarCanal(this);
     }
     
-    //Constructor para configurar solo el tipo de cajero y los impuestos, los fondos seran configurados uno por uno
+    //Constructor para configurar solo el tipo de canal y los impuestos, los fondos seran configurados uno por uno
     //Esto con la idea de inicializar canales que solo tengan algunas divisas
     public Canal(String tipoCanal, float impuesto) {
     	this.tipoCanal = tipoCanal;
@@ -64,7 +64,7 @@ public class Canal {
 	
 	@Override
 	public String toString() {
-		return "Tipo de canal: %s\nTasa de impuestos: %s\n".formatted(tipoCanal,impuesto);
+		return "Canal: %s\nTasa de impuestos: %s\n".formatted(tipoCanal,impuesto);
 	}
 	
     public boolean tieneDivisa(Divisa divisa) {
