@@ -1,11 +1,14 @@
 package gestorAplicacion.entidades_de_negocio;
 
+import java.util.ArrayList;
+
 public enum Divisa {
 	EURO(1.11),
 	DOLAR(1.0),
 	RUBLO_RUSO(0.012),
 	YEN_JAPONES(0.0075),
 	PESO_COLOMBIANO(0.00022);
+	
 	
 	
 	private double valor;
@@ -21,6 +24,16 @@ public enum Divisa {
 
 	public void setValor(double valor) {
 		this.valor = valor;
+	}
+	
+	public static ArrayList<Divisa> getDivisas(){
+		ArrayList retorno = new ArrayList<Divisa>();
+		retorno.add(Divisa.DOLAR);
+		retorno.add(Divisa.EURO);
+		retorno.add(Divisa.RUBLO_RUSO);
+		retorno.add(Divisa.YEN_JAPONES);
+		retorno.add(Divisa.PESO_COLOMBIANO);
+		return retorno;
 	}
 	
 	

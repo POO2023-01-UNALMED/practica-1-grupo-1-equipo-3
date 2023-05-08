@@ -1,5 +1,7 @@
 package gestorAplicacion.tarjetas;
 
+import java.util.Dictionary;
+
 import gestorAplicacion.entidades_de_negocio.Divisa;
 
 public class TarjetaCredito extends Tarjeta {

@@ -127,7 +127,11 @@ public class mainTemporal {
 					int puntajeTentativo = Banco.calcularPuntaje(historial);
 					ArrayList<Tarjeta> TarjetasBloqueadas = Tarjeta.TarjetasBloqueadas(clienteActual);
 					ArrayList<Tarjeta> TarjetasActivas = Tarjeta.TarjetasNoBloqueadas(clienteActual);
-					System.out.println(Factura.modificarPuntaje(TarjetasBloqueadas, TarjetasActivas, clienteActual, puntajeTentativo));
+					int puntajeDefinitivo = Factura.modificarPuntaje(TarjetasBloqueadas, TarjetasActivas, clienteActual, puntajeTentativo);
+					System.out.println("Escoga la divisa que quiere para su tarjeta de crédito:");
+					for(Divisa d : Divisa.getDivisas()){
+						System.out.println(Divisa.getDivisas().indexOf(d)+1 + ". " + d.name());
+					}
 					
 				} else if(entrada2.equals("6")){
 					break;
