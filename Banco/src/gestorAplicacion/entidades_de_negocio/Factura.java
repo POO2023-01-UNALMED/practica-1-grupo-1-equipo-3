@@ -99,6 +99,10 @@ public class Factura {
 			}
 		}
 		puntaje -= (int) 100*(tarjetasBloqueadas.size())/(tarjetasActivas.size() + tarjetasBloqueadas.size());
+<<<<<<< HEAD
+=======
+
+>>>>>>> a6195a1a778dfdd875392697ee241c8b8c620ec9
 		return puntaje;
 	}
 	

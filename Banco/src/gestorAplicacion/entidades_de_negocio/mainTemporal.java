@@ -137,7 +137,14 @@ public class mainTemporal {
 					int puntajeTentativo = Banco.calcularPuntaje(historial);
 					ArrayList<Tarjeta> TarjetasBloqueadas = Tarjeta.TarjetasBloqueadas(clienteActual);
 					ArrayList<Tarjeta> TarjetasActivas = Tarjeta.TarjetasNoBloqueadas(clienteActual);
-					System.out.println(Factura.modificarPuntaje(TarjetasBloqueadas, TarjetasActivas, clienteActual, puntajeTentativo));
+					int puntajeDefinitivo = Factura.modificarPuntaje(TarjetasBloqueadas, TarjetasActivas, clienteActual, puntajeTentativo);
+					System.out.println("Escoga la divisa que quiere para su tarjeta de crédito:");
+					for(Divisa d : Divisa.getDivisas()){
+						System.out.println(Divisa.getDivisas().indexOf(d)+1 + ". " + d.name());
+					}
+					int entrada3 = scanner.nextInt();
+					Divisa divisa = Divisa.getDivisas().get(entrada3);
+
 					
 				} else if(entrada2.equals("6")){
 					break;
@@ -180,9 +187,17 @@ public class mainTemporal {
 		TarjetaCredito tarjetaCredito10 = new TarjetaCredito(987654321, Divisa.PESO_COLOMBIANO, 1000, (float) 5.0);
 		
 		TarjetaDebito tarjetafac = new TarjetaDebito(666, Divisa.DOLAR, 10);
+<<<<<<< HEAD
 		TarjetaCredito tarjetaCredito = new TarjetaCredito(2145, Divisa.DOLAR, 3000, (float) 1.5);
 		cliente1.agregarTarjetasDebito(tarjetaDebito1, tarjetaDebito2, tarjetaDebito3, tarjetaDebito5);
 		cliente1.agregarTarjetasCredito(tarjetaCredito1, tarjetaCredito2, tarjetaCredito7, tarjetaCredito9);
+=======
+		TarjetaDebito tarjeta1 = new TarjetaDebito(1, Divisa.DOLAR, 1000);
+		TarjetaDebito tarjeta2 = new TarjetaDebito(1, Divisa.EURO, 10);
+		TarjetaCredito tarjetaCredito = new TarjetaCredito(2145, Divisa.DOLAR, 3000, 1.5);
+		cliente1.agregarTarjetasDebito(tarjeta1, tarjeta2);
+		cliente1.agregarTarjetasCredito(tarjetaCredito);
+>>>>>>> a6195a1a778dfdd875392697ee241c8b8c620ec9
 
 		Factura factura1 = new Factura(cliente1, 100.0, 5, tarjetafac);
 		Factura factura2 = new Factura(cliente1, 90, 8, tarjetafac);
