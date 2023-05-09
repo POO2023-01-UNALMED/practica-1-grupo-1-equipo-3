@@ -173,13 +173,25 @@ public class mainTemporal {
 					ArrayList<Tarjeta> TarjetasActivas = Tarjeta.TarjetasNoBloqueadas(clienteActual);
 					int puntajeDefinitivo = Factura.modificarPuntaje(TarjetasBloqueadas, TarjetasActivas, clienteActual, puntajeTentativo);
 					System.out.println("Escoga la divisa que quiere para su tarjeta de crédito:");
-					for(Divisa d : Divisa.getDivisas()){
-						System.out.println(Divisa.getDivisas().indexOf(d)+1 + ". " + d.name());
+					for(Divisa divisa : Divisa.values()){
+						System.out.println(divisa.ordinal() + 1 + ". " + divisa);
 					}
-					int entrada3 = scanner.nextInt();
-					Divisa divisa = Divisa.getDivisas().get(entrada3);
-
+					int entrada3 = scanner.nextInt()-1;
+					Divisa divisa = Divisa.values()[entrada3];
+					ArrayList<TarjetaCredito> tarjetasDisponibles = TarjetaCredito.tarjetasDisponibles(puntajeDefinitivo, divisa);
+					int i = 0;
+					System.out.println("Su puntaje total es: %s. Por favor, escoga la tarjeta de crédito que desea:\n".formatted(puntajeDefinitivo));
+					for(TarjetaCredito t : tarjetasDisponibles){
+						System.out.println("%s. %sPuntos: %s\n".formatted(i+1, t.toString(), i*50));
+						i++;
+					}
+					System.out.println("%s. Para salir".formatted(tarjetasDisponibles.size()+1));
+					int entrada4 = scanner.nextInt()-1;
+					int bono = puntajeDefinitivo - entrada4*50;
+					if(entrada4 == tarjetasDisponibles.size()) continue;
+					else TarjetaCredito.anadirTarjetaCredito(tarjetasDisponibles.get(entrada4), clienteActual, bono);
 					
+					scanner.nextLine();
 				} else if(entrada2.equals("6")){
 					break;
 				}

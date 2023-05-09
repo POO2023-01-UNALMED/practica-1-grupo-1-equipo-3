@@ -93,12 +93,12 @@ public class Factura {
 			}
 		}
 		for(Tarjeta t : tarjetasActivas){
-			System.out.println(t);
 			if(t instanceof TarjetaDebito){
-				puntaje += (int) 0.1*(((TarjetaDebito) t).getSaldo()*t.getDivisa().getValor());
+				puntaje += (int) (0.1*(((TarjetaDebito) t).getSaldo()*t.getDivisa().getValor()));
 			}
 		}
 		puntaje -= (int) 100*(tarjetasBloqueadas.size())/(tarjetasActivas.size() + tarjetasBloqueadas.size());
+		puntaje += cliente.getBonoActual();
 		return puntaje;
 	}
 	

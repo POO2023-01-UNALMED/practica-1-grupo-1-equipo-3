@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import gestorAplicacion.entidades_de_negocio.Divisa;
+import gestorAplicacion.entidades_de_negocio.Cliente;;
 
 public class TarjetaCredito extends Tarjeta {
 	private double creditoMaximo; // Es el límite de dinero que se puede prestar mediante esta tarjeta
@@ -72,7 +73,9 @@ public class TarjetaCredito extends Tarjeta {
 		reqCredMax.put(100, 1000.0);
 		reqInteres.put(100, 5.0);
 		reqCredMax.put(150, 2000.0);
-		reqInteres.put(150, 3.0);
+		reqInteres.put(150, 4.0);
+		reqCredMax.put(200, 3000.0);
+		reqInteres.put(200, 3.0);
 		ArrayList<TarjetaCredito> Tarjetas = new ArrayList<TarjetaCredito>();
 		int noTarjeta; 
 		while(true) {
@@ -83,9 +86,14 @@ public class TarjetaCredito extends Tarjeta {
 		}
 		for(int i : reqCredMax.keySet()){
 			if(i > puntaje) break;
-			else Tarjetas.add(new TarjetaCredito(noTarjeta, divisa, reqCredMax.get(i), reqInteres.get(i)));
+			else Tarjetas.add(new TarjetaCredito(noTarjeta, divisa, Math.floor(100*reqCredMax.get(i)/divisa.getValor())/100, reqInteres.get(i)));
 		}
 		return Tarjetas;
+	}
+
+	public static void anadirTarjetaCredito(TarjetaCredito tarjeta, Cliente cliente, int bono){
+		cliente.getTarjetasCredito().add(tarjeta);
+		cliente.setBonoActual(bono);
 	}
 
 }
