@@ -119,14 +119,48 @@ public class mainTemporal {
 					}
 					else {
 						ArrayList<Divisa> divisas = clienteActual.escogerDivisas(divisaOrigen, divisaDestino);
+						ArrayList<Tarjeta> tarjetas = clienteActual.listarTarjetas(divisas);
+						
+						ArrayList<Tarjeta> tarjetasEscogidas = new ArrayList<Tarjeta>();
+						
+						System.out.println("Escoja la tarjeta con la divisa de origen:\n");
+						for(Tarjeta tarjeta: tarjetas) {
+							System.out.println(tarjetas.indexOf(tarjeta) + 1 + ". " + tarjeta);
+						}
+						
+						int entrada5 = scanner.nextInt() - 1;
+						tarjetasEscogidas.add(tarjetas.get(entrada5));
+						
+						//La tarjeta de origen que escoja el usuario debe corresponder con la divisa de origen (el orden debe ser el mismo) 
+						if(!Divisa.verificarOrden(divisas, tarjetasEscogidas.get(0).getDivisa(), "Origen")) {
+							System.out.println("Debes escoger una tarjeta de origen con una divisa acorde a la divisa que quieres cambiar\n");
+							break;
+						}
+						
+						System.out.println("Escoja la tarjeta con la divisa de Destino:\n");
+						for(Tarjeta tarjeta: tarjetas) {
+							if(tarjeta instanceof TarjetaCredito)//La divisa de destino solo puede ser una tarjeta debito 
+								continue;
+							System.out.println(tarjetas.indexOf(tarjeta) + 1 + ". " + tarjeta);
+						}
+						
+						int entrada6 = scanner.nextInt() - 1;
+						tarjetasEscogidas.add(tarjetas.get(entrada6));
+						
+						if(Divisa.verificarOrden(divisas, tarjetasEscogidas.get(1).getDivisa(), "Destino")) {
+							System.out.println("Debes escoger una tarjeta de destino con una divisa acorde a la divisa que quieres obtener\n");
+							break;
+						}//Eventualmente hay que volver esta parte un ciclo, para que le permita escojer al usuario nuevamente otra tarjeta
+						
+						
 						ArrayList<Canal> listaCanales = clienteActual.listarCanales(divisas);
 						System.out.println("Escoja el canal donde realizará el proceso");
 						for(Canal canal: listaCanales) {
 							System.out.println(listaCanales.indexOf(canal) + 1 + ". " + canal);
 						}
 						
-						int entrada5 = scanner.nextInt() - 1;
-						Canal canalEscogido = listaCanales.get(entrada5);
+						int entrada7 = scanner.nextInt() - 1;
+						Canal canalEscogido = listaCanales.get(entrada7);
 						System.out.println(canalEscogido);
 						
 						break;

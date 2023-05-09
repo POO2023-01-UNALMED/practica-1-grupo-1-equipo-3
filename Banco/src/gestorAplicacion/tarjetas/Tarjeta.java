@@ -20,6 +20,7 @@ public abstract class Tarjeta {
 		tarjetas.add(this);
 	}
 	
+	//Metodos de las instancias
 	public int getNoTarjeta() {
 		return noTarjeta;
 	}
@@ -51,6 +52,8 @@ public abstract class Tarjeta {
 		return tarjetas;
 	}
 	
+	//Metodos asbtractos
+	
 	//Función que se encarga de hacer transacciones. Si la transacción es exitosa, devuelve verdadero
 	public abstract boolean transaccion(double cantidad, TarjetaDebito t);
 	
@@ -63,6 +66,7 @@ public abstract class Tarjeta {
 	public abstract void sacarDinero(double monto);
 	public abstract void introducirDinero(double monto);
 
+	//Metodos de la clase
 	public static ArrayList<Tarjeta> TarjetasBloqueadas(Cliente cliente){
 		ArrayList<Tarjeta> retorno = new ArrayList<Tarjeta>();
 		for(Tarjeta t : cliente.getTarjetasCredito()){
@@ -77,6 +81,7 @@ public abstract class Tarjeta {
 		}
 		return retorno;
 	}
+	
 	public static ArrayList<Tarjeta> TarjetasNoBloqueadas(Cliente cliente){
 		ArrayList<Tarjeta> retorno = new ArrayList<Tarjeta>();
 		for(Tarjeta t : cliente.getTarjetasCredito()){

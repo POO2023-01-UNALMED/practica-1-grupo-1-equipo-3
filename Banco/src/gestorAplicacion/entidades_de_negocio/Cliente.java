@@ -159,26 +159,55 @@ public class Cliente {
 	//Retorna las tarjetas de credito y debito que sean compatibles con la divisa de la factura
 	//Ademas que no tengan fondos en 0 o creditoMaximo alcanzado
 	//La tarjeta para ser listada también debe tener un estado "Activo"
-	public ArrayList<Tarjeta> listarTarjetas(Factura factura){
+	public ArrayList<Tarjeta> listarTarjetas(Factura factura){//Listar tarjetas para pagar factura
 		ArrayList<Tarjeta> tarjetasDisponibles = new ArrayList<Tarjeta>();
-			for(TarjetaDebito tarjeta : tarjetasDebito){
-				if(!tarjeta.isActiva())
-					continue;
-				if(!tarjeta.tieneSaldo())
-					continue;
-				if(tarjeta.getDivisa().equals(factura.getDivisa())){
-					tarjetasDisponibles.add(tarjeta);
-				}
+		for(TarjetaDebito tarjeta : tarjetasDebito){
+			if(!tarjeta.isActiva())
+				continue;
+			if(!tarjeta.tieneSaldo())
+				continue;
+			if(tarjeta.getDivisa().equals(factura.getDivisa())){
+				tarjetasDisponibles.add(tarjeta);
 			}
-			for(TarjetaCredito tarjeta : tarjetasCredito){
-				if(!tarjeta.isActiva())
-					continue;
-				if(!tarjeta.tieneSaldo())
-					continue;
-				if(tarjeta.getDivisa().equals(factura.getDivisa())){
-					tarjetasDisponibles.add(tarjeta);
-				}
+		}
+		for(TarjetaCredito tarjeta : tarjetasCredito){
+			if(!tarjeta.isActiva())
+				continue;
+			if(!tarjeta.tieneSaldo())
+				continue;
+			if(tarjeta.getDivisa().equals(factura.getDivisa())){
+				tarjetasDisponibles.add(tarjeta);
 			}
+		}
+		return tarjetasDisponibles;
+	}
+	
+	public ArrayList<Tarjeta> listarTarjetas(ArrayList<Divisa> divisas){//Listar tarjetas para cambiar divisas. Recibe un arrayList
+		Divisa divisaOrigen = divisas.get(0);
+		Divisa divisaDestino = divisas.get(1);
+		
+		ArrayList<Tarjeta> tarjetasDisponibles = new ArrayList<Tarjeta>();
+		
+		for(TarjetaDebito tarjeta : tarjetasDebito){
+			if(!tarjeta.isActiva())
+				continue;
+			if(!tarjeta.tieneSaldo())
+				continue;
+			if(tarjeta.getDivisa().equals(divisaOrigen) || tarjeta.getDivisa().equals(divisaDestino)){
+				tarjetasDisponibles.add(tarjeta);
+			}
+		}
+		
+		for(TarjetaCredito tarjeta : tarjetasCredito){
+			if(!tarjeta.isActiva())
+				continue;
+			if(!tarjeta.tieneSaldo())
+				continue;
+			if(tarjeta.getDivisa().equals(divisaOrigen) || tarjeta.getDivisa().equals(divisaDestino)){
+				tarjetasDisponibles.add(tarjeta);
+			}
+		}
+		
 		return tarjetasDisponibles;
 	}
 	

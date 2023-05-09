@@ -13,6 +13,7 @@ public class Canal {
 	 *	Por lo que solo se pueden cambiar esas 3 divisas en estos canales
 	 * */
 	private float impuesto;
+	private int contador;//Este atributo solo es para asignarle un numero a los canales, para rastrearlos mejor. Ej: Sucursal Fisica #2
 	private EnumMap<Divisa, Double> fondosPorDivisa = new EnumMap<>(Divisa.class); 
 
 	//Los fondos deben ser proporcionados en el orden en que estan declaradas las divisas
@@ -64,7 +65,7 @@ public class Canal {
 	
 	@Override
 	public String toString() {
-		return "Canal: %s\nTasa de impuestos: %s\n".formatted(tipoCanal,impuesto);
+		return "Canal: %s #%s\nTasa de impuestos: %s\n".formatted(tipoCanal,Banco.getCanales().indexOf(this) + 1,impuesto);
 	}
 	
     public boolean tieneDivisa(Divisa divisa) {
