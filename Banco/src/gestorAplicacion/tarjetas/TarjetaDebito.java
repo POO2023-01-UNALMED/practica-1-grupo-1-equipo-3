@@ -36,17 +36,11 @@ public class TarjetaDebito extends Tarjeta{
 	}
 	
 	public boolean tieneSaldo() {
-		if (saldo == 0.0)
-			return false;
-		return true;
+		return saldo != 0.0;
 	}
 
 	public boolean puedeTransferir(double monto){
-		if(monto <= saldo){
-			return true;
-		} else {
-			return false;
-		}
+		return monto <= saldo;
 	}
 	
 	public void sacarDinero(double monto){

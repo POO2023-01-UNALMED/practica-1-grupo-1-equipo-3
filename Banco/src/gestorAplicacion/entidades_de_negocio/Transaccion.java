@@ -15,7 +15,7 @@ public class Transaccion {
 	private boolean pendiente;
 	private Factura factura;
 	private Divisa divisa;
-	private static ArrayList<Transaccion> transacciones = new ArrayList<Transaccion>();
+	private static ArrayList<Transaccion> transacciones = new ArrayList<>();
 
 	
 	public Transaccion(Cliente clienteObjetivo, Cliente clienteOrigen, Tarjeta tarjetaOrigen, TarjetaDebito tarjetaObjetivo, double cantidad) {

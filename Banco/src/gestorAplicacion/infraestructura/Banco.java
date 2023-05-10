@@ -11,17 +11,13 @@ import java.util.List;
 
 public class Banco {
 	
-	private static ArrayList<Cliente> clientes = new ArrayList<Cliente>();
-	private static ArrayList<Canal> canales = new ArrayList<Canal>();
+	private static ArrayList<Cliente> clientes = new ArrayList<>();
+	private static ArrayList<Canal> canales = new ArrayList<>();
 	
 	//Metodos de la clase
 	
 	public static ArrayList<Canal> ordenarCanalesPorImpuestos(List<Canal> canales) {//De menor a mayor
-	    Collections.sort(canales, new Comparator<Canal>() {
-	        public int compare(Canal canal1, Canal canal2) {
-	            return Double.compare(canal1.getImpuesto(), canal2.getImpuesto());
-	        }
-	    });
+	    canales.sort(Comparator.comparingDouble(Canal::getImpuesto));
 	    return new ArrayList<>(canales);
 	}
 	
@@ -39,15 +35,11 @@ public class Banco {
 	
 	
 	public static void agregarClientes(ArrayList<Cliente> clientes) {//Agregar varios clientes de un arrayList
-		for(Cliente cliente: clientes) {
-			Banco.clientes.add(cliente);
-		}
+		Banco.clientes.addAll(clientes);
 	}
 	
 	public static void agregarClientes(Cliente... clientes) {//Agregar varios clientes de un array
-		for(Cliente cliente: clientes) {
-			Banco.clientes.add(cliente);
-		}
+		Collections.addAll(Banco.clientes, clientes);
 	}
 	
 	public static void eliminarCliente(Cliente cliente) {//Eliminar un solo cliente
@@ -76,15 +68,11 @@ public class Banco {
 	
 	
 	public static void agregarCanales(Canal... canales) {//Agregar varios canales de un array normal
-		for(Canal canal: canales) {
-			Banco.canales.add(canal);
-		}
+		Collections.addAll(Banco.canales, canales);
 	}
 	
 	public static void agregarCanales(ArrayList<Canal> canales) {//Agregar varios canales de un arrayList
-		for(Canal canal: canales) {
-			Banco.canales.add(canal);
-		}
+		Banco.canales.addAll(canales);
 	}
 	
 	
@@ -107,7 +95,7 @@ public class Banco {
 	public static int calcularPuntaje(ArrayList<Transaccion> trans){
 		int puntaje = 0;
 		for(Transaccion t : trans){
-			puntaje += (int) 2*t.getCantidad()*t.getDivisa().getValor();
+			puntaje += 2 *t.getCantidad()*t.getDivisa().getValor();
 		}
 		return puntaje;
 	}
@@ -115,8 +103,9 @@ public class Banco {
 	public static boolean numeroExistente(int num) { // Evalua si un número de tarjeta corresponde a algúna tarjeta de algún cliente
 		boolean valor = false;
 		for(Tarjeta t : Tarjeta.getTarjetas()) {
-			if(num == t.getNoTarjeta()) {
+			if (num == t.getNoTarjeta()) {
 				valor = true;
+				break;
 			}
 		}
 		return valor;

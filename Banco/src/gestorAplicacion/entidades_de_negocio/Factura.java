@@ -11,7 +11,7 @@ public class Factura {
 	private double valorPagado;
 	private int transfeRestantes; //El tope maximo de transferencias antes de que la factura venza
 	private TarjetaDebito tarjetaDestino;
-	private ArrayList<Transaccion> transfeActuales = new ArrayList<Transaccion>();
+	private ArrayList<Transaccion> transfeActuales = new ArrayList<>();
 	private boolean facturaVencida;
 	private boolean facturaPagada;
 
@@ -61,10 +61,10 @@ public class Factura {
 	}
 	
 	public String toString(){
-		String retorno = "";
+		String retorno;
 		if(facturaPagada && !facturaVencida){
 			retorno = "Factura pagada antes de vencer.\nTarjeta objetivo es: " + tarjetaDestino.getNoTarjeta() + "\n";
-		} else if (facturaPagada && facturaVencida){
+		} else if (facturaPagada){
 			retorno = "Factura pagada después de vencer.\nTarjeta objetivo es: " + tarjetaDestino.getNoTarjeta() + "\n";
 		}else if(facturaVencida){
 			retorno = "Factura vencida por pagar.1\nTarjeta objetivo es: " + tarjetaDestino.getNoTarjeta() + " faltan " + (total-valorPagado) + " " + divisa.name() + " por pagar" + "\n";
@@ -75,11 +75,8 @@ public class Factura {
 	}
 
 	public Transaccion generarTransaccion(double monto, Tarjeta tarjetaOrigen){
-		boolean validez = false;
-		if(tarjetaOrigen.puedeTransferir(monto) && tarjetaOrigen.getDivisa().equals(this.tarjetaDestino.getDivisa())){
-			validez = true;
-		}
-		
+		boolean validez = tarjetaOrigen.puedeTransferir(monto) && tarjetaOrigen.getDivisa().equals(this.tarjetaDestino.getDivisa());
+
 		return new Transaccion(cliente, tarjetaOrigen, tarjetaDestino, monto, this, !validez);
 	}
 	
@@ -97,7 +94,7 @@ public class Factura {
 				puntaje += (int) (0.1*(((TarjetaDebito) t).getSaldo()*t.getDivisa().getValor()));
 			}
 		}
-		puntaje -= (int) 100*(tarjetasBloqueadas.size())/(tarjetasActivas.size() + tarjetasBloqueadas.size());
+		puntaje -= 100 *(tarjetasBloqueadas.size())/(tarjetasActivas.size() + tarjetasBloqueadas.size());
 		puntaje += cliente.getBonoActual();
 		return puntaje;
 	}

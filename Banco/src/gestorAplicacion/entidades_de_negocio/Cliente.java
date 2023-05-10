@@ -1,9 +1,8 @@
 package gestorAplicacion.entidades_de_negocio;
 
-import java.util.Scanner;
+import java.util.Arrays;
 
 import gestorAplicacion.infraestructura.*;
-import gestorAplicacion.entidades_de_negocio.Factura;
 import gestorAplicacion.tarjetas.*;
 
 import java.util.ArrayList;
@@ -11,9 +10,9 @@ import java.util.ArrayList;
 public class Cliente {
 	private String nombre;
 	private int Id;
-	private ArrayList<TarjetaDebito> tarjetasDebito = new ArrayList<TarjetaDebito>();
-	private ArrayList<TarjetaCredito> tarjetasCredito = new ArrayList<TarjetaCredito>();
-	private ArrayList<Factura> facturas = new ArrayList<Factura>();
+	private ArrayList<TarjetaDebito> tarjetasDebito = new ArrayList<>();
+	private ArrayList<TarjetaCredito> tarjetasCredito = new ArrayList<>();
+	private ArrayList<Factura> facturas = new ArrayList<>();
 	private int bonoActual = 0;
 	
 	public Cliente(String nombre, int noDeIdentificacion) {
@@ -56,15 +55,11 @@ public class Cliente {
 	}
 	
 	public void agregarTarjetasDebito(ArrayList<TarjetaDebito> tarjetasDebito) {//Agregar varias tarjetas de un arrayList
-		for(TarjetaDebito tarjetaDebito: tarjetasDebito) {
-			this.tarjetasDebito.add(tarjetaDebito);
-		}
+		this.tarjetasDebito.addAll(tarjetasDebito);
 	}
 	
 	public void agregarTarjetasDebito(TarjetaDebito... tarjetasDebito) {//Agregar varios tarjetas una por una Ej. (tarjeta1, tarjeta2, etc)
-		for(TarjetaDebito tarjetaDebito: tarjetasDebito) {
-			this.tarjetasDebito.add(tarjetaDebito);
-		}
+		this.tarjetasDebito.addAll(Arrays.asList(tarjetasDebito));
 	}
 	
 	public void eliminarTarjetaDebito(TarjetaDebito tarjetaDebito) {
@@ -92,15 +87,11 @@ public class Cliente {
 	}
 	
 	public void agregarTarjetasCredito(ArrayList<TarjetaCredito> tarjetasCredito) {//Agregar varias tarjetas de un arrayList
-		for(TarjetaCredito tarjetaCredito: tarjetasCredito) {
-			this.tarjetasCredito.add(tarjetaCredito);
-		}
+		this.tarjetasCredito.addAll(tarjetasCredito);
 	}
 	
 	public void agregarTarjetasCredito(TarjetaCredito... tarjetasCredito) {//Agregar varios tarjetas una por una Ej. (tarjeta1, tarjeta2, etc)
-		for(TarjetaCredito tarjetaCredito: tarjetasCredito) {
-			this.tarjetasCredito.add(tarjetaCredito);
-		}
+		this.tarjetasCredito.addAll(Arrays.asList(tarjetasCredito));
 	}
 	
 	public void eliminarTarjetaCredito(TarjetaCredito tarjetaCredito) {
@@ -142,7 +133,7 @@ public class Cliente {
 	//Metodos de las intancias
 	
 	public ArrayList<Factura> listarFacturas(){//Este metodo solo retorna facturas pendientes
-		ArrayList<Factura> retorno = new ArrayList<Factura>();
+		ArrayList<Factura> retorno = new ArrayList<>();
 		for(Factura f : this.facturas){
 			if(f.isFacturaVencida() && !f.isFacturaPagada()){
 				retorno.add(f);
@@ -160,7 +151,7 @@ public class Cliente {
 	//Ademas que no tengan fondos en 0 o creditoMaximo alcanzado
 	//La tarjeta para ser listada también debe tener un estado "Activo"
 	public ArrayList<Tarjeta> listarTarjetas(Factura factura){//Listar tarjetas para pagar factura
-		ArrayList<Tarjeta> tarjetasDisponibles = new ArrayList<Tarjeta>();
+		ArrayList<Tarjeta> tarjetasDisponibles = new ArrayList<>();
 		for(TarjetaDebito tarjeta : tarjetasDebito){
 			if(!tarjeta.isActiva())
 				continue;
@@ -186,7 +177,7 @@ public class Cliente {
 		Divisa divisaOrigen = divisas.get(0);
 		Divisa divisaDestino = divisas.get(1);
 		
-		ArrayList<Tarjeta> tarjetasDisponibles = new ArrayList<Tarjeta>();
+		ArrayList<Tarjeta> tarjetasDisponibles = new ArrayList<>();
 		
 		for(TarjetaDebito tarjeta : tarjetasDebito){
 			if(!tarjeta.isActiva())
@@ -214,7 +205,7 @@ public class Cliente {
 	//El usuario debe tener tarjetas con la divisa de origen que escoja
 	//Dichas tarjetas deben tener saldo o credito, y estar activas
 	public ArrayList<Divisa> escogerDivisas(Divisa origen, Divisa destino) {//Retorna un ArrayList
-		ArrayList<Divisa> divisas = new ArrayList<Divisa>();
+		ArrayList<Divisa> divisas = new ArrayList<>();
 		divisas.add(origen);
 		divisas.add(destino);
 		
@@ -281,7 +272,7 @@ public class Cliente {
 		Divisa divisaOrigen = divisas[0];
 		Divisa divisaDestino = divisas[1];
 		
-		ArrayList<Canal> canales = new ArrayList<Canal>();  
+		ArrayList<Canal> canales = new ArrayList<>();
 		for(Canal canal: Banco.getCanales()) {
 			if(!canal.tieneDivisa(divisaOrigen))
 				continue;
@@ -293,15 +284,14 @@ public class Cliente {
 		}
 		
 		//ordenar por menos impuestos de menor a mayor
-		ArrayList<Canal> canalesOrdenados = Banco.ordenarCanalesPorImpuestos(canales);
-		return canalesOrdenados;
+		return Banco.ordenarCanalesPorImpuestos(canales);
 	}
 
 	public ArrayList<Canal> listarCanales(ArrayList<Divisa> divisas) {//recibe un arrayList
 		Divisa divisaOrigen = divisas.get(0);
 		Divisa divisaDestino = divisas.get(1);
 		
-		ArrayList<Canal> canales = new ArrayList<Canal>();  
+		ArrayList<Canal> canales = new ArrayList<>();
 		for(Canal canal: Banco.getCanales()) {
 			if(!canal.tieneDivisa(divisaOrigen))
 				continue;
@@ -313,12 +303,11 @@ public class Cliente {
 		}
 		
 		//ordenar por menos impuestos de menor a mayor
-		ArrayList<Canal> canalesOrdenados = Banco.ordenarCanalesPorImpuestos(canales);
-		return canalesOrdenados;
+		return Banco.ordenarCanalesPorImpuestos(canales);
 	}
 	
 	public ArrayList<Transaccion> revisarHistorialCreditos(){
-		ArrayList<Transaccion> retorno = new ArrayList<Transaccion>();
+		ArrayList<Transaccion> retorno = new ArrayList<>();
 		for(Transaccion t : Transaccion.getTransacciones()){
 			if(t.getClienteOrigen().equals(this) && t.getTarjetaOrigen() instanceof TarjetaCredito && !t.isRechazado() && !t.isPendiente()){
 				retorno.add(t);

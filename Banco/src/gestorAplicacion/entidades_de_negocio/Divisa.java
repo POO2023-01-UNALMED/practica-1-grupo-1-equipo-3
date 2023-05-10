@@ -14,7 +14,7 @@ public enum Divisa {
 	private double valor;
 	//private static Divisa[] divisas = {new Divisa("dolar", 1), new Divisa("euro", 1.11), new Divisa("peso colombiano", 0.00022), new Divisa("yen japonés", 0.0075), new Divisa("rublo ruso", 0.012)};
 
-	private Divisa(double valor) {
+	Divisa(double valor) {
 		this.valor = valor;
 	}
 
@@ -27,7 +27,7 @@ public enum Divisa {
 	}
 	
 	public static ArrayList<Divisa> getDivisas(){
-		ArrayList retorno = new ArrayList<Divisa>();
+		ArrayList<Divisa> retorno = new ArrayList<>();
 		retorno.add(Divisa.DOLAR);
 		retorno.add(Divisa.EURO);
 		retorno.add(Divisa.RUBLO_RUSO);
@@ -45,18 +45,14 @@ public enum Divisa {
 	 * @return Un valor verdadero o falso que determina si la divisa si se encontraba en la posición correcta o no
 	 */
 	public static boolean verificarOrden(ArrayList<Divisa> divisas, Divisa divisa, String orden) {
-		if(orden.equalsIgnoreCase("Origen")) {
+		           if(orden.equalsIgnoreCase("Origen")) {
 			int index = divisas.indexOf(divisa);
-			if(divisas.get(index) == divisas.get(0))
-				return true;
-			return false;
+			return divisas.get(index) == divisas.get(0);
 		}
 		
 		else if(orden.equalsIgnoreCase("Destino")) {
 			int index = divisas.indexOf(divisa);
-			if(divisas.get(index) == divisas.get(0))
-				return true;
-			return false;
+			return divisas.get(index) == divisas.get(0);
 		}
 		
 		return false;
@@ -64,22 +60,18 @@ public enum Divisa {
 	
 	//Recibe un array normal
 	public static boolean verificarOrden(Divisa[] divisas, Divisa divisa, String orden) {
-		ArrayList<Divisa> listaDivisa = new ArrayList<Divisa>();
+		ArrayList<Divisa> listaDivisa = new ArrayList<>();
 		listaDivisa.add(divisas[0]);//divisa de origen
 		listaDivisa.add(divisas[1]);//divisa de destino
 		
 		if(orden.equalsIgnoreCase("Origen")) {
 			int index = listaDivisa.indexOf(divisa);
-			if(listaDivisa.get(index) == listaDivisa.get(0))
-				return true;
-			return false;
+			return listaDivisa.get(index) == listaDivisa.get(0);
 		}
 		
 		else if(orden.equalsIgnoreCase("Destino")) {
 			int index = listaDivisa.indexOf(divisa);
-			if(listaDivisa.get(index) == listaDivisa.get(0))
-				return true;
-			return false;
+			return listaDivisa.get(index) == listaDivisa.get(0);
 		}
 		
 		return false;

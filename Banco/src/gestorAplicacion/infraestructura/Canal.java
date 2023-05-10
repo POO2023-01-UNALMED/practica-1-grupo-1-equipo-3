@@ -73,8 +73,6 @@ public class Canal {
     }
     
     public boolean tieneFondosDeDivisa(Divisa divisa) {
-    	if(fondosPorDivisa.get(divisa) > 0.0) 
-    		return true;
-        return false;
-    }
+		return fondosPorDivisa.get(divisa) > 0.0;
+	}
 }

@@ -35,168 +35,173 @@ public class mainTemporal {
 			} else{
 				continue; //Si el valor ingresado no corresponde a un cliente, el programa vuelve al principio
 			}
+			label:
 			while(true) { // el loop principal que se ejecuta para cada cliente
 				System.out.println("1. Para ver facturas\n2. Para ver las tarjetas disponibles\n3. Para pagar una factura\n4. Cambiar Divisas\n5. Solicitar una tarjeta de crédito\n6. Salir");
 				String entrada2 = scanner.nextLine();//Se lee la elección del usuario
-				if(entrada2.equals("1")){
-					if(clienteActual.listarFacturas().isEmpty()){
-						System.out.println("No hay facturas por pagar");
-					} else {
-						for(Factura f : clienteActual.getFactura()){
-							System.out.println(f);
+				switch (entrada2) {
+					case "1":
+						if (clienteActual.listarFacturas().isEmpty()) {
+							System.out.println("No hay facturas por pagar");
+						} else {
+							for (Factura f : clienteActual.getFactura()) {
+								System.out.println(f);
+							}
 						}
-					}
-				}else if (entrada2.equals("2")){
-					for(Tarjeta t : clienteActual.getTarjetasCredito()){
-						System.out.println(t);
-					}
-					for(Tarjeta t : clienteActual.getTarjetasDebito()){
-						System.out.println(t);
-					}
-				}else if(entrada2.equals("3")){
-					if(clienteActual.listarFacturas().isEmpty()){
-						System.out.println("No hay facturas por pagar");
-						continue;
-					} else {
-						System.out.println("Escoja la factura que desea pagar");
-						for(Factura f : clienteActual.listarFacturas()){
-							System.out.println(clienteActual.listarFacturas().indexOf(f)+1 + ". " + f);
+						break;
+					case "2":
+						for (Tarjeta t : clienteActual.getTarjetasCredito()) {
+							System.out.println(t);
 						}
-					}
-					int entrada3 = scanner.nextInt()-1;
-					Factura factura = clienteActual.listarFacturas().get(entrada3);
-					System.out.println("Ingrese la tarjeta que quiere utilizar");
-					ArrayList<Tarjeta> tarjetasPosibles = clienteActual.listarTarjetas(factura);
-					for(Tarjeta t : tarjetasPosibles){
-						System.out.println(tarjetasPosibles.indexOf(t)+1 + ". " + t);
-					}
-					int entrada4 = scanner.nextInt()-1;
-					Tarjeta tarjeta = tarjetasPosibles.get(entrada4);
-					System.out.println("Ingrese la cantidad de dinero que desea transferir");
-					double monto = scanner.nextDouble();
-					scanner.nextLine();
-					Transaccion transaccion = factura.generarTransaccion(monto, tarjeta);
-					if(transaccion.isRechazado()){ //En caso de que la transacción fue rechazada, se notifica al usuario, y se vuelve al principio
-						System.out.println("La transacción fue rechazada");
-						continue;
-					}
-					System.out.println("La transacción ha sido generada. Es la siguiente: " + transaccion);
-					String entrada5;
-					while(true){
-						System.out.println("Quiere continuar con el proceso?\n1. Si\n2. No");
-						entrada5 = scanner.nextLine();
-						if(entrada5.equals("2") || entrada5.equals("1")){
-							break;
+						for (Tarjeta t : clienteActual.getTarjetasDebito()) {
+							System.out.println(t);
 						}
-					}
-					if(entrada2.equals("2")){
-						continue;
-					}
-					Factura facturaNueva = transaccion.pagarFactura();
-					clienteActual.getFactura().set(clienteActual.getFactura().indexOf(factura), facturaNueva); //Remplaza la factura anterior con la factura nueva
-					
-				}else if(entrada2.equals("4")){
-					System.out.println("Escoja las divisas que desea cambiar");
-					System.out.println("Escoja la divisa de origen:");
-					
-					for(Divisa divisa : Divisa.values()){//Recorre un array de las divisas
-						System.out.println(divisa.ordinal() + 1 + ". " + divisa);
-					}
-					int entrada3 = scanner.nextInt() - 1;//Obtiene el numero de la divisa escogida
-					Divisa divisaOrigen = Divisa.values()[entrada3]; //Almacena la referencia de la divisa escogida
-					
-					System.out.println("Escoja la divisa de destino:");
-					for(Divisa divisa : Divisa.values()){
-						System.out.println(divisa.ordinal() + 1 + ". " + divisa);
-					}
-					int entrada4 = scanner.nextInt() - 1;
-					Divisa divisaDestino = Divisa.values()[entrada4];
-					
-					//Si el valor de retorno es null
-					if(Objects.isNull(clienteActual.escogerDivisas(divisaOrigen, divisaDestino))) {
-						System.out.println("No tiene tarjetas que cumplan con la divisa de origen");
+						break;
+					case "3": {
+						if (clienteActual.listarFacturas().isEmpty()) {
+							System.out.println("No hay facturas por pagar");
+							continue;
+						} else {
+							System.out.println("Escoja la factura que desea pagar");
+							for (Factura f : clienteActual.listarFacturas()) {
+								System.out.println(clienteActual.listarFacturas().indexOf(f) + 1 + ". " + f);
+							}
+						}
+						int entrada3 = scanner.nextInt() - 1;
+						Factura factura = clienteActual.listarFacturas().get(entrada3);
+						System.out.println("Ingrese la tarjeta que quiere utilizar");
+						ArrayList<Tarjeta> tarjetasPosibles = clienteActual.listarTarjetas(factura);
+						for (Tarjeta t : tarjetasPosibles) {
+							System.out.println(tarjetasPosibles.indexOf(t) + 1 + ". " + t);
+						}
+						int entrada4 = scanner.nextInt() - 1;
+						Tarjeta tarjeta = tarjetasPosibles.get(entrada4);
+						System.out.println("Ingrese la cantidad de dinero que desea transferir");
+						double monto = scanner.nextDouble();
+						scanner.nextLine();
+						Transaccion transaccion = factura.generarTransaccion(monto, tarjeta);
+						if (transaccion.isRechazado()) { //En caso de que la transacción fue rechazada, se notifica al usuario, y se vuelve al principio
+							System.out.println("La transacción fue rechazada");
+							continue;
+						}
+						System.out.println("La transacción ha sido generada. Es la siguiente: " + transaccion);
+						String entrada5;
+						do {
+							System.out.println("Quiere continuar con el proceso?\n1. Si\n2. No");
+							entrada5 = scanner.nextLine();
+						} while (!entrada5.equals("2") && !entrada5.equals("1"));
+						Factura facturaNueva = transaccion.pagarFactura();
+						clienteActual.getFactura().set(clienteActual.getFactura().indexOf(factura), facturaNueva); //Remplaza la factura anterior con la factura nueva
+
+
 						break;
 					}
-					else {
-						ArrayList<Divisa> divisas = clienteActual.escogerDivisas(divisaOrigen, divisaDestino);
-						ArrayList<Tarjeta> tarjetas = clienteActual.listarTarjetas(divisas);
-						
-						ArrayList<Tarjeta> tarjetasEscogidas = new ArrayList<Tarjeta>();
-						
-						System.out.println("Escoja la tarjeta con la divisa de origen:\n");
-						for(Tarjeta tarjeta: tarjetas) {
-							System.out.println(tarjetas.indexOf(tarjeta) + 1 + ". " + tarjeta);
+					case "4": {
+						System.out.println("Escoja las divisas que desea cambiar");
+						System.out.println("Escoja la divisa de origen:");
+
+						for (Divisa divisa : Divisa.values()) {//Recorre un array de las divisas
+							System.out.println(divisa.ordinal() + 1 + ". " + divisa);
 						}
-						
-						int entrada5 = scanner.nextInt() - 1;
-						tarjetasEscogidas.add(tarjetas.get(entrada5));
-						
-						//La tarjeta de origen que escoja el usuario debe corresponder con la divisa de origen (el orden debe ser el mismo) 
-						if(!Divisa.verificarOrden(divisas, tarjetasEscogidas.get(0).getDivisa(), "Origen")) {
-							System.out.println("Debes escoger una tarjeta de origen con una divisa acorde a la divisa que quieres cambiar\n");
-							break;
+						int entrada3 = scanner.nextInt() - 1;//Obtiene el numero de la divisa escogida
+
+						Divisa divisaOrigen = Divisa.values()[entrada3]; //Almacena la referencia de la divisa escogida
+
+
+						System.out.println("Escoja la divisa de destino:");
+						for (Divisa divisa : Divisa.values()) {
+							System.out.println(divisa.ordinal() + 1 + ". " + divisa);
 						}
-						
-						System.out.println("Escoja la tarjeta con la divisa de Destino:\n");
-						for(Tarjeta tarjeta: tarjetas) {
-							if(tarjeta instanceof TarjetaCredito)//La divisa de destino solo puede ser una tarjeta debito 
-								continue;
-							System.out.println(tarjetas.indexOf(tarjeta) + 1 + ". " + tarjeta);
+						int entrada4 = scanner.nextInt() - 1;
+						Divisa divisaDestino = Divisa.values()[entrada4];
+
+						//Si el valor de retorno es null
+						if (Objects.isNull(clienteActual.escogerDivisas(divisaOrigen, divisaDestino))) {
+							System.out.println("No tiene tarjetas que cumplan con la divisa de origen");
+						} else {
+							ArrayList<Divisa> divisas = clienteActual.escogerDivisas(divisaOrigen, divisaDestino);
+							ArrayList<Tarjeta> tarjetas = clienteActual.listarTarjetas(divisas);
+
+							ArrayList<Tarjeta> tarjetasEscogidas = new ArrayList<>();
+
+							System.out.println("Escoja la tarjeta con la divisa de origen:\n");
+							for (Tarjeta tarjeta : tarjetas) {
+								System.out.println(tarjetas.indexOf(tarjeta) + 1 + ". " + tarjeta);
+							}
+
+							int entrada5 = scanner.nextInt() - 1;
+							tarjetasEscogidas.add(tarjetas.get(entrada5));
+
+							//La tarjeta de origen que escoja el usuario debe corresponder con la divisa de origen (el orden debe ser el mismo)
+							if (!Divisa.verificarOrden(divisas, tarjetasEscogidas.get(0).getDivisa(), "Origen")) {
+								System.out.println("Debes escoger una tarjeta de origen con una divisa acorde a la divisa que quieres cambiar\n");
+								break label;
+							}
+
+							System.out.println("Escoja la tarjeta con la divisa de Destino:\n");
+							for (Tarjeta tarjeta : tarjetas) {
+								if (tarjeta instanceof TarjetaCredito)//La divisa de destino solo puede ser una tarjeta debito
+									continue;
+								System.out.println(tarjetas.indexOf(tarjeta) + 1 + ". " + tarjeta);
+							}
+
+							int entrada6 = scanner.nextInt() - 1;
+							tarjetasEscogidas.add(tarjetas.get(entrada6));
+
+							if (Divisa.verificarOrden(divisas, tarjetasEscogidas.get(1).getDivisa(), "Destino")) {
+								System.out.println("Debes escoger una tarjeta de destino con una divisa acorde a la divisa que quieres obtener\n");
+								break label;
+							}//Eventualmente hay que volver esta parte un ciclo, para que le permita escojer al usuario nuevamente otra tarjeta
+
+
+							ArrayList<Canal> listaCanales = clienteActual.listarCanales(divisas);
+							System.out.println("Escoja el canal donde realizará el proceso");
+							for (Canal canal : listaCanales) {
+								System.out.println(listaCanales.indexOf(canal) + 1 + ". " + canal);
+							}
+
+							int entrada7 = scanner.nextInt() - 1;
+							Canal canalEscogido = listaCanales.get(entrada7);
+							System.out.println(canalEscogido);
+
 						}
-						
-						int entrada6 = scanner.nextInt() - 1;
-						tarjetasEscogidas.add(tarjetas.get(entrada6));
-						
-						if(Divisa.verificarOrden(divisas, tarjetasEscogidas.get(1).getDivisa(), "Destino")) {
-							System.out.println("Debes escoger una tarjeta de destino con una divisa acorde a la divisa que quieres obtener\n");
-							break;
-						}//Eventualmente hay que volver esta parte un ciclo, para que le permita escojer al usuario nuevamente otra tarjeta
-						
-						
-						ArrayList<Canal> listaCanales = clienteActual.listarCanales(divisas);
-						System.out.println("Escoja el canal donde realizará el proceso");
-						for(Canal canal: listaCanales) {
-							System.out.println(listaCanales.indexOf(canal) + 1 + ". " + canal);
+						break label;
+					}
+					case "5": {
+						System.out.println("Viendo transferencias del usuario...");
+						ArrayList<Transaccion> historial = clienteActual.revisarHistorialCreditos();
+						int puntajeTentativo = Banco.calcularPuntaje(historial);
+						ArrayList<Tarjeta> TarjetasBloqueadas = Tarjeta.TarjetasBloqueadas(clienteActual);
+						ArrayList<Tarjeta> TarjetasActivas = Tarjeta.TarjetasNoBloqueadas(clienteActual);
+						int puntajeDefinitivo = Factura.modificarPuntaje(TarjetasBloqueadas, TarjetasActivas, clienteActual, puntajeTentativo);
+						System.out.println("Escoga la divisa que quiere para su tarjeta de crédito:");
+						for (Divisa divisa : Divisa.values()) {
+							System.out.println(divisa.ordinal() + 1 + ". " + divisa);
 						}
-						
-						int entrada7 = scanner.nextInt() - 1;
-						Canal canalEscogido = listaCanales.get(entrada7);
-						System.out.println(canalEscogido);
-						
+						int entrada3 = scanner.nextInt() - 1;
+						Divisa divisa = Divisa.values()[entrada3];
+						ArrayList<TarjetaCredito> tarjetasDisponibles = TarjetaCredito.tarjetasDisponibles(puntajeDefinitivo, divisa);
+						int i = 0;
+						System.out.printf("Su puntaje total es: %s. Por favor, escoga la tarjeta de crédito que desea:\n%n", puntajeDefinitivo);
+						for (TarjetaCredito t : tarjetasDisponibles) {
+							System.out.printf("%s. %sPuntos: %s\n%n", i + 1, t.toString(), i * 50);
+							i++;
+						}
+						System.out.printf("%s. Para salir%n", tarjetasDisponibles.size() + 1);
+						int entrada4 = scanner.nextInt() - 1;
+						int bono = puntajeDefinitivo - entrada4 * 50;
+						if (entrada4 == tarjetasDisponibles.size()) continue;
+						else
+							TarjetaCredito.anadirTarjetaCredito(tarjetasDisponibles.get(entrada4), clienteActual, bono);
+
+						scanner.nextLine();
 						break;
 					}
-				}else if(entrada2.equals("5")){
-					System.out.println("Viendo transferencias del usuario...");
-					ArrayList<Transaccion> historial = clienteActual.revisarHistorialCreditos();
-					int puntajeTentativo = Banco.calcularPuntaje(historial);
-					ArrayList<Tarjeta> TarjetasBloqueadas = Tarjeta.TarjetasBloqueadas(clienteActual);
-					ArrayList<Tarjeta> TarjetasActivas = Tarjeta.TarjetasNoBloqueadas(clienteActual);
-					int puntajeDefinitivo = Factura.modificarPuntaje(TarjetasBloqueadas, TarjetasActivas, clienteActual, puntajeTentativo);
-					System.out.println("Escoga la divisa que quiere para su tarjeta de crédito:");
-					for(Divisa divisa : Divisa.values()){
-						System.out.println(divisa.ordinal() + 1 + ". " + divisa);
-					}
-					int entrada3 = scanner.nextInt()-1;
-					Divisa divisa = Divisa.values()[entrada3];
-					ArrayList<TarjetaCredito> tarjetasDisponibles = TarjetaCredito.tarjetasDisponibles(puntajeDefinitivo, divisa);
-					int i = 0;
-					System.out.println("Su puntaje total es: %s. Por favor, escoga la tarjeta de crédito que desea:\n".formatted(puntajeDefinitivo));
-					for(TarjetaCredito t : tarjetasDisponibles){
-						System.out.println("%s. %sPuntos: %s\n".formatted(i+1, t.toString(), i*50));
-						i++;
-					}
-					System.out.println("%s. Para salir".formatted(tarjetasDisponibles.size()+1));
-					int entrada4 = scanner.nextInt()-1;
-					int bono = puntajeDefinitivo - entrada4*50;
-					if(entrada4 == tarjetasDisponibles.size()) continue;
-					else TarjetaCredito.anadirTarjetaCredito(tarjetasDisponibles.get(entrada4), clienteActual, bono);
-					
-					scanner.nextLine();
-				} else if(entrada2.equals("6")){
-					break;
+					case "6":
+						break label;
 				}
 			}
-			
+
 		}
 		
 		scanner.close();
