@@ -5,7 +5,7 @@ import gestorAplicacion.entidades_de_negocio.*;
 
 
 
-public abstract class Tarjeta {
+public abstract class  Tarjeta {
 	protected int noTarjeta;
 	protected Divisa divisa;
 	protected String estado;

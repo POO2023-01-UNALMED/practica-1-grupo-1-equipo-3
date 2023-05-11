@@ -46,7 +46,7 @@ public class Cliente {
 		this.Id = noDeIdentificacion;
 	}
 
-	public ArrayList<TarjetaDebito> getTarjetasDebito() {
+	public ArrayList<TarjetaDebito>  getTarjetasDebito() {
 		return tarjetasDebito;
 	}
 
