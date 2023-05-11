@@ -37,7 +37,7 @@ public class mainTemporal {
 			}
 			label:
 			while(true) { // el loop principal que se ejecuta para cada cliente
-				System.out.println("1. Para ver facturas\n2. Para ver las tarjetas disponibles\n3. Para pagar una factura\n4. Cambiar Divisas\n5. Solicitar una tarjeta de crédito\n6. Salir");
+				System.out.println("1. Para ver facturas\n2. Para ver las tarjetas disponibles\n3. Para pagar una factura\n4. Cambiar Divisas\n5. Solicitar una tarjeta de crédito\n6. Para hacer una transferencia\n7. Para retirar dinero\n 9. Para salir");
 				String entrada2 = scanner.nextLine();//Se lee la elección del usuario
 				switch (entrada2) {
 					case "1":
@@ -197,7 +197,56 @@ public class mainTemporal {
 						scanner.nextLine();
 						break;
 					}
-					case "6":
+					case "6": {
+						System.out.println("Estas son las tarjetas débito que tienes disponibles:\n");
+						for (TarjetaDebito tarjeta : clienteActual.getTarjetasDebito()) {
+							System.out.println("Numero de tarjeta: " + tarjeta.getNoTarjeta());
+							System.out.println("Divisa de la tarjeta: " + tarjeta.getDivisa());
+							System.out.println("Saldo de la tarjeta: " + tarjeta.getSaldo());
+							System.out.println(tarjeta.getEstado());
+							System.out.println();
+						}
+						int eleccion_de_tarjeta_debito;
+						TarjetaDebito tarjeta_de_origen;
+
+						while (true) {
+							eleccion_de_tarjeta_debito = scanner.nextInt();
+
+							if (eleccion_de_tarjeta_debito > 0 && eleccion_de_tarjeta_debito <= clienteActual.getTarjetasDebito().size()) {
+								tarjeta_de_origen = clienteActual.getTarjetasDebito().get(eleccion_de_tarjeta_debito - 1);
+								break;
+							} else {
+								System.out.println("Por favor, elige un número válido de tarjeta.");
+							}
+						}
+						System.out.println(tarjeta_de_origen);
+						//falta hacer elegir el canal y hacer la transaccion... preguntar que se tiene que hacer ahi
+					}
+					case "7":{
+						System.out.println("Estas son las tarjetas débito que tienes disponibles:\n");
+						for (TarjetaDebito tarjeta : clienteActual.getTarjetasDebito()) {
+							System.out.println("Numero de tarjeta: " + tarjeta.getNoTarjeta());
+							System.out.println("Divisa de la tarjeta: " + tarjeta.getDivisa());
+							System.out.println("Saldo de la tarjeta: " + tarjeta.getSaldo());
+							System.out.println(tarjeta.getEstado());
+							System.out.println();
+						}
+						int eleccion_de_tarjeta_debito;
+						TarjetaDebito tarjeta_de_origen;
+
+						while (true) {
+							eleccion_de_tarjeta_debito = scanner.nextInt();
+
+							if (eleccion_de_tarjeta_debito > 0 && eleccion_de_tarjeta_debito <= clienteActual.getTarjetasDebito().size()) {
+								tarjeta_de_origen = clienteActual.getTarjetasDebito().get(eleccion_de_tarjeta_debito - 1);
+								break;
+							} else {
+								System.out.println("Por favor, elige un número válido de tarjeta.");
+							}
+						}
+						System.out.println(tarjeta_de_origen);
+					}
+					case "9":
 						break label;
 				}
 			}
