@@ -2,7 +2,10 @@ package gestorAplicacion.entidades_de_negocio;
 
 import java.util.ArrayList;
 
+import gestorAplicacion.infraestructura.Canal;
+
 public enum Divisa {
+	LIBRA_ESTERLINA(1.26),
 	EURO(1.11),
 	DOLAR(1.0),
 	RUBLO_RUSO(0.012),
@@ -75,6 +78,38 @@ public enum Divisa {
 		}
 		
 		return false;
+	}
+	
+	/**
+	 * Realiza la conversión de la divisa de origen a la divisa de destino, aplicandole los impuestos del canal correspondiente
+	 * 
+	 * @param divisas, la lista de divisas a comparar. Recibe un arrayList
+	 * @param canal, de este se obtendrá la tasa de impuesto
+	 * @param monto, monto a convertir
+	 * @return ArrayList de doubles, el primer valor es la conversión, el segundo el monto de impuestos que será dispuesto al canal
+	 */
+	public ArrayList<Double> convertirDivisas(Divisa[] divisas, Canal canal, double monto) {
+		Divisa divisaOrigen = divisas[0];
+		Divisa divisaDestino = divisas[1];
+		ArrayList<Double> montos = new ArrayList<>();
+		double montoFinal = monto;
+		
+		//valor que se retornara para el canal cuando se efectue la transaccion
+		double impuesto = monto * (canal.getImpuesto() / 100);
+		montoFinal -= impuesto;
+		
+		montos.add(montoFinal);
+		montos.add(impuesto);
+		
+		//convertimos la divisa de origen a dolar
+		montoFinal = monto * divisaOrigen.getValor();
+		if (divisaDestino.equals(Divisa.DOLAR)) 
+			return montos; 
+		
+		//convertimos la divisa ya en dolares, a la divisa de destino
+		montoFinal = monto / divisaDestino.getValor();
+
+		return montos;
 	}
 
 }

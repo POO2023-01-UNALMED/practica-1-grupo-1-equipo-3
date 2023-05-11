@@ -224,6 +224,8 @@ public class mainTemporal {
 		TarjetaDebito tarjetaDebito8 = new TarjetaDebito(890123, Divisa.RUBLO_RUSO, 1370);
 		TarjetaDebito tarjetaDebito9 = new TarjetaDebito(901234, Divisa.YEN_JAPONES, 480);
 		TarjetaDebito tarjetaDebito10 = new TarjetaDebito(123456789, Divisa.PESO_COLOMBIANO, 2000);
+		TarjetaDebito tarjetaDebito11 = new TarjetaDebito(4684648, Divisa.LIBRA_ESTERLINA,1000);
+		TarjetaDebito tarjetaDebito12 = new TarjetaDebito(5448843, Divisa.LIBRA_ESTERLINA,9526);
 		
 		//TARJETAS CREDITO
 		TarjetaCredito tarjetaCredito1 = new TarjetaCredito(987456, Divisa.DOLAR, 3000, 1.5);
@@ -236,11 +238,13 @@ public class mainTemporal {
 		TarjetaCredito tarjetaCredito8 = new TarjetaCredito(210987, Divisa.RUBLO_RUSO, 700, 0.3);
 		TarjetaCredito tarjetaCredito9 = new TarjetaCredito(109876, Divisa.YEN_JAPONES, 300, 0.99);
 		TarjetaCredito tarjetaCredito10 = new TarjetaCredito(987654321, Divisa.PESO_COLOMBIANO, 1000, 5.0);
+		TarjetaCredito tarjetaCredito11 = new TarjetaCredito(41341395, Divisa.LIBRA_ESTERLINA, 500, 1.0);
+		TarjetaCredito tarjetaCredito12 = new TarjetaCredito(15641687, Divisa.LIBRA_ESTERLINA, 2000, 0.075);
 		
 		TarjetaDebito tarjetafac = new TarjetaDebito(666, Divisa.DOLAR, 10);
 
-		cliente1.agregarTarjetasDebito(tarjetaDebito1, tarjetaDebito2, tarjetaDebito3, tarjetaDebito5);
-		cliente1.agregarTarjetasCredito(tarjetaCredito1, tarjetaCredito2, tarjetaCredito7, tarjetaCredito9);
+		cliente1.agregarTarjetasDebito(tarjetaDebito1, tarjetaDebito2, tarjetaDebito3, tarjetaDebito5, tarjetaDebito11);
+		cliente1.agregarTarjetasCredito(tarjetaCredito1, tarjetaCredito2, tarjetaCredito7, tarjetaCredito9, tarjetaCredito11);
 
 		TarjetaDebito tarjeta1 = new TarjetaDebito(1, Divisa.DOLAR, 1000);
 		TarjetaDebito tarjeta2 = new TarjetaDebito(1, Divisa.EURO, 10);
