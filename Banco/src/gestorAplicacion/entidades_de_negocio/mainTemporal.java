@@ -1,6 +1,7 @@
 package gestorAplicacion.entidades_de_negocio;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Objects;
 import java.util.Scanner;
 
@@ -98,7 +99,7 @@ public class mainTemporal {
 					}
 					case "4": {
 						System.out.println("Escoja las divisas que desea cambiar");
-						System.out.println("Escoja la divisa de origen:");
+						System.out.println("Escoja la divisa de origen:\n");
 
 						for (Divisa divisa : Divisa.values()) {//Recorre un array de las divisas
 							System.out.println(divisa.ordinal() + 1 + ". " + divisa);
@@ -108,16 +109,23 @@ public class mainTemporal {
 						Divisa divisaOrigen = Divisa.values()[entrada3]; //Almacena la referencia de la divisa escogida
 
 
-						System.out.println("Escoja la divisa de destino:");
+						System.out.println("Escoja la divisa de destino:\n");
 						for (Divisa divisa : Divisa.values()) {
 							System.out.println(divisa.ordinal() + 1 + ". " + divisa);
 						}
 						int entrada4 = scanner.nextInt() - 1;
 						Divisa divisaDestino = Divisa.values()[entrada4];
-
-						//Si el valor de retorno es null
+						
+						//Si el cliente escoge la misma divisa de Origen y de destino
+						if(divisaOrigen.equals(divisaDestino)) {
+							System.out.println("Debes escoger dos divisas distintas para hacer la conversión\n");
+							break label;
+						}
+						System.out.println(divisaOrigen.name());
+						
+						//Si el cliente no tiene ninguna tarjeta de cada divisa respectivamente
 						if (Objects.isNull(clienteActual.escogerDivisas(divisaOrigen, divisaDestino))) {
-							System.out.println("No tiene tarjetas que cumplan con la divisa de origen");
+							System.out.println("No tiene tarjetas que cumplan con la divisa de origen\n");
 						} else {
 							ArrayList<Divisa> divisas = clienteActual.escogerDivisas(divisaOrigen, divisaDestino);
 							ArrayList<Tarjeta> tarjetas = clienteActual.listarTarjetas(divisas);
@@ -151,7 +159,7 @@ public class mainTemporal {
 							if (Divisa.verificarOrden(divisas, tarjetasEscogidas.get(1).getDivisa(), "Destino")) {
 								System.out.println("Debes escoger una tarjeta de destino con una divisa acorde a la divisa que quieres obtener\n");
 								break label;
-							}//Eventualmente hay que volver esta parte un ciclo, para que le permita escojer al usuario nuevamente otra tarjeta
+							}//Eventualmente hay que volver esta parte un ciclo en uiMain, para que le permita escojer al usuario nuevamente otra tarjeta
 
 
 							ArrayList<Canal> listaCanales = clienteActual.listarCanales(divisas);
@@ -162,7 +170,23 @@ public class mainTemporal {
 
 							int entrada7 = scanner.nextInt() - 1;
 							Canal canalEscogido = listaCanales.get(entrada7);
-							System.out.println(canalEscogido);
+							
+							double monto = 0;
+							
+							System.out.println("Por favor digita el monto a convertir:\n");
+							
+							monto:
+							while(true) {
+								monto = scanner.nextDouble();
+								if(monto <= 0) {
+									System.out.println("El monto debe ser mayor a 0");
+									continue;									
+								}
+								break monto;
+							}
+							
+							ArrayList<Double> conversion = Divisa.convertirDivisas(divisas, canalEscogido, monto); 
+							System.out.println(conversion);
 
 						}
 						break label;
@@ -285,7 +309,7 @@ public class mainTemporal {
 		TarjetaCredito tarjetaCredito6 = new TarjetaCredito(432109, Divisa.DOLAR, 500, 0.75);
 		TarjetaCredito tarjetaCredito7 = new TarjetaCredito(321098, Divisa.EURO, 1750, 0.1);
 		TarjetaCredito tarjetaCredito8 = new TarjetaCredito(210987, Divisa.RUBLO_RUSO, 700, 0.3);
-		TarjetaCredito tarjetaCredito9 = new TarjetaCredito(109876, Divisa.YEN_JAPONES, 300, 0.99);
+		TarjetaCredito tarjetaCredito9 = new TarjetaCredito(109876, Divisa.YEN_JAPONES, 4000, 0.99);
 		TarjetaCredito tarjetaCredito10 = new TarjetaCredito(987654321, Divisa.PESO_COLOMBIANO, 1000, 5.0);
 		TarjetaCredito tarjetaCredito11 = new TarjetaCredito(41341395, Divisa.LIBRA_ESTERLINA, 500, 1.0);
 		TarjetaCredito tarjetaCredito12 = new TarjetaCredito(15641687, Divisa.LIBRA_ESTERLINA, 2000, 0.075);
@@ -303,9 +327,8 @@ public class mainTemporal {
 		Factura factura2 = new Factura(cliente1, 90, 8, tarjetafac);
 		
 		//CANALES
-		
 		//Sucursal fisica
-		Canal sucursalFisica1 = new Canal("Sucursal Fisica",(float)2.0, 22500, 12370, 800, 700, 30000);
+		Canal sucursalFisica1 = new Canal("Sucursal Fisica",(float)2.0, 22500, 12370, 800, 700, 20000, 30000);
 		
 		//Cajero Automático
 		Canal cajero1 = new Canal("Cajero",(float)0.5);
@@ -322,17 +345,20 @@ public class mainTemporal {
 		cajero2.setFondos(Divisa.DOLAR, 8000.0);
 
 		//Canal tipo Sucursal Física
-		Canal sucursalFisica2 = new Canal("Sucursal Física", (float) 1.5, 4000.0, 6000.0, 2000.0, 1500.0, 8000.0);
+		Canal sucursalFisica2 = new Canal("Sucursal Física", (float) 1.5, 4000.0, 6000.0, 2000.0, 1500.0, 8000.0, 6700.0);
+		Canal sucursalFisica3 = new Canal("Sucursal Física", (float) 0.0, 4000.0, 6000.0, 2000.0, 4000.0, 8000.0, 6700.0);
 
 		//Canal tipo Sucursal en Línea
-		Canal sucursalVirtual1 = new Canal("Sucursal en Línea", (float) 2.5, 5100.0, 8900.0, 0.0, 1200.0, 3700.0);
+		Canal sucursalVirtual1 = new Canal("Sucursal en Línea", (float) 2.5, 5100.0, 8900.0, 0.0, 1200.0, 3700.0, 8545.0);
 
 		//Canal tipo Corresponsal Bancario
 		Canal corresponsal2 = new Canal("Corresponsal Bancario", (float) 0.8);
 		corresponsal2.setFondos(Divisa.DOLAR, 15000.0);
 		corresponsal2.setFondos(Divisa.EURO, 8000.0);
 		corresponsal2.setFondos(Divisa.RUBLO_RUSO, 35000.0);
-		
+//		
+//		for(Canal canal: Banco.getCanales())
+//			System.out.println(canal.getFondos());
 	}
 
 }
