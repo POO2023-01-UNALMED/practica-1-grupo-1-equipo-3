@@ -127,10 +127,11 @@ public class Transaccion {
 		TarjetaDebito tarjetaDestino = (TarjetaDebito) tarjetas.get(0);
 		
 		boolean validez = true;
-		if(!(canal.getFondos(divisaDestino) >= montoFinal) && !(tarjetaOrigen.puedeTransferir(montoFinal)))
-			validez = true;
+		if(!(canal.getFondos(divisaDestino) >= montoFinal) || !(tarjetaOrigen.puedeTransferir(montoFinal)))
+			validez = false;
 		
 		Transaccion transaccion = new Transaccion(cliente, tarjetaOrigen, tarjetaDestino, montoFinal, canal, validez);
+		transaccion.pendiente = false;
 		return transaccion;
 	}
 }
