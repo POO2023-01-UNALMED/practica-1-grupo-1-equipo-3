@@ -3,10 +3,13 @@ package gestorAplicacion.infraestructura;
 import gestorAplicacion.entidades_de_negocio.*;
 import gestorAplicacion.tarjetas.*;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Locale;
 
 
 public class Banco {
@@ -110,6 +113,19 @@ public class Banco {
 		}
 		return valor;
 	}
+	
+	/**
+	 * Esta funcion es con el fin de usarse en los toString y las impresiones en consola
+	 * @param numero a formatear
+	 * @return el numero formateado de acuerdo a las reglas de formato de Colombia. 
+	 * Ejm: 1000000.25 = 1.000.000,25
+	 * */
+	public static String formatearNumero(double numero) {
+		Locale esLocale = new Locale("es", "CO");
+        DecimalFormat df = (DecimalFormat) NumberFormat.getInstance(esLocale);
+        df.applyPattern("#,##0.00");
+        return df.format(numero);
+    }
 
 
 //	public static ArrayList<Cliente> otrosUsuarios(Cliente usuario) {
