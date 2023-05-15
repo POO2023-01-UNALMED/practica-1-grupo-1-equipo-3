@@ -1,6 +1,7 @@
 package gestorAplicacion.tarjetas;
 
 import gestorAplicacion.entidades_de_negocio.Divisa;
+import gestorAplicacion.infraestructura.Banco;
 
 public class TarjetaDebito extends Tarjeta{
 	private double saldo;
@@ -20,7 +21,7 @@ public class TarjetaDebito extends Tarjeta{
 	
 	//Metodos de las instancias
 	public String toString() {
-		return "Tipo de tarjeta: Débito\nNúmero de tarjeta: %s\nSaldo: %s %s\n".formatted(getNoTarjeta(), saldo, divisa.name());
+		return "Tipo de tarjeta: Débito\nNúmero de tarjeta: %s\nSaldo: %s %s\n".formatted(getNoTarjeta(), Banco.formatearNumero(saldo), divisa.name());
 	}
 	
 	//

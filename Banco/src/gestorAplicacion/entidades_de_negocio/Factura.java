@@ -2,6 +2,7 @@ package gestorAplicacion.entidades_de_negocio;
 
 import java.util.ArrayList;
 
+import gestorAplicacion.infraestructura.Banco;
 import gestorAplicacion.tarjetas.*;
 
 public class Factura {
@@ -63,13 +64,13 @@ public class Factura {
 	public String toString(){
 		String retorno;
 		if(facturaPagada && !facturaVencida){
-			retorno = "Factura pagada antes de vencer.\nTarjeta objetivo es: " + tarjetaDestino.getNoTarjeta() + "\n";
+			retorno = "Factura pagada ANTES de vencer\nTarjeta objetivo: " + tarjetaDestino.getNoTarjeta() + "\n";
 		} else if (facturaPagada){
-			retorno = "Factura pagada después de vencer.\nTarjeta objetivo es: " + tarjetaDestino.getNoTarjeta() + "\n";
+			retorno = "Factura pagada DESPUÉS de vencer\nTarjeta objetivo: " + tarjetaDestino.getNoTarjeta() + "\n";
 		}else if(facturaVencida){
-			retorno = "Factura vencida por pagar.1\nTarjeta objetivo es: " + tarjetaDestino.getNoTarjeta() + " faltan " + (total-valorPagado) + " " + divisa.name() + " por pagar" + "\n";
+			retorno = "Factura vencida por pagar.1\nTarjeta objetivo: " + tarjetaDestino.getNoTarjeta() + " faltan " + Banco.formatearNumero((total-valorPagado)) + " " + divisa.name() + " por pagar" + "\n";
 		} else {
-			retorno = "Factura no vencida por pagar.\nTarjeta objetivo es: " + tarjetaDestino.getNoTarjeta() + " faltan " + (total-valorPagado) + " " + divisa.name() + " por pagar en " + transfeRestantes + " transferencias" + "\n";
+			retorno = "Factura no vencida por pagar.\nTarjeta objetivo: " + tarjetaDestino.getNoTarjeta() + " faltan " + Banco.formatearNumero(total-valorPagado) + " " + divisa.name() + " por pagar en " + transfeRestantes + " transferencias" + "\n";
 		}
 		return retorno;
 	}
