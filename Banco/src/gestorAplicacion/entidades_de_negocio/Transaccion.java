@@ -2,6 +2,8 @@ package gestorAplicacion.entidades_de_negocio;
 
 import java.util.ArrayList;
 
+import gestorAplicacion.infraestructura.Banco;
+import gestorAplicacion.infraestructura.Canal;
 import gestorAplicacion.tarjetas.Tarjeta;
 import gestorAplicacion.tarjetas.TarjetaDebito;
 
@@ -10,6 +12,7 @@ public class Transaccion {
 	private Cliente clienteOrigen;
 	private Tarjeta tarjetaOrigen;
 	private TarjetaDebito tarjetaObjetivo;
+	private Canal canalObjetivo; //Cuando una transaccion requiera retornar el valor de un impuesto al banco (se retorna a un canal) 
 	private double cantidad;
 	private boolean rechazado;
 	private boolean pendiente;
@@ -37,6 +40,18 @@ public class Transaccion {
 		this.cantidad = cantidad;
 		this.rechazado = rechazado;
 		this.factura = factura;
+		pendiente = true;
+		divisa = tarjetaOrigen.getDivisa();
+		transacciones.add(this);
+	}
+	
+	public Transaccion(Cliente clienteOrigen, Tarjeta tarjetaOrigen, TarjetaDebito tarjetaObjetivo, double cantidad, Canal canalObjetivo, boolean rechazado) {
+		this.clienteOrigen = clienteOrigen;
+		this.tarjetaOrigen = tarjetaOrigen;
+		this.tarjetaObjetivo = tarjetaObjetivo;
+		this.cantidad = cantidad;
+		this.rechazado = rechazado;
+		this.canalObjetivo = canalObjetivo;
 		pendiente = true;
 		divisa = tarjetaOrigen.getDivisa();
 		transacciones.add(this);
@@ -72,11 +87,11 @@ public class Transaccion {
 
 	public String toString(){
 		if(rechazado){
-			return "Transacción rechazada por un monto de " + cantidad + " desde la tarjeta " + tarjetaOrigen.getNoTarjeta() + " Hacia la tarjeta " + tarjetaObjetivo.getNoTarjeta() + " por parte de " + clienteOrigen.getNombre();
+			return "Transacción Rechazada\nTotal: " + Banco.formatearNumero(cantidad) + "\nTarjeta de origen: " + tarjetaOrigen.getNoTarjeta() + "\nTarjeta de destino: " + tarjetaObjetivo.getNoTarjeta() + "\nProveniente de: " + clienteOrigen.getNombre();
 		} else if (pendiente){
-			return "Transacción pendiente aprobada por un monto de " + cantidad + " desde la tarjeta " + tarjetaOrigen.getNoTarjeta() + " Hacia la tarjeta " + tarjetaObjetivo.getNoTarjeta() + " por parte de " + clienteOrigen.getNombre();
+			return "Transacción Pendiente\nAprobada por un total de: " + Banco.formatearNumero(cantidad) + "\nTarjeta de origen: " + tarjetaOrigen.getNoTarjeta() + "\nTarjeta de destino: " + tarjetaObjetivo.getNoTarjeta() + "\nProveniente de: " + clienteOrigen.getNombre();
 		} else {
-			return "Transacción aprobada por un monto de " + cantidad + " desde la tarjeta " + tarjetaOrigen.getNoTarjeta() + " Hacia la tarjeta " + tarjetaObjetivo.getNoTarjeta() + " por parte de " + clienteOrigen.getNombre();
+			return "Transacción Aprobada\nTotal: " + Banco.formatearNumero(cantidad) + "\nTarjeta de origen: " + tarjetaOrigen.getNoTarjeta() + "\nTarjeta de destino: " + tarjetaObjetivo.getNoTarjeta() + "\nProveniente de: " + clienteOrigen.getNombre();
 		}
 	}
 
@@ -101,5 +116,21 @@ public class Transaccion {
 		}
 		return null;
 	}
-
+	
+	//Transaccion que se genera al cambiar Divisas
+	public static Transaccion crearTransaccion(ArrayList<Divisa> divisas, ArrayList<Double> montos, Canal canal, ArrayList<Tarjeta> tarjetas, Cliente cliente) {
+		Divisa divisaOrigen = divisas.get(0);
+		Divisa divisaDestino = divisas.get(1);
+		Double montoFinal = montos.get(0);
+		Double impuestoRetorno = montos.get(1);//Monto que se pagará al canal
+		Tarjeta tarjetaOrigen = tarjetas.get(0);
+		TarjetaDebito tarjetaDestino = (TarjetaDebito) tarjetas.get(0);
+		
+		boolean validez = true;
+		if(!(canal.getFondos(divisaDestino) >= montoFinal) && !(tarjetaOrigen.puedeTransferir(montoFinal)))
+			validez = true;
+		
+		Transaccion transaccion = new Transaccion(cliente, tarjetaOrigen, tarjetaDestino, montoFinal, canal, validez);
+		return transaccion;
+	}
 }

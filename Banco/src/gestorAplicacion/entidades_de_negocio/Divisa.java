@@ -12,10 +12,7 @@ public enum Divisa {
 	YEN_JAPONES(0.0074),
 	PESO_COLOMBIANO(0.00022);
 	
-	
-	
 	private double valor;
-	//private static Divisa[] divisas = {new Divisa("dolar", 1), new Divisa("euro", 1.11), new Divisa("peso colombiano", 0.00022), new Divisa("yen japonés", 0.0075), new Divisa("rublo ruso", 0.012)};
 
 	Divisa(double valor) {
 		this.valor = valor;

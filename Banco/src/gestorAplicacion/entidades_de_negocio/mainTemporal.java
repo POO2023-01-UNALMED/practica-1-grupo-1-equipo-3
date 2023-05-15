@@ -186,6 +186,7 @@ public class mainTemporal {
 							}
 							
 							ArrayList<Double> conversion = Divisa.convertirDivisas(divisas, canalEscogido, monto); 
+							Transaccion transaccion = Transaccion.crearTransaccion(divisas, conversion, canalEscogido, tarjetasEscogidas, clienteActual);
 							System.out.println(conversion);
 
 						}
@@ -287,6 +288,7 @@ public class mainTemporal {
 		Cliente cliente3 = new Cliente("Marta", 3);
 		
 		//TARJETAS DEBITO
+		//Para la serializacion hay que volver los montos a valores reales, como millones, para que algunas funcionalidades tengan mas sentido
 		TarjetaDebito tarjetaDebito1 = new TarjetaDebito(123456, Divisa.DOLAR, 3000);
 		TarjetaDebito tarjetaDebito2 = new TarjetaDebito(234567, Divisa.EURO, 0);
 		TarjetaDebito tarjetaDebito3 = new TarjetaDebito(345678, Divisa.RUBLO_RUSO, 200);
