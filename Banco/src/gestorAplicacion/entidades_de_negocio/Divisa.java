@@ -132,6 +132,7 @@ public enum Divisa {
 			montoFinal = Math.round(montoFinal * 100.0) / 100.0;
 			montos.add(montoFinal);
 			montos.add(impuesto);
+			
 			return montos;			
 		} 
 		

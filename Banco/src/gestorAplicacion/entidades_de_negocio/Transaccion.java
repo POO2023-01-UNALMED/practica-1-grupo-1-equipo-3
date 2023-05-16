@@ -77,6 +77,50 @@ public class Transaccion {
 		return cantidad;
 	}
 
+	public Cliente getClienteObjetivo() {
+		return clienteObjetivo;
+	}
+
+	public TarjetaDebito getTarjetaObjetivo() {
+		return tarjetaObjetivo;
+	}
+
+	public Canal getCanalObjetivo() {
+		return canalObjetivo;
+	}
+
+	public Factura getFactura() {
+		return factura;
+	}
+
+	public void setClienteOrigen(Cliente clienteOrigen) {
+		this.clienteOrigen = clienteOrigen;
+	}
+
+	public void setTarjetaOrigen(Tarjeta tarjetaOrigen) {
+		this.tarjetaOrigen = tarjetaOrigen;
+	}
+
+	public void setCantidad(double cantidad) {
+		this.cantidad = cantidad;
+	}
+
+	public void setRechazado(boolean rechazado) {
+		this.rechazado = rechazado;
+	}
+
+	public void setPendiente(boolean pendiente) {
+		this.pendiente = pendiente;
+	}
+
+	public void setDivisa(Divisa divisa) {
+		this.divisa = divisa;
+	}
+
+	public static void setTransacciones(ArrayList<Transaccion> transacciones) {
+		Transaccion.transacciones = transacciones;
+	}
+
 	public static ArrayList<Transaccion> getTransacciones(){
 		return transacciones;
 	}
@@ -87,11 +131,11 @@ public class Transaccion {
 
 	public String toString(){
 		if(rechazado){
-			return "Transacción Rechazada\nTotal: " + Banco.formatearNumero(cantidad) + "\nTarjeta de origen: " + tarjetaOrigen.getNoTarjeta() + "\nTarjeta de destino: " + tarjetaObjetivo.getNoTarjeta() + "\nProveniente de: " + clienteOrigen.getNombre();
+			return "Transacción Rechazada\nTotal: " + Banco.formatearNumero(cantidad) + "\nTarjeta de origen: #" + tarjetaOrigen.getNoTarjeta() + "\nTarjeta de destino: #" + tarjetaObjetivo.getNoTarjeta() + "\nProveniente de: " + clienteOrigen.getNombre() + "\n";
 		} else if (pendiente){
-			return "Transacción Pendiente\nAprobada por un total de: " + Banco.formatearNumero(cantidad) + "\nTarjeta de origen: " + tarjetaOrigen.getNoTarjeta() + "\nTarjeta de destino: " + tarjetaObjetivo.getNoTarjeta() + "\nProveniente de: " + clienteOrigen.getNombre();
+			return "Transacción Pendiente\nAprobada por un total de: " + Banco.formatearNumero(cantidad) + "\nTarjeta de origen: #" + tarjetaOrigen.getNoTarjeta() + "\nTarjeta de destino: #" + tarjetaObjetivo.getNoTarjeta() + "\nProveniente de: " + clienteOrigen.getNombre() + "\n";
 		} else {
-			return "Transacción Aprobada\nTotal: " + Banco.formatearNumero(cantidad) + "\nTarjeta de origen: " + tarjetaOrigen.getNoTarjeta() + "\nTarjeta de destino: " + tarjetaObjetivo.getNoTarjeta() + "\nProveniente de: " + clienteOrigen.getNombre();
+			return "Transacción Aprobada\nTotal: " + Banco.formatearNumero(cantidad) + "\nTarjeta de origen: #" + tarjetaOrigen.getNoTarjeta() + "\nTarjeta de destino: #" + tarjetaObjetivo.getNoTarjeta() + "\nProveniente de: " + clienteOrigen.getNombre() + "\n";
 		}
 	}
 
@@ -118,20 +162,20 @@ public class Transaccion {
 	}
 	
 	//Transaccion que se genera al cambiar Divisas
-	public static Transaccion crearTransaccion(ArrayList<Divisa> divisas, ArrayList<Double> montos, Canal canal, ArrayList<Tarjeta> tarjetas, Cliente cliente) {
+	public static Transaccion crearTransaccion(ArrayList<Divisa> divisas, double montoInicial, ArrayList<Double> montosFinales, Canal canal, ArrayList<Tarjeta> tarjetas, Cliente cliente) {
 		Divisa divisaOrigen = divisas.get(0);
 		Divisa divisaDestino = divisas.get(1);
-		Double montoFinal = montos.get(0);
-		Double impuestoRetorno = montos.get(1);//Monto que se pagará al canal
+		Double montoFinal = montosFinales.get(0);
+		Double impuestoRetorno = montosFinales.get(1);//Monto que se pagará al canal
 		Tarjeta tarjetaOrigen = tarjetas.get(0);
-		TarjetaDebito tarjetaDestino = (TarjetaDebito) tarjetas.get(0);
+		TarjetaDebito tarjetaDestino = (TarjetaDebito) tarjetas.get(1);
 		
-		boolean validez = true;
-		if(!(canal.getFondos(divisaDestino) >= montoFinal) || !(tarjetaOrigen.puedeTransferir(montoFinal)))
-			validez = false;
+		boolean rechazado = false;
+		if(montoFinal > canal.getFondos(divisaDestino) || !(tarjetaOrigen.puedeTransferir(montoInicial)))
+			rechazado = true;
 		
-		Transaccion transaccion = new Transaccion(cliente, tarjetaOrigen, tarjetaDestino, montoFinal, canal, validez);
-		transaccion.pendiente = false;
+		Transaccion transaccion = new Transaccion(cliente, tarjetaOrigen, tarjetaDestino, montoFinal, canal, rechazado);
+		transaccion.pendiente = !rechazado;
 		return transaccion;
 	}
 }

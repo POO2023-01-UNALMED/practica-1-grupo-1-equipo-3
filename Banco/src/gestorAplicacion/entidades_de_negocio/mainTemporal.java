@@ -171,23 +171,23 @@ public class mainTemporal {
 							int entrada7 = scanner.nextInt() - 1;
 							Canal canalEscogido = listaCanales.get(entrada7);
 							
-							double monto = 0;
+							double montoInicial = 0;
 							
 							System.out.println("Por favor digita el monto a convertir:\n");
 							
 							monto:
 							while(true) {
-								monto = scanner.nextDouble();
-								if(monto <= 0) {
+								montoInicial = scanner.nextDouble();
+								if(montoInicial <= 0) {
 									System.out.println("El monto debe ser mayor a 0");
 									continue;									
 								}
 								break monto;
 							}
 							
-							ArrayList<Double> conversion = Divisa.convertirDivisas(divisas, canalEscogido, monto); 
-							Transaccion transaccion = Transaccion.crearTransaccion(divisas, conversion, canalEscogido, tarjetasEscogidas, clienteActual);
-							System.out.println(conversion);
+							ArrayList<Double> conversion = Divisa.convertirDivisas(divisas, canalEscogido, montoInicial); 
+							Transaccion transaccion = Transaccion.crearTransaccion(divisas, montoInicial, conversion, canalEscogido, tarjetasEscogidas, clienteActual);
+							System.out.println(transaccion);
 
 						}
 						break label;
@@ -288,32 +288,32 @@ public class mainTemporal {
 		Cliente cliente3 = new Cliente("Marta", 3);
 		
 		//TARJETAS DEBITO
-		//Para la serializacion hay que volver los montos a valores reales, como millones, para que algunas funcionalidades tengan mas sentido
+		//Para la serializacion hay que volver los montos a valores reales, como millones en el caso del peso colombiano, para que algunas funcionalidades tengan mas sentido
 		TarjetaDebito tarjetaDebito1 = new TarjetaDebito(123456, Divisa.DOLAR, 3000);
 		TarjetaDebito tarjetaDebito2 = new TarjetaDebito(234567, Divisa.EURO, 0);
-		TarjetaDebito tarjetaDebito3 = new TarjetaDebito(345678, Divisa.RUBLO_RUSO, 200);
-		TarjetaDebito tarjetaDebito4 = new TarjetaDebito(456789, Divisa.YEN_JAPONES, 970);
-		TarjetaDebito tarjetaDebito5 = new TarjetaDebito(567890, Divisa.PESO_COLOMBIANO, 8000);
-		TarjetaDebito tarjetaDebito6 = new TarjetaDebito(678901, Divisa.DOLAR, 7000);
-		TarjetaDebito tarjetaDebito7 = new TarjetaDebito(789012, Divisa.EURO, 2450);
-		TarjetaDebito tarjetaDebito8 = new TarjetaDebito(890123, Divisa.RUBLO_RUSO, 1370);
-		TarjetaDebito tarjetaDebito9 = new TarjetaDebito(901234, Divisa.YEN_JAPONES, 480);
-		TarjetaDebito tarjetaDebito10 = new TarjetaDebito(123456789, Divisa.PESO_COLOMBIANO, 2000);
+		TarjetaDebito tarjetaDebito3 = new TarjetaDebito(345678, Divisa.RUBLO_RUSO, 20000);
+		TarjetaDebito tarjetaDebito4 = new TarjetaDebito(456789, Divisa.YEN_JAPONES, 90700);
+		TarjetaDebito tarjetaDebito5 = new TarjetaDebito(567890, Divisa.PESO_COLOMBIANO, 8000000);
+		TarjetaDebito tarjetaDebito6 = new TarjetaDebito(678901, Divisa.DOLAR, 700);
+		TarjetaDebito tarjetaDebito7 = new TarjetaDebito(789012, Divisa.EURO, 2400500);
+		TarjetaDebito tarjetaDebito8 = new TarjetaDebito(890123, Divisa.RUBLO_RUSO, 13700);
+		TarjetaDebito tarjetaDebito9 = new TarjetaDebito(901234, Divisa.YEN_JAPONES, 48000);
+		TarjetaDebito tarjetaDebito10 = new TarjetaDebito(123456789, Divisa.PESO_COLOMBIANO, 2000000);
 		TarjetaDebito tarjetaDebito11 = new TarjetaDebito(4684648, Divisa.LIBRA_ESTERLINA,1000);
-		TarjetaDebito tarjetaDebito12 = new TarjetaDebito(5448843, Divisa.LIBRA_ESTERLINA,9526);
+		TarjetaDebito tarjetaDebito12 = new TarjetaDebito(5448843, Divisa.LIBRA_ESTERLINA,960);
 		
 		//TARJETAS CREDITO
 		TarjetaCredito tarjetaCredito1 = new TarjetaCredito(987456, Divisa.DOLAR, 3000, 1.5);
 		TarjetaCredito tarjetaCredito2 = new TarjetaCredito(876543, Divisa.EURO, 2000, 2.0);
-		TarjetaCredito tarjetaCredito3 = new TarjetaCredito(765432, Divisa.RUBLO_RUSO, 1500, 0.8);
-		TarjetaCredito tarjetaCredito4 = new TarjetaCredito(654321, Divisa.YEN_JAPONES, 1850, 0.2);
-		TarjetaCredito tarjetaCredito5 = new TarjetaCredito(543210, Divisa.PESO_COLOMBIANO, 6000, 1.25);
-		TarjetaCredito tarjetaCredito6 = new TarjetaCredito(432109, Divisa.DOLAR, 500, 0.75);
+		TarjetaCredito tarjetaCredito3 = new TarjetaCredito(765432, Divisa.RUBLO_RUSO, 105000, 0.8);
+		TarjetaCredito tarjetaCredito4 = new TarjetaCredito(654321, Divisa.YEN_JAPONES, 108050, 0.2);
+		TarjetaCredito tarjetaCredito5 = new TarjetaCredito(543210, Divisa.PESO_COLOMBIANO, 6000000, 1.25);
+		TarjetaCredito tarjetaCredito6 = new TarjetaCredito(432109, Divisa.DOLAR, 5000, 0.75);
 		TarjetaCredito tarjetaCredito7 = new TarjetaCredito(321098, Divisa.EURO, 1750, 0.1);
-		TarjetaCredito tarjetaCredito8 = new TarjetaCredito(210987, Divisa.RUBLO_RUSO, 700, 0.3);
-		TarjetaCredito tarjetaCredito9 = new TarjetaCredito(109876, Divisa.YEN_JAPONES, 4000, 0.99);
-		TarjetaCredito tarjetaCredito10 = new TarjetaCredito(987654321, Divisa.PESO_COLOMBIANO, 1000, 5.0);
-		TarjetaCredito tarjetaCredito11 = new TarjetaCredito(41341395, Divisa.LIBRA_ESTERLINA, 500, 1.0);
+		TarjetaCredito tarjetaCredito8 = new TarjetaCredito(210987, Divisa.RUBLO_RUSO, 70000, 0.3);
+		TarjetaCredito tarjetaCredito9 = new TarjetaCredito(109876, Divisa.YEN_JAPONES, 40000, 0.99);
+		TarjetaCredito tarjetaCredito10 = new TarjetaCredito(987654321, Divisa.PESO_COLOMBIANO, 1000000, 5.0);
+		TarjetaCredito tarjetaCredito11 = new TarjetaCredito(41341395, Divisa.LIBRA_ESTERLINA, 5000, 1.0);
 		TarjetaCredito tarjetaCredito12 = new TarjetaCredito(15641687, Divisa.LIBRA_ESTERLINA, 2000, 0.075);
 		
 		TarjetaDebito tarjetafac = new TarjetaDebito(666, Divisa.DOLAR, 10);
@@ -330,34 +330,33 @@ public class mainTemporal {
 		
 		//CANALES
 		//Sucursal fisica
-		Canal sucursalFisica1 = new Canal("Sucursal Fisica",(float)2.0, 22500, 12370, 800, 700, 20000, 30000);
+		Canal sucursalFisica1 = new Canal("Sucursal Fisica",(float)2.0, 22500, 12370, 8000, 70000, 200000, 30000000);
 		
 		//Cajero Automático
 		Canal cajero1 = new Canal("Cajero",(float)0.5);
-		cajero1.setFondos(Divisa.PESO_COLOMBIANO, 12000.0);
+		cajero1.setFondos(Divisa.PESO_COLOMBIANO, 12000000);
 		
 		//Corresponal Bancario
 		Canal corresponsal1 = new Canal("Corresponsal Bancario", (float)1.0);
-		corresponsal1.setFondos(Divisa.DOLAR, 20000.0);
-		corresponsal1.setFondos(Divisa.EURO, 10000.0);
-		corresponsal1.setFondos(Divisa.PESO_COLOMBIANO, 40000.0);
+		corresponsal1.setFondos(Divisa.DOLAR, 20000);
+		corresponsal1.setFondos(Divisa.EURO, 10000);
+		corresponsal1.setFondos(Divisa.PESO_COLOMBIANO, 40000000);
 		
 		//Canal tipo Cajero Automático
 		Canal cajero2 = new Canal("Cajero", (float) 1.0);
-		cajero2.setFondos(Divisa.DOLAR, 8000.0);
+		cajero2.setFondos(Divisa.DOLAR, 8000);
 
 		//Canal tipo Sucursal Física
-		Canal sucursalFisica2 = new Canal("Sucursal Física", (float) 1.5, 4000.0, 6000.0, 2000.0, 1500.0, 8000.0, 6700.0);
-		Canal sucursalFisica3 = new Canal("Sucursal Física", (float) 0.0, 4000.0, 6000.0, 2000.0, 4000.0, 8000.0, 6700.0);
+		Canal sucursalFisica2 = new Canal("Sucursal Física", (float) 1.5, 4000.0, 6000.0, 2000.0, 150000.0, 8000000.0, 6700000.0);
 
 		//Canal tipo Sucursal en Línea
-		Canal sucursalVirtual1 = new Canal("Sucursal en Línea", (float) 2.5, 5100.0, 8900.0, 0.0, 1200.0, 3700.0, 8545.0);
+		Canal sucursalVirtual1 = new Canal("Sucursal en Línea", (float) 2.5, 5100.0, 8900.0, 0.0, 120000.0, 370000.0, 80545000.0);
 
 		//Canal tipo Corresponsal Bancario
 		Canal corresponsal2 = new Canal("Corresponsal Bancario", (float) 0.8);
 		corresponsal2.setFondos(Divisa.DOLAR, 15000.0);
 		corresponsal2.setFondos(Divisa.EURO, 8000.0);
-		corresponsal2.setFondos(Divisa.RUBLO_RUSO, 35000.0);
+		corresponsal2.setFondos(Divisa.RUBLO_RUSO, 350000.0);
 //		
 //		for(Canal canal: Banco.getCanales())
 //			System.out.println(canal.getFondos());
