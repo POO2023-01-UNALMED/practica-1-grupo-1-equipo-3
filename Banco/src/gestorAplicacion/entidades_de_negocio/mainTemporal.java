@@ -31,7 +31,7 @@ public class mainTemporal {
 				break;
 			}
 			Cliente clienteActual; //Es el cliente escogido por el usuario
-			if(respuesta1 >= 0 && respuesta1 <= Banco.getClientes().size()){
+			if(respuesta1 > 0 && respuesta1 <= Banco.getClientes().size()){
 				clienteActual = Banco.getClientes().get(respuesta1-1);
 			} else{
 				continue; //Si el valor ingresado no corresponde a un cliente, el programa vuelve al principio
@@ -245,7 +245,55 @@ public class mainTemporal {
 							}
 						}
 						System.out.println(tarjeta_de_origen);
-						//falta hacer elegir el canal y hacer la transaccion... preguntar que se tiene que hacer ahi
+						Cliente clienteObjetivo;
+						while (true) {
+							System.out.println("Elija el usuario al que le desea hacer la transaccion:");
+							for (Cliente c : Banco.getClientes()) {
+								System.out.println(Banco.getClientes().indexOf(c) + 1 + ". " + c.getNombre());
+							}
+							int eleccion_cliente_objetivo = scanner.nextInt();
+							if (eleccion_cliente_objetivo > 0 && eleccion_cliente_objetivo <= Banco.getClientes().size()) {
+								clienteObjetivo = Banco.getClientes().get(eleccion_cliente_objetivo - 1);
+								break;
+							}
+						}
+						if (clienteActual == clienteObjetivo) {
+							clienteActual.getTarjetasDebito().remove(tarjeta_de_origen);
+						}
+						int eleccion_de_tarjeta_debito_objetivo;
+						TarjetaDebito tarjeta_Objetivo;
+						for (TarjetaDebito tarjeta : clienteActual.getTarjetasDebito()) {
+							System.out.println("Numero de tarjeta: " + tarjeta.getNoTarjeta());
+							System.out.println("Divisa de la tarjeta: " + tarjeta.getDivisa());
+							System.out.println("Saldo de la tarjeta: " + tarjeta.getSaldo());
+							System.out.println(tarjeta.getEstado());
+							System.out.println();
+						}
+						while (true) {
+							eleccion_de_tarjeta_debito_objetivo = scanner.nextInt();
+
+							if (eleccion_de_tarjeta_debito_objetivo > 0 && eleccion_de_tarjeta_debito_objetivo <= clienteObjetivo.getTarjetasDebito().size()) {
+								tarjeta_Objetivo = clienteObjetivo.getTarjetasDebito().get(eleccion_de_tarjeta_debito_objetivo - 1);
+								break;
+							} else {
+								System.out.println("Por favor, elige un número válido de tarjeta.");
+							}
+						}
+						System.out.println("Ingrese el monto que desea tranferir:");
+						double monto = scanner.nextDouble();
+						boolean transaccion = tarjeta_de_origen.transaccion(monto, tarjeta_Objetivo);
+						if (!transaccion && monto>tarjeta_de_origen.getSaldo()){
+							System.out.println("la transaccion ha fallado porque no hay suficiente dinero en la cuenta");
+							// aca se puede agregar codigo para las trsnacciones rechazadas
+						}else {
+							if (tarjeta_Objetivo.getDivisa() != tarjeta_de_origen.getDivisa()){
+								tarjeta_de_origen.setSaldo(tarjeta_de_origen.getSaldo()-monto);
+								double dolares = tarjeta_de_origen.getDivisa().getValor() * monto;
+								tarjeta_Objetivo.setSaldo(tarjeta_Objetivo.getSaldo() + tarjeta_Objetivo.getDivisa().getValor() * dolares);
+								System.out.println("Transaccion hecha!!!");
+							}
+						}
+						clienteActual.agregarTarjetDebito(tarjeta_de_origen);
 					}
 					case "7":{
 						System.out.println("Estas son las tarjetas débito que tienes disponibles:\n");
