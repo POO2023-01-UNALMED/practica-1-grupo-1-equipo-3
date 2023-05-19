@@ -21,7 +21,7 @@ public class Transaccion {
 	private Divisa divisa;
 	private static ArrayList<Transaccion> transacciones = new ArrayList<>();
 
-	
+	/*
 	public Transaccion(Cliente clienteObjetivo, Cliente clienteOrigen, Tarjeta tarjetaOrigen, TarjetaDebito tarjetaObjetivo, double cantidad) {
 		this.clienteObjetivo = clienteObjetivo;
 		this.clienteOrigen = clienteOrigen;
@@ -33,6 +33,7 @@ public class Transaccion {
 		divisa = tarjetaOrigen.getDivisa();
 		transacciones.add(this);
 	}
+	 */
 
 	public Transaccion(Cliente clienteOrigen, Tarjeta tarjetaOrigen, TarjetaDebito tarjetaObjetivo, double cantidad, Factura factura, boolean rechazado) {
 		this.clienteOrigen = clienteOrigen;

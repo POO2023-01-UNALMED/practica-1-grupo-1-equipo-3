@@ -190,7 +190,7 @@ public class mainTemporal {
 							
 							transaccion = canalEscogido.finalizarConversion(transaccion, montoInicial);
 							System.out.println(transaccion);
-							
+
 						}
 						break label;
 					}
@@ -259,43 +259,47 @@ public class mainTemporal {
 								break;
 							}
 						}
+						ArrayList<TarjetaDebito> tarjetasObjetivo = clienteObjetivo.getTarjetasDebito(); //tarjetasObjetivo guarda las tarjetas que son objetivos viables para la transacción
 						if (clienteActual == clienteObjetivo) {
-							clienteActual.getTarjetasDebito().remove(tarjeta_de_origen);
+							tarjetasObjetivo.remove(tarjeta_de_origen);
 						}
 						int eleccion_de_tarjeta_debito_objetivo;
 						TarjetaDebito tarjeta_Objetivo;
-						for (TarjetaDebito tarjeta : clienteActual.getTarjetasDebito()) {
+						for (TarjetaDebito tarjeta : tarjetasObjetivo) { //Mostrando las opciones para transferir del cliente objetivo.
 							System.out.println("Numero de tarjeta: " + tarjeta.getNoTarjeta());
 							System.out.println("Divisa de la tarjeta: " + tarjeta.getDivisa());
 							System.out.println("Saldo de la tarjeta: " + tarjeta.getSaldo());
 							System.out.println(tarjeta.getEstado());
 							System.out.println();
 						}
+
+						if(tarjetasObjetivo.isEmpty()){ // Si el cliente objetivo no tiene tarjetas que puedan ser utilizadas en este contexto, la transacción se cancela
+							System.out.println("El cliente objetivo no tiene tarjetas válidas para esta operación");
+							scanner.nextLine();
+							continue;
+						}
+
 						while (true) {
 							eleccion_de_tarjeta_debito_objetivo = scanner.nextInt();
 
-							if (eleccion_de_tarjeta_debito_objetivo > 0 && eleccion_de_tarjeta_debito_objetivo <= clienteObjetivo.getTarjetasDebito().size()) {
-								tarjeta_Objetivo = clienteObjetivo.getTarjetasDebito().get(eleccion_de_tarjeta_debito_objetivo - 1);
+							if (eleccion_de_tarjeta_debito_objetivo > 0 && eleccion_de_tarjeta_debito_objetivo <= tarjetasObjetivo.size()) {
+								tarjeta_Objetivo = tarjetasObjetivo.get(eleccion_de_tarjeta_debito_objetivo - 1);
 								break;
 							} else {
 								System.out.println("Por favor, elige un número válido de tarjeta.");
 							}
 						}
-						System.out.println("Ingrese el monto que desea tranferir:");
+						System.out.println("Ingrese el monto que desea tranferir (En la divisa de su tarjeta escogida):");
 						double monto = scanner.nextDouble();
-						boolean transaccion = tarjeta_de_origen.transaccion(monto, tarjeta_Objetivo);
-						if (!transaccion && monto>tarjeta_de_origen.getSaldo()){
+						Transaccion transaccion = new Transaccion(clienteObjetivo, clienteActual, tarjeta_de_origen, tarjeta_Objetivo, monto); //Genera un nuevo objeto de transacción. En caso de que no sea rechazada la transacción, el constructor mismo hace los cambios de las tarjetas
+						if (!transaccion.isRechazado() && monto>tarjeta_de_origen.getSaldo()){
 							System.out.println("la transaccion ha fallado porque no hay suficiente dinero en la cuenta");
-							// aca se puede agregar codigo para las trsnacciones rechazadas
-						}else {
-							if (tarjeta_Objetivo.getDivisa() != tarjeta_de_origen.getDivisa()){
-								tarjeta_de_origen.setSaldo(tarjeta_de_origen.getSaldo()-monto);
-								double dolares = tarjeta_de_origen.getDivisa().getValor() * monto;
-								tarjeta_Objetivo.setSaldo(tarjeta_Objetivo.getSaldo() + tarjeta_Objetivo.getDivisa().getValor() * dolares);
-								System.out.println("Transaccion hecha!!!");
-							}
+							// aca se puede agregar codigo para las transacciones rechazadas
+						}else if(transaccion.isRechazado()) {
+							System.out.println("La transacción ha sido rechazada");
+						}else if(!transaccion.isRechazado()){
+							System.out.println("Transacción hecha");
 						}
-						clienteActual.agregarTarjetDebito(tarjeta_de_origen);
 					}
 					case "7":{
 						System.out.println("Estas son las tarjetas débito que tienes disponibles:\n");
