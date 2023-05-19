@@ -38,7 +38,7 @@ public class mainTemporal {
 			}
 			label:
 			while(true) { // el loop principal que se ejecuta para cada cliente
-				System.out.println("1. Para ver facturas\n2. Para ver las tarjetas disponibles\n3. Para pagar una factura\n4. Cambiar Divisas\n5. Solicitar una tarjeta de crédito\n6. Para hacer una transferencia\n7. Para retirar dinero\n 9. Para salir");
+				System.out.println("1. Para ver facturas\n2. Para ver las tarjetas disponibles\n3. Para pagar una factura\n4. Cambiar Divisas\n5. Solicitar una tarjeta de crédito\n6. Para hacer una transferencia\n7. Para retirar dinero\n8. Para deshacer una transacción\n9. Para salir");
 				String entrada2 = scanner.nextLine();//Se lee la elección del usuario
 				switch (entrada2) {
 					case "1":
@@ -259,9 +259,11 @@ public class mainTemporal {
 								break;
 							}
 						}
-						ArrayList<TarjetaDebito> tarjetasObjetivo = clienteObjetivo.getTarjetasDebito(); //tarjetasObjetivo guarda las tarjetas que son objetivos viables para la transacción
-						if (clienteActual == clienteObjetivo) {
-							tarjetasObjetivo.remove(tarjeta_de_origen);
+						ArrayList<TarjetaDebito> tarjetasObjetivo = new ArrayList<TarjetaDebito>(); //tarjetasObjetivo guarda las tarjetas a las cuales se puede hacer una transacción
+						for(TarjetaDebito t : clienteObjetivo.getTarjetasDebito()){
+							if(!t.equals(tarjeta_de_origen)){
+								tarjetasObjetivo.add(t);
+							}
 						}
 						int eleccion_de_tarjeta_debito_objetivo;
 						TarjetaDebito tarjeta_Objetivo;
@@ -298,11 +300,11 @@ public class mainTemporal {
 						}else if(transaccion.isRechazado()) {
 							System.out.println("La transacción ha sido rechazada");
 						}else if(!transaccion.isRechazado()){
-							System.out.println("Transacción hecha");
+							System.out.println("Transacción realizada");
 						}
 					}
-					case "7":{
-						System.out.println("Estas son las tarjetas débito que tienes disponibles:\n");
+					case "7": {
+						System.out.println("Estas son las tarjetas débito que tiene disponibles:\n");
 						for (TarjetaDebito tarjeta : clienteActual.getTarjetasDebito()) {
 							System.out.println("Numero de tarjeta: " + tarjeta.getNoTarjeta());
 							System.out.println("Divisa de la tarjeta: " + tarjeta.getDivisa());
@@ -324,6 +326,31 @@ public class mainTemporal {
 							}
 						}
 						System.out.println(tarjeta_de_origen);
+					}
+					case "8":{
+						System.out.println("Escoga mediante qué criterio desea encontrar la transacción\n1. Divisa\n2. Cliente que recibió la transacción\n");
+						String criterioEscogido;
+						while(true){
+							criterioEscogido = scanner.nextLine();
+							if(criterioEscogido.equals("1") || criterioEscogido.equals("2") || criterioEscogido.equals("3")){
+								break;
+							}
+						}
+						ArrayList<Transaccion> transacciones= new ArrayList<Transaccion>(); //Almacena las transacciones que el cliente podría deshacer
+						if(criterioEscogido.equals("1")){
+							System.out.println("Por favor, escoga la divisa");
+							for (Divisa divisa : Divisa.values()) {//Recorre un array de las divisas
+								System.out.println(divisa.ordinal() + 1 + ". " + divisa);
+							}
+							int eleccion_divisa = scanner.nextInt() - 1;//Obtiene el numero de la divisa escogida
+							Divisa divisaCriterio = Divisa.values()[eleccion_divisa]; //Almacena la divisa escogida
+							transacciones = Transaccion.encontrarTransacciones(divisaCriterio, clienteActual);
+						}
+
+						System.out.println("Estas son las transacciones que puede deshacer:");
+						for(Transaccion t : transacciones){
+							System.out.println(transacciones.indexOf(t)+1 + " " + t);
+						}
 					}
 					case "9":
 						break label;
