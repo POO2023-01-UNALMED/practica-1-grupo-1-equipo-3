@@ -123,6 +123,7 @@ public enum Divisa {
 		double montoFinal = monto;
 		
 		double impuesto = monto * (canal.getImpuesto() / 100);
+		impuesto = (impuesto * 100.0) / 100.0;
 		montoFinal -= impuesto;
 		
 		//convertimos la divisa de origen a dolar

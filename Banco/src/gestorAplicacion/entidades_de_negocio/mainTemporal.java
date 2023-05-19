@@ -187,8 +187,10 @@ public class mainTemporal {
 							
 							ArrayList<Double> conversion = Divisa.convertirDivisas(divisas, canalEscogido, montoInicial); 
 							Transaccion transaccion = Transaccion.crearTransaccion(divisas, montoInicial, conversion, canalEscogido, tarjetasEscogidas, clienteActual);
+							
+							transaccion = canalEscogido.finalizarConversion(transaccion, montoInicial);
 							System.out.println(transaccion);
-
+							
 						}
 						break label;
 					}
