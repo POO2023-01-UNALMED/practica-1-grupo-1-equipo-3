@@ -171,21 +171,20 @@ public class mainTemporal {
 							int entrada7 = scanner.nextInt() - 1;
 							Canal canalEscogido = listaCanales.get(entrada7);
 							
-							double montoInicial = 0;
+							double montoInicial;
 							
 							System.out.println("Por favor digita el monto a convertir:\n");
-							
-							monto:
-							while(true) {
+
+							while (true) {
 								montoInicial = scanner.nextDouble();
-								if(montoInicial <= 0) {
+								if (montoInicial <= 0) {
 									System.out.println("El monto debe ser mayor a 0");
-									continue;									
+									continue;
 								}
-								break monto;
+								break;
 							}
 							
-							ArrayList<Double> conversion = Divisa.convertirDivisas(divisas, canalEscogido, montoInicial); 
+							ArrayList<Double> conversion = Divisa.convertirDivisas(divisas, canalEscogido, montoInicial);
 							Transaccion transaccion = Transaccion.crearTransaccion(divisas, montoInicial, conversion, canalEscogido, tarjetasEscogidas, clienteActual);
 							
 							transaccion = canalEscogido.finalizarConversion(transaccion, montoInicial);
@@ -259,7 +258,7 @@ public class mainTemporal {
 								break;
 							}
 						}
-						ArrayList<TarjetaDebito> tarjetasObjetivo = new ArrayList<TarjetaDebito>(); //tarjetasObjetivo guarda las tarjetas a las cuales se puede hacer una transacción
+						ArrayList<TarjetaDebito> tarjetasObjetivo = new ArrayList<>(); //tarjetasObjetivo guarda las tarjetas a las cuales se puede hacer una transacción
 						for(TarjetaDebito t : clienteObjetivo.getTarjetasDebito()){
 							if(!t.equals(tarjeta_de_origen)){
 								tarjetasObjetivo.add(t);
@@ -330,13 +329,10 @@ public class mainTemporal {
 					case "8":{
 						System.out.println("Escoga mediante qué criterio desea encontrar la transacción\n1. Divisa\n2. Cliente que recibió la transacción\n");
 						String criterioEscogido;
-						while(true){
+						do {
 							criterioEscogido = scanner.nextLine();
-							if(criterioEscogido.equals("1") || criterioEscogido.equals("2") || criterioEscogido.equals("3")){
-								break;
-							}
-						}
-						ArrayList<Transaccion> transacciones= new ArrayList<Transaccion>(); //Almacena las transacciones que el cliente podría deshacer
+						} while (!criterioEscogido.equals("1") && !criterioEscogido.equals("2") && !criterioEscogido.equals("3"));
+						ArrayList<Transaccion> transacciones= new ArrayList<>(); //Almacena las transacciones que el cliente podría deshacer
 						if(criterioEscogido.equals("1")){
 							System.out.println("Por favor, escoga la divisa");
 							for (Divisa divisa : Divisa.values()) {//Recorre un array de las divisas

@@ -202,10 +202,8 @@ public class Transaccion {
 		Tarjeta tarjetaOrigen = tarjetas.get(0);
 		TarjetaDebito tarjetaDestino = (TarjetaDebito) tarjetas.get(1);
 		
-		boolean rechazado = false;
-		if(montoFinal > canal.getFondos(divisaDestino) || !(tarjetaOrigen.puedeTransferir(montoInicial)))
-			rechazado = true;
-		
+		boolean rechazado = montoFinal > canal.getFondos(divisaDestino) || !(tarjetaOrigen.puedeTransferir(montoInicial));
+
 		Transaccion transaccion = new Transaccion(cliente, tarjetaOrigen, tarjetaDestino, montoFinal, impuestoRetorno, canal, rechazado);
 		transaccion.pendiente = !rechazado;
 		return transaccion;

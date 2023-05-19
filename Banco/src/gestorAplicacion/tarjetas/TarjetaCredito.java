@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import gestorAplicacion.entidades_de_negocio.Divisa;
-import gestorAplicacion.entidades_de_negocio.Cliente;;
+import gestorAplicacion.entidades_de_negocio.Cliente;
 
 public class TarjetaCredito extends Tarjeta {
 	private double creditoMaximo; // Es el límite de dinero que se puede prestar mediante esta tarjeta
@@ -39,17 +39,11 @@ public class TarjetaCredito extends Tarjeta {
 	}
 
 	public boolean puedeTransferir(double monto){
-		if((creditoMaximo-credito)>=monto){
-			return true;
-		} else {
-			return false;
-		}
+		return (creditoMaximo - credito) >= monto;
 	}
 	
 	public boolean tieneSaldo() {
-		if (credito == creditoMaximo)
-			return false;
-		return true;
+		return credito != creditoMaximo;
 	}
 
 	public void sacarDinero(double monto){
@@ -77,13 +71,10 @@ public class TarjetaCredito extends Tarjeta {
 		reqCredMax.put(200, 3000.0);
 		reqInteres.put(200, 3.0);
 		ArrayList<TarjetaCredito> Tarjetas = new ArrayList<TarjetaCredito>();
-		int noTarjeta; 
-		while(true) {
-			noTarjeta = (int) Math.floor(Math.random()*(999999999 - 100000000 + 1) + 100000000); // genera un número aleatorio entre 999999999 y 100000000. Este será el número de la tarjeta, a menos de que ya está siendo usado (lo cual es improbable)
-			if(!Banco.numeroExistente(noTarjeta)) {
-				break;
-			}
-		}
+		int noTarjeta;
+		do {
+			noTarjeta = (int) Math.floor(Math.random() * (999999999 - 100000000 + 1) + 100000000); // genera un número aleatorio entre 999999999 y 100000000. Este será el número de la tarjeta, a menos de que ya está siendo usado (lo cual es improbable)
+		} while (Banco.numeroExistente(noTarjeta));
 		for(int i : reqCredMax.keySet()){
 			if(i > puntaje) break;
 			else Tarjetas.add(new TarjetaCredito(noTarjeta, divisa, Math.floor(100*reqCredMax.get(i)/divisa.getValor())/100, reqInteres.get(i)));

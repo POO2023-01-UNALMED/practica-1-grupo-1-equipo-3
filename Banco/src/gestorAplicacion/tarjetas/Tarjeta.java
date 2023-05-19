@@ -10,7 +10,7 @@ public abstract class  Tarjeta {
 	protected Divisa divisa;
 	protected String estado;
 	protected int transaccionesRechazadas;
-	protected static ArrayList<Tarjeta> tarjetas = new ArrayList<Tarjeta>();
+	protected static ArrayList<Tarjeta> tarjetas = new ArrayList<>();
 	
 	public Tarjeta(int noTarjeta, Divisa divisa) {
 		this.noTarjeta = noTarjeta;
@@ -44,8 +44,7 @@ public abstract class  Tarjeta {
 	}
 	
 	public boolean isActiva() {
-		if(!getEstado().equalsIgnoreCase("ACTIVA")) return false;
-		return true;
+		return getEstado().equalsIgnoreCase("ACTIVA");
 	}
 	
 	public static ArrayList<Tarjeta> getTarjetas(){
@@ -68,7 +67,7 @@ public abstract class  Tarjeta {
 
 	//Metodos de la clase
 	public static ArrayList<Tarjeta> TarjetasBloqueadas(Cliente cliente){
-		ArrayList<Tarjeta> retorno = new ArrayList<Tarjeta>();
+		ArrayList<Tarjeta> retorno = new ArrayList<>();
 		for(Tarjeta t : cliente.getTarjetasCredito()){
 			if(!t.isActiva()){
 				retorno.add(t);
@@ -83,7 +82,7 @@ public abstract class  Tarjeta {
 	}
 	
 	public static ArrayList<Tarjeta> TarjetasNoBloqueadas(Cliente cliente){
-		ArrayList<Tarjeta> retorno = new ArrayList<Tarjeta>();
+		ArrayList<Tarjeta> retorno = new ArrayList<>();
 		for(Tarjeta t : cliente.getTarjetasCredito()){
 			if(t.isActiva()){
 				retorno.add(t);
