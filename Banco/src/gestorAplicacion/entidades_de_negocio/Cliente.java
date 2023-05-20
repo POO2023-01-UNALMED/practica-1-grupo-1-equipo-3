@@ -82,6 +82,13 @@ public class Cliente {
 		return tarjetasCredito;
 	}
 
+	public ArrayList<Tarjeta> getTarjetas() {
+		ArrayList<Tarjeta> retorno = new ArrayList<Tarjeta>();
+		retorno.addAll(tarjetasDebito);
+		retorno.addAll(tarjetasCredito);
+		return retorno;
+	}
+
 	public void agregarTarjetasCredito(TarjetaCredito tarjetaCredito) {
 		this.tarjetasCredito.add(tarjetaCredito);
 	}

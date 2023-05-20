@@ -172,6 +172,16 @@ public class Transaccion {
 		return retorno;
 	}
 
+	public static ArrayList<Transaccion> encontrarTransacciones(Cliente clienteOrigen, Tarjeta tarjeta){ //Funciones que permiten filtrar las transacciones según un criterio dado
+		ArrayList<Transaccion> retorno = new ArrayList<Transaccion>();
+		for(Transaccion t : transacciones){
+			if(t.clienteOrigen.equals(clienteOrigen) && t.tarjetaObjetivo.equals(tarjeta)){
+				retorno.add(t);
+			}
+		}
+		return retorno;
+	}
+
 	public Tarjeta getTarjetaOrigen(){
 		return tarjetaOrigen;
 	}

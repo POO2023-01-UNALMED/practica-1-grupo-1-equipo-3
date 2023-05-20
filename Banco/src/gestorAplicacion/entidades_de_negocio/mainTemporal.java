@@ -302,6 +302,7 @@ public class mainTemporal {
 						}else if(!transaccion.isRechazado()){
 							System.out.println("Transacción realizada");
 						}
+						scanner.nextLine();
 						break;
 					}
 					case "7": {
@@ -329,7 +330,7 @@ public class mainTemporal {
 						System.out.println(tarjeta_de_origen);
 					}
 					case "8":{
-						System.out.println("Escoga mediante qué criterio desea encontrar la transacción\n1. Divisa\n2. Cliente que recibió la transacción\n");
+						System.out.println("Escoga mediante qué criterio desea encontrar la transacción\n1. Divisa\n2. Cliente que recibió la transacción\n3. Para filtrar por tarjetas");
 						String criterioEscogido;
 						while(true){
 							criterioEscogido = scanner.nextLine();
@@ -354,15 +355,32 @@ public class mainTemporal {
 							}
 							int eleccion_cliente = scanner.nextInt() - 1;//Obtiene el numero de la divisa escogida
 							Cliente clienteCriterio = Banco.getClientes().get(eleccion_cliente); //Almacena la divisa escogida
-							
-
+							transacciones = Transaccion.encontrarTransacciones(clienteActual, clienteCriterio);
+						}else if(criterioEscogido.equals("3")){		//Se filtran las transacciones por tarjeta
+							System.out.println("Por favor, escoga la tarjeta");
+							for(Tarjeta t : clienteActual.getTarjetas()){
+								System.out.println(clienteActual.getTarjetas().indexOf(t)+1 + " " + t);
+							}
+							int eleccion_tarjeta = scanner.nextInt()-1; //Obtiene el numero de la tarjeta escogida
+							Tarjeta tarjetaCriterio = clienteActual.getTarjetas().get(eleccion_tarjeta);  //Almacena la tarjeta escogida
+							transacciones = Transaccion.encontrarTransacciones(clienteActual, tarjetaCriterio);
+						}
+						if(transacciones.isEmpty()){
+							System.out.println("Usted no tiene ninguna transacción que corresponda al criterio especificado");
+							scanner.nextLine();
+							break;
 						}
 
 						System.out.println("Estas son las transacciones que puede deshacer:");
 						for(Transaccion t : transacciones){
 							System.out.println(transacciones.indexOf(t)+1 + " " + t);
 						}
-
+						int eleccion_transaccion = scanner.nextInt()-1;
+						Transaccion transaccion = transacciones.get(eleccion_transaccion);
+						System.out.println("Por favor, ingrese un mensaje para el cliente que recibió la transacción");
+						scanner.nextLine();
+						String mensaje = scanner.nextLine();
+						System.out.println(mensaje);
 						break;
 					}
 					case "9":
@@ -414,6 +432,7 @@ public class mainTemporal {
 
 		cliente1.agregarTarjetasDebito(tarjetaDebito1, tarjetaDebito2, tarjetaDebito3, tarjetaDebito5, tarjetaDebito11);
 		cliente1.agregarTarjetasCredito(tarjetaCredito1, tarjetaCredito2, tarjetaCredito7, tarjetaCredito9, tarjetaCredito11);
+		cliente2.agregarTarjetDebito(tarjetaDebito6);
 
 		TarjetaDebito tarjeta1 = new TarjetaDebito(1, Divisa.DOLAR, 1000);
 		TarjetaDebito tarjeta2 = new TarjetaDebito(1, Divisa.EURO, 10);
