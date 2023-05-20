@@ -152,6 +152,26 @@ public class Transaccion {
 		return transacciones;
 	}
 
+	public static ArrayList<Transaccion> encontrarTransacciones(Cliente clienteOrigen, Divisa divisa){ //Funciones que permiten filtrar las transacciones según un criterio dado
+		ArrayList<Transaccion> retorno = new ArrayList<Transaccion>();
+		for(Transaccion t : transacciones){
+			if(t.divisa.equals(divisa) && t.clienteOrigen.equals(clienteOrigen)){
+				retorno.add(t);
+			}
+		}
+		return retorno;
+	}
+
+	public static ArrayList<Transaccion> encontrarTransacciones(Cliente clienteOrigen, Cliente clienteObjetivo){ //Funciones que permiten filtrar las transacciones según un criterio dado
+		ArrayList<Transaccion> retorno = new ArrayList<Transaccion>();
+		for(Transaccion t : transacciones){
+			if(t.clienteOrigen.equals(clienteOrigen) && t.clienteObjetivo.equals(clienteObjetivo)){
+				retorno.add(t);
+			}
+		}
+		return retorno;
+	}
+
 	public Tarjeta getTarjetaOrigen(){
 		return tarjetaOrigen;
 	}
@@ -202,8 +222,10 @@ public class Transaccion {
 		Tarjeta tarjetaOrigen = tarjetas.get(0);
 		TarjetaDebito tarjetaDestino = (TarjetaDebito) tarjetas.get(1);
 		
-		boolean rechazado = montoFinal > canal.getFondos(divisaDestino) || !(tarjetaOrigen.puedeTransferir(montoInicial));
-
+		boolean rechazado = false;
+		if(montoFinal > canal.getFondos(divisaDestino) || !(tarjetaOrigen.puedeTransferir(montoInicial)))
+			rechazado = true;
+		
 		Transaccion transaccion = new Transaccion(cliente, tarjetaOrigen, tarjetaDestino, montoFinal, impuestoRetorno, canal, rechazado);
 		transaccion.pendiente = !rechazado;
 		return transaccion;

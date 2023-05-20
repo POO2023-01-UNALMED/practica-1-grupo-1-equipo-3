@@ -171,20 +171,21 @@ public class mainTemporal {
 							int entrada7 = scanner.nextInt() - 1;
 							Canal canalEscogido = listaCanales.get(entrada7);
 							
-							double montoInicial;
+							double montoInicial = 0;
 							
 							System.out.println("Por favor digita el monto a convertir:\n");
-
-							while (true) {
+							
+							monto:
+							while(true) {
 								montoInicial = scanner.nextDouble();
-								if (montoInicial <= 0) {
+								if(montoInicial <= 0) {
 									System.out.println("El monto debe ser mayor a 0");
-									continue;
+									continue;									
 								}
-								break;
+								break monto;
 							}
 							
-							ArrayList<Double> conversion = Divisa.convertirDivisas(divisas, canalEscogido, montoInicial);
+							ArrayList<Double> conversion = Divisa.convertirDivisas(divisas, canalEscogido, montoInicial); 
 							Transaccion transaccion = Transaccion.crearTransaccion(divisas, montoInicial, conversion, canalEscogido, tarjetasEscogidas, clienteActual);
 							
 							transaccion = canalEscogido.finalizarConversion(transaccion, montoInicial);
@@ -258,7 +259,7 @@ public class mainTemporal {
 								break;
 							}
 						}
-						ArrayList<TarjetaDebito> tarjetasObjetivo = new ArrayList<>(); //tarjetasObjetivo guarda las tarjetas a las cuales se puede hacer una transacción
+						ArrayList<TarjetaDebito> tarjetasObjetivo = new ArrayList<TarjetaDebito>(); //tarjetasObjetivo guarda las tarjetas a las cuales se puede hacer una transacción
 						for(TarjetaDebito t : clienteObjetivo.getTarjetasDebito()){
 							if(!t.equals(tarjeta_de_origen)){
 								tarjetasObjetivo.add(t);
@@ -301,6 +302,7 @@ public class mainTemporal {
 						}else if(!transaccion.isRechazado()){
 							System.out.println("Transacción realizada");
 						}
+						break;
 					}
 					case "7": {
 						System.out.println("Estas son las tarjetas débito que tiene disponibles:\n");
@@ -329,24 +331,39 @@ public class mainTemporal {
 					case "8":{
 						System.out.println("Escoga mediante qué criterio desea encontrar la transacción\n1. Divisa\n2. Cliente que recibió la transacción\n");
 						String criterioEscogido;
-						do {
+						while(true){
 							criterioEscogido = scanner.nextLine();
-						} while (!criterioEscogido.equals("1") && !criterioEscogido.equals("2") && !criterioEscogido.equals("3"));
-						ArrayList<Transaccion> transacciones= new ArrayList<>(); //Almacena las transacciones que el cliente podría deshacer
-						if(criterioEscogido.equals("1")){
+							if(criterioEscogido.equals("1") || criterioEscogido.equals("2") || criterioEscogido.equals("3")){
+								break;
+							}
+						}
+						ArrayList<Transaccion> transacciones= new ArrayList<Transaccion>(); //Almacena las transacciones que el cliente podría deshacer
+						if(criterioEscogido.equals("1")){		//Se filtran las transacciones por Divisa
 							System.out.println("Por favor, escoga la divisa");
 							for (Divisa divisa : Divisa.values()) {//Recorre un array de las divisas
 								System.out.println(divisa.ordinal() + 1 + ". " + divisa);
 							}
 							int eleccion_divisa = scanner.nextInt() - 1;//Obtiene el numero de la divisa escogida
 							Divisa divisaCriterio = Divisa.values()[eleccion_divisa]; //Almacena la divisa escogida
-							transacciones = Transaccion.encontrarTransacciones(divisaCriterio, clienteActual);
+							System.out.println(divisaCriterio);
+							transacciones = Transaccion.encontrarTransacciones(clienteActual, divisaCriterio);
+						}else if(criterioEscogido.equals("2")){		//Se filtran las transacciones por cliente
+							System.out.println("Por favor, escoga el cliente");
+							for(Cliente c : Banco.getClientes()){
+								System.out.println(Banco.getClientes().indexOf(c)+1 + " " + c.getNombre());
+							}
+							int eleccion_cliente = scanner.nextInt() - 1;//Obtiene el numero de la divisa escogida
+							Cliente clienteCriterio = Banco.getClientes().get(eleccion_cliente); //Almacena la divisa escogida
+							
+
 						}
 
 						System.out.println("Estas son las transacciones que puede deshacer:");
 						for(Transaccion t : transacciones){
 							System.out.println(transacciones.indexOf(t)+1 + " " + t);
 						}
+
+						break;
 					}
 					case "9":
 						break label;
