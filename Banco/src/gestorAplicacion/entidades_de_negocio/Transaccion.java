@@ -17,6 +17,7 @@ public class Transaccion {
 	private double impuesto;//Algunas transaccion pueden descontar un pequeño impuesto
 	private boolean rechazado;
 	private boolean pendiente;
+	private boolean retornable;
 	private Factura factura;
 	private Divisa divisa;
 	private String mensaje; //Se utiliza únicamente en la funcionalidad deshacer transacción
@@ -31,6 +32,7 @@ public class Transaccion {
 		this.cantidad = cantidad;
 		rechazado = !tarjetaOrigen.transaccion(cantidad, tarjetaObjetivo);
 		pendiente = false;
+		retornable = true;
 		divisa = tarjetaOrigen.getDivisa();
 		transacciones.add(this);
 	}
@@ -44,6 +46,7 @@ public class Transaccion {
 		this.rechazado = rechazado;
 		this.factura = factura;
 		pendiente = true;
+		retornable = true;
 		divisa = tarjetaOrigen.getDivisa();
 		transacciones.add(this);
 	}
@@ -57,6 +60,7 @@ public class Transaccion {
 		this.rechazado = rechazado;
 		this.canalObjetivo = canalObjetivo;
 		pendiente = true;
+		retornable = true;
 		divisa = tarjetaOrigen.getDivisa();
 		transacciones.add(this);
 	}
@@ -70,6 +74,7 @@ public class Transaccion {
 		this.mensaje = mensaje;
 		pendiente = true;
 		rechazado = false;
+		retornable = false;
 		transacciones.add(this);
 	}
 	
@@ -91,6 +96,10 @@ public class Transaccion {
 
 	public String getMensaje(){
 		return mensaje;
+	}
+
+	public boolean isRetornable(){
+		return retornable;
 	}
 
 	public double getCantidad(){
@@ -115,6 +124,10 @@ public class Transaccion {
 
 	public void setClienteOrigen(Cliente clienteOrigen) {
 		this.clienteOrigen = clienteOrigen;
+	}
+
+	public void setRetornable(boolean retornable){
+		this.retornable = retornable;
 	}
 
 	public void setTarjetaOrigen(Tarjeta tarjetaOrigen) {
@@ -172,7 +185,7 @@ public class Transaccion {
 	public static ArrayList<Transaccion> encontrarTransacciones(Cliente clienteOrigen, Divisa divisa){ //Funciones que permiten filtrar las transacciones según un criterio dado
 		ArrayList<Transaccion> retorno = new ArrayList<Transaccion>();
 		for(Transaccion t : transacciones){
-			if(t.divisa.equals(divisa) && t.clienteOrigen.equals(clienteOrigen) && t.clienteObjetivo != null){
+			if(t.divisa.equals(divisa) && t.clienteOrigen.equals(clienteOrigen) && t.clienteObjetivo != null && t.isRetornable() && !t.isPendiente() && !t.isRechazado()){
 				retorno.add(t);
 			}
 		}
@@ -182,7 +195,7 @@ public class Transaccion {
 	public static ArrayList<Transaccion> encontrarTransacciones(Cliente clienteOrigen, Cliente clienteObjetivo){ //Funciones que permiten filtrar las transacciones según un criterio dado
 		ArrayList<Transaccion> retorno = new ArrayList<Transaccion>();
 		for(Transaccion t : transacciones){
-			if(t.clienteOrigen.equals(clienteOrigen) && t.clienteObjetivo.equals(clienteObjetivo) && t.clienteObjetivo != null){
+			if(t.clienteOrigen.equals(clienteOrigen) && t.clienteObjetivo.equals(clienteObjetivo) && t.clienteObjetivo != null && t.isRetornable()&& !t.isPendiente() && !t.isRechazado()){
 				retorno.add(t);
 			}
 		}
@@ -192,7 +205,7 @@ public class Transaccion {
 	public static ArrayList<Transaccion> encontrarTransacciones(Cliente clienteOrigen, Tarjeta tarjeta){ //Funciones que permiten filtrar las transacciones según un criterio dado
 		ArrayList<Transaccion> retorno = new ArrayList<Transaccion>();
 		for(Transaccion t : transacciones){
-			if(t.clienteOrigen.equals(clienteOrigen) && t.tarjetaOrigen.equals(tarjeta) && t.clienteObjetivo != null){
+			if(t.clienteOrigen.equals(clienteOrigen) && t.tarjetaOrigen.equals(tarjeta) && t.clienteObjetivo != null && t.isRetornable()&& !t.isPendiente() && !t.isRechazado()){
 				retorno.add(t);
 			}
 		}
@@ -205,7 +218,7 @@ public class Transaccion {
 
 	public String toString(){
 		if(mensaje != null && pendiente){ //Es el toString en caso de que la transacción sea una petición por parte de otro usuario
-			return "El cliente " + clienteOrigen.getNombre() + " Quisiera deshacer una transacción por " + Banco.formatearNumero(cantidad) + " " + tarjetaOrigen.getDivisa() + " recibidos porla tarjeta #" + tarjetaObjetivo.getNoTarjeta() + "\nSu mensaje es: " + mensaje;
+			return "El cliente " + clienteOrigen.getNombre() + " quisiera deshacer una transacción por " + Banco.formatearNumero(cantidad) + " " + tarjetaOrigen.getDivisa() + " recibidos por la tarjeta #" + tarjetaObjetivo.getNoTarjeta() + "\nSu mensaje es: " + mensaje;
 		}
 		if(rechazado){
 			return "Transacción Rechazada\nTotal: " + Banco.formatearNumero(cantidad) + "\nTarjeta de origen: #" + tarjetaOrigen.getNoTarjeta() + "\nTarjeta de destino: #" + tarjetaObjetivo.getNoTarjeta() + "\nProveniente de: " + clienteOrigen.getNombre() + "\n";
@@ -259,5 +272,18 @@ public class Transaccion {
 		Transaccion transaccion = new Transaccion(cliente, tarjetaOrigen, tarjetaDestino, montoFinal, impuestoRetorno, canal, rechazado);
 		transaccion.pendiente = !rechazado;
 		return transaccion;
+	}
+
+	public static Transaccion completarTransaccion(Transaccion transaccion, Boolean respuesta){
+		if(!respuesta){
+			transaccion.rechazado = true;
+			transaccion.pendiente = false;
+			return transaccion;
+		}else{
+			transaccion.rechazado = false;
+			transaccion.pendiente = false;
+			transaccion.tarjetaObjetivo.deshacerTransaccion(transaccion.cantidad, transaccion.tarjetaOrigen); // En caso de que el cliente diga que sí, esta función deshace la transaccion.
+			return transaccion;
+		}
 	}
 }

@@ -390,7 +390,30 @@ public class mainTemporal {
 						for(Transaccion t : transacciones){
 							System.out.println(transacciones.indexOf(t)+1 + " " + t);
 						}
-						System.out.println("Escoga una de estas transacciones para deshacer");
+						System.out.println(String.format("Escoga una de estas transacciones para deshacer, o presione %s para salir", (clienteActual.verPeticiones().size()+1)));
+						int eleccion_transaccion = scanner.nextInt()-1;
+						if(eleccion_transaccion == transacciones.size()){
+							scanner.nextLine();
+							continue;
+						}
+						Transaccion transaccion = transacciones.get(eleccion_transaccion);
+						System.out.println("Quiere conceder o negar esta petición (y/n)");
+						boolean acceptar;
+						while(true){
+							scanner.nextLine();
+							String respuesta = scanner.nextLine();
+							if(respuesta.equalsIgnoreCase("y")){
+								acceptar = true;
+								break;
+							}
+							if(respuesta.equalsIgnoreCase("n")){
+								acceptar = false;
+								break;
+							}
+							System.out.println("Porfavor responda y o n");
+						}
+						Transaccion transNueva = Transaccion.completarTransaccion(transaccion, acceptar);
+						Transaccion.getTransacciones().set(Transaccion.getTransacciones().indexOf(transaccion), transNueva); //Reemplaza la transacción anterior con la nueva transacción
 						break;
 					}
 					case "10":
