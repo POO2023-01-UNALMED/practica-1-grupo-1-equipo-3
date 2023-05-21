@@ -63,16 +63,14 @@ public class Transaccion {
 
 	public Transaccion(Transaccion transaccion, String mensaje){ //genera una petición para que la vea el otro cliente
 		this.clienteOrigen = transaccion.clienteOrigen;
+		this.clienteObjetivo = transaccion.clienteObjetivo;
 		this.tarjetaOrigen = transaccion.tarjetaOrigen;
 		this.tarjetaObjetivo = transaccion.tarjetaObjetivo;
 		this.cantidad = transaccion.cantidad;
 		this.mensaje = mensaje;
-		if(transaccion.getClienteObjetivo() == null){ // Si no hay cliente que halla recibido la transacción, significa que el clienteObjetivo no puede confirmarla. En este caso, la petición simplemente se accepta
-			pendiente = false;
-			rechazado = false;
-			this.tarjetaObjetivo.deshacerTransaccion(cantidad, tarjetaOrigen);
-			System.out.println("Transacción deshecha");
-		}
+		pendiente = true;
+		rechazado = false;
+		transacciones.add(this);
 	}
 	
 	public boolean isRechazado() {
@@ -89,6 +87,10 @@ public class Transaccion {
 
 	public Cliente getClienteOrigen(){
 		return clienteOrigen;
+	}
+
+	public String getMensaje(){
+		return mensaje;
 	}
 
 	public double getCantidad(){
@@ -202,6 +204,9 @@ public class Transaccion {
 	}
 
 	public String toString(){
+		if(mensaje != null && pendiente){ //Es el toString en caso de que la transacción sea una petición por parte de otro usuario
+			return "El cliente " + clienteOrigen.getNombre() + " Quisiera deshacer una transacción por " + Banco.formatearNumero(cantidad) + " " + tarjetaOrigen.getDivisa() + " recibidos porla tarjeta #" + tarjetaObjetivo.getNoTarjeta() + "\nSu mensaje es: " + mensaje;
+		}
 		if(rechazado){
 			return "Transacción Rechazada\nTotal: " + Banco.formatearNumero(cantidad) + "\nTarjeta de origen: #" + tarjetaOrigen.getNoTarjeta() + "\nTarjeta de destino: #" + tarjetaObjetivo.getNoTarjeta() + "\nProveniente de: " + clienteOrigen.getNombre() + "\n";
 		} else if (pendiente){

@@ -5,6 +5,7 @@ import java.util.Arrays;
 import gestorAplicacion.infraestructura.*;
 import gestorAplicacion.tarjetas.*;
 
+import java.sql.Array;
 import java.util.ArrayList;
 
 public class Cliente {
@@ -275,6 +276,19 @@ public class Cliente {
 		return null;
 	}
 	
+	public ArrayList<Transaccion> verPeticiones(){
+		ArrayList<Transaccion> retorno = new ArrayList<Transaccion>();
+		for(Transaccion t : Transaccion.getTransacciones()){
+			if(t.getClienteObjetivo() != null){		//Verifica si la transacción tiene un cliente objetivo. sin esta verificación, la siguiente línea podría soltar un error
+				if(t.getClienteObjetivo().equals(this) && t.getMensaje() != null && t.isPendiente()){
+					retorno.add(t);
+				}
+			}
+			
+		}
+		return retorno;
+	}
+
 	public ArrayList<Canal> listarCanales(Divisa[] divisas) {//Recibe un array normal
 		Divisa divisaOrigen = divisas[0];
 		Divisa divisaDestino = divisas[1];

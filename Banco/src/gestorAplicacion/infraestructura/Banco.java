@@ -113,6 +113,10 @@ public class Banco {
 		}
 		return valor;
 	}
+
+	public static Transaccion generarPeticion(Transaccion transaccion, String mensaje){
+		return new Transaccion(transaccion, mensaje);
+	}
 	
 	/**
 	 * Esta funcion es con el fin de usarse en los toString y las impresiones en consola

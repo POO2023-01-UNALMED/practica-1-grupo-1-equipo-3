@@ -38,7 +38,7 @@ public class mainTemporal {
 			}
 			label:
 			while(true) { // el loop principal que se ejecuta para cada cliente
-				System.out.println("1. Para ver facturas\n2. Para ver las tarjetas disponibles\n3. Para pagar una factura\n4. Cambiar Divisas\n5. Solicitar una tarjeta de crédito\n6. Para hacer una transferencia\n7. Para retirar dinero\n8. Para deshacer una transacción\n9. Para salir");
+				System.out.println("1. Para ver facturas\n2. Para ver las tarjetas disponibles\n3. Para pagar una factura\n4. Cambiar Divisas\n5. Solicitar una tarjeta de crédito\n6. Para hacer una transferencia\n7. Para retirar dinero\n8. Para deshacer una transacción\n9. Para ver peticiones\n10. Para salir");
 				String entrada2 = scanner.nextLine();//Se lee la elección del usuario
 				switch (entrada2) {
 					case "1":
@@ -381,10 +381,19 @@ public class mainTemporal {
 						System.out.println("Por favor, ingrese un mensaje para el cliente que recibió la transacción");
 						scanner.nextLine();
 						String mensaje = scanner.nextLine();
-						new Transaccion(transaccion, mensaje);
+						Banco.generarPeticion(transaccion, mensaje);
 						break;
 					}
-					case "9":
+					case "9":{
+						ArrayList<Transaccion> transacciones = clienteActual.verPeticiones();
+						System.out.println("Estas son las siguientes peticiones que usted ha recibido");
+						for(Transaccion t : transacciones){
+							System.out.println(transacciones.indexOf(t)+1 + " " + t);
+						}
+						System.out.println("Escoga una de estas transacciones para deshacer");
+						break;
+					}
+					case "10":
 						break label;
 				}
 			}
