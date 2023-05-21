@@ -55,6 +55,8 @@ public abstract class  Tarjeta {
 	
 	//Función que se encarga de hacer transacciones. Si la transacción es exitosa, devuelve verdadero
 	public abstract boolean transaccion(double cantidad, TarjetaDebito t);
+
+	public abstract boolean deshacerTransaccion(double cantidad, Tarjeta t); //Sirve para deshacer una transacción a un cliente determinado
 	
 	//Determina si una clase tiene fondos (en tarjetas debito) o si aun tiene credito (en tarjetas debito)
 	public abstract boolean tieneSaldo();

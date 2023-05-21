@@ -19,6 +19,7 @@ public class Transaccion {
 	private boolean pendiente;
 	private Factura factura;
 	private Divisa divisa;
+	private String mensaje; //Se utiliza únicamente en la funcionalidad deshacer transacción
 	private static ArrayList<Transaccion> transacciones = new ArrayList<>();
 
 	
@@ -58,6 +59,20 @@ public class Transaccion {
 		pendiente = true;
 		divisa = tarjetaOrigen.getDivisa();
 		transacciones.add(this);
+	}
+
+	public Transaccion(Transaccion transaccion, String mensaje){ //genera una petición para que la vea el otro cliente
+		this.clienteOrigen = transaccion.clienteOrigen;
+		this.tarjetaOrigen = transaccion.tarjetaOrigen;
+		this.tarjetaObjetivo = transaccion.tarjetaObjetivo;
+		this.cantidad = transaccion.cantidad;
+		this.mensaje = mensaje;
+		if(transaccion.getClienteObjetivo() == null){ // Si no hay cliente que halla recibido la transacción, significa que el clienteObjetivo no puede confirmarla. En este caso, la petición simplemente se accepta
+			pendiente = false;
+			rechazado = false;
+			this.tarjetaObjetivo.deshacerTransaccion(cantidad, tarjetaOrigen);
+			System.out.println("Transacción deshecha");
+		}
 	}
 	
 	public boolean isRechazado() {
@@ -155,7 +170,7 @@ public class Transaccion {
 	public static ArrayList<Transaccion> encontrarTransacciones(Cliente clienteOrigen, Divisa divisa){ //Funciones que permiten filtrar las transacciones según un criterio dado
 		ArrayList<Transaccion> retorno = new ArrayList<Transaccion>();
 		for(Transaccion t : transacciones){
-			if(t.divisa.equals(divisa) && t.clienteOrigen.equals(clienteOrigen)){
+			if(t.divisa.equals(divisa) && t.clienteOrigen.equals(clienteOrigen) && t.clienteObjetivo != null){
 				retorno.add(t);
 			}
 		}
@@ -165,7 +180,7 @@ public class Transaccion {
 	public static ArrayList<Transaccion> encontrarTransacciones(Cliente clienteOrigen, Cliente clienteObjetivo){ //Funciones que permiten filtrar las transacciones según un criterio dado
 		ArrayList<Transaccion> retorno = new ArrayList<Transaccion>();
 		for(Transaccion t : transacciones){
-			if(t.clienteOrigen.equals(clienteOrigen) && t.clienteObjetivo.equals(clienteObjetivo)){
+			if(t.clienteOrigen.equals(clienteOrigen) && t.clienteObjetivo.equals(clienteObjetivo) && t.clienteObjetivo != null){
 				retorno.add(t);
 			}
 		}
@@ -175,7 +190,7 @@ public class Transaccion {
 	public static ArrayList<Transaccion> encontrarTransacciones(Cliente clienteOrigen, Tarjeta tarjeta){ //Funciones que permiten filtrar las transacciones según un criterio dado
 		ArrayList<Transaccion> retorno = new ArrayList<Transaccion>();
 		for(Transaccion t : transacciones){
-			if(t.clienteOrigen.equals(clienteOrigen) && t.tarjetaObjetivo.equals(tarjeta)){
+			if(t.clienteOrigen.equals(clienteOrigen) && t.tarjetaOrigen.equals(tarjeta) && t.clienteObjetivo != null){
 				retorno.add(t);
 			}
 		}

@@ -12,7 +12,6 @@ public class Factura {
 	private double valorPagado;
 	private int transfeRestantes; //El tope maximo de transferencias antes de que la factura venza
 	private TarjetaDebito tarjetaDestino;
-	private ArrayList<Transaccion> transfeActuales = new ArrayList<>();
 	private boolean facturaVencida;
 	private boolean facturaPagada;
 
@@ -98,6 +97,14 @@ public class Factura {
 		puntaje -= 100 *(tarjetasBloqueadas.size())/(tarjetasActivas.size() + tarjetasBloqueadas.size());
 		puntaje += cliente.getBonoActual();
 		return puntaje;
+	}
+
+	public void setValorPagado(double pagado){
+		this.valorPagado = pagado;
+	}
+
+	public double getValorPagado(){
+		return this.valorPagado;
 	}
 	
 }

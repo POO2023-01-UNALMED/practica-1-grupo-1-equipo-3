@@ -2,6 +2,7 @@ package gestorAplicacion.tarjetas;
 
 import gestorAplicacion.entidades_de_negocio.Divisa;
 import gestorAplicacion.infraestructura.Banco;
+import gestorAplicacion.entidades_de_negocio.Factura;;
 
 public class TarjetaDebito extends Tarjeta{
 	private double saldo;
@@ -35,6 +36,21 @@ public class TarjetaDebito extends Tarjeta{
 			return false;
 		}
 	}
+
+	public boolean deshacerTransaccion(double cantidad, Tarjeta t){
+		if(saldo >= cantidad && (t instanceof TarjetaDebito)) {	//Deshacer transacción en caso de que el origen de la transacción fué una tarjeta de débito
+			this.saldo -= Math.floor(100*cantidad*t.divisa.getValor()/this.divisa.getValor())/100;
+			((TarjetaDebito)t).setSaldo(((TarjetaDebito)t).getSaldo() + cantidad);
+			return true;
+		}else if (saldo >= cantidad && t instanceof TarjetaCredito && ((TarjetaCredito)t).getEspacio() >= cantidad){ //Deshacer transacción en caso de que el origen de la transacción fué una tarjeta de crédito
+			this.saldo -= Math.floor(100*cantidad*t.divisa.getValor()/this.divisa.getValor())/100;
+			((TarjetaCredito)t).setCredito(cantidad);
+			return true;
+		} else {
+			return false;
+		}
+	}
+
 	
 	public boolean tieneSaldo() {
 		return saldo != 0.0;

@@ -9,6 +9,7 @@ import java.util.Map;
 
 import gestorAplicacion.entidades_de_negocio.Divisa;
 import gestorAplicacion.entidades_de_negocio.Cliente;
+import gestorAplicacion.entidades_de_negocio.Factura;
 
 public class TarjetaCredito extends Tarjeta {
 	private double creditoMaximo; // Es el límite de dinero que se puede prestar mediante esta tarjeta
@@ -32,6 +33,20 @@ public class TarjetaCredito extends Tarjeta {
 		if(creditoMaximo - credito >= cantidad && t.getDivisa().equals(getDivisa())) {
 			credito += cantidad;
 			t.setSaldo(t.getSaldo() + cantidad);
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	public boolean deshacerTransaccion(double cantidad, Tarjeta t){
+		if(creditoMaximo-credito >= cantidad && (t instanceof TarjetaDebito)) {	//Deshacer transacción en caso de que el origen de la transacción fué una tarjeta de débito
+			this.credito += Math.floor(100*cantidad*t.divisa.getValor()/this.divisa.getValor())/100;
+			((TarjetaDebito)t).setSaldo(((TarjetaDebito)t).getSaldo() + cantidad);
+			return true;
+		}else if (creditoMaximo-credito >= cantidad && t instanceof TarjetaCredito && ((TarjetaCredito)t).getEspacio() >= cantidad){ //Deshacer transacción en caso de que el origen de la transacción fué una tarjeta de crédito
+			this.credito += Math.floor(100*cantidad*t.divisa.getValor()/this.divisa.getValor())/100;
+			((TarjetaCredito)t).setCredito(cantidad);
 			return true;
 		} else {
 			return false;
@@ -80,6 +95,16 @@ public class TarjetaCredito extends Tarjeta {
 			else Tarjetas.add(new TarjetaCredito(noTarjeta, divisa, Math.floor(100*reqCredMax.get(i)/divisa.getValor())/100, reqInteres.get(i)));
 		}
 		return Tarjetas;
+	}
+
+	public double getEspacio(){
+		return creditoMaximo - credito;
+	}
+
+	public void setCredito(double credito){
+		if(credito >= 0){
+			this.credito = credito;
+		}
 	}
 
 	public static void anadirTarjetaCredito(TarjetaCredito tarjeta, Cliente cliente, int bono){

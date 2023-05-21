@@ -364,6 +364,7 @@ public class mainTemporal {
 							int eleccion_tarjeta = scanner.nextInt()-1; //Obtiene el numero de la tarjeta escogida
 							Tarjeta tarjetaCriterio = clienteActual.getTarjetas().get(eleccion_tarjeta);  //Almacena la tarjeta escogida
 							transacciones = Transaccion.encontrarTransacciones(clienteActual, tarjetaCriterio);
+							System.out.println(tarjetaCriterio);
 						}
 						if(transacciones.isEmpty()){
 							System.out.println("Usted no tiene ninguna transacción que corresponda al criterio especificado");
@@ -380,7 +381,7 @@ public class mainTemporal {
 						System.out.println("Por favor, ingrese un mensaje para el cliente que recibió la transacción");
 						scanner.nextLine();
 						String mensaje = scanner.nextLine();
-						System.out.println(mensaje);
+						new Transaccion(transaccion, mensaje);
 						break;
 					}
 					case "9":
