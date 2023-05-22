@@ -1,3 +1,8 @@
+//Autores:
+//Jose Miguel Pulgarin A.
+//Carlos Guarin
+//Dario Alexander Penagos V.
+
 package gestorAplicacion.tarjetas;
 
 import gestorAplicacion.infraestructura.*;
@@ -66,6 +71,7 @@ public class TarjetaCredito extends Tarjeta {
 			this.credito += monto;
 		}
 	}
+	
 	public void introducirDinero(double monto){
 		if(this.credito - monto >= 0){
 			this.credito -= monto;

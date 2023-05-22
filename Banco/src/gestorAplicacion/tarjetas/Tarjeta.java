@@ -1,9 +1,12 @@
+//Autores:
+//Jose Miguel Pulgarin A.
+//Carlos Guarin
+//Dario Alexander Penagos V.
+
 package gestorAplicacion.tarjetas;
 import java.util.ArrayList;
 
 import gestorAplicacion.entidades_de_negocio.*;
-
-
 
 public abstract class  Tarjeta {
 	protected int noTarjeta;

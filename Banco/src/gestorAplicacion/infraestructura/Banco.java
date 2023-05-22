@@ -1,3 +1,8 @@
+//Autores:
+//Jose Miguel Pulgarin A.
+//Carlos Guarin
+//Dario Alexander Penagos V.
+
 package gestorAplicacion.infraestructura;
 
 import gestorAplicacion.entidades_de_negocio.*;
