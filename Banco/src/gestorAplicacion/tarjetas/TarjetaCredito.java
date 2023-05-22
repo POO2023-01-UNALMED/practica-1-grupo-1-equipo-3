@@ -16,15 +16,15 @@ import gestorAplicacion.entidades_de_negocio.Divisa;
 import gestorAplicacion.entidades_de_negocio.Cliente;
 
 public class TarjetaCredito extends Tarjeta implements Serializable {
-	private final double creditoMaximo; // Límite de crédito máximo de la tarjeta
+	private final double CREDITOMAXIMO; // Límite de crédito máximo de la tarjeta
 	private double credito; // Cantidad de crédito utilizada actualmente
-	private final double interes; // Tasa de interés aplicada al crédito
+	private final double INTERES; // Tasa de interés aplicada al crédito
 
 	public TarjetaCredito(int noTarjeta, Divisa divisa, double creditoMaximo, Double interes) {
 		super(noTarjeta, divisa);
-		this.creditoMaximo = creditoMaximo;
+		this.CREDITOMAXIMO = creditoMaximo;
 		this.credito = 0;
-		this.interes = interes;
+		this.INTERES = interes;
 	}
 
 	/**
@@ -37,7 +37,7 @@ public class TarjetaCredito extends Tarjeta implements Serializable {
 				"Límite: %s %s\n" +
 				"Crédito: %s %s\n" +
 				"Tasa de interés: %s\n"
-						.formatted(noTarjeta, Banco.formatearNumero(creditoMaximo), divisa.name(), Banco.formatearNumero(credito), divisa.name(), interes);
+						.formatted(noTarjeta, Banco.formatearNumero(CREDITOMAXIMO), divisa.name(), Banco.formatearNumero(credito), divisa.name(), INTERES);
 	}
 
 	/**
@@ -47,7 +47,7 @@ public class TarjetaCredito extends Tarjeta implements Serializable {
 	 * @return true si la transacción es exitosa, false en caso contrario.
 	 */
 	public boolean transaccion(double cantidad, TarjetaDebito t) {
-		if (creditoMaximo - credito >= cantidad && t.getDivisa().equals(getDivisa())) {
+		if (CREDITOMAXIMO - credito >= cantidad && t.getDivisa().equals(getDivisa())) {
 			credito += cantidad;
 			t.setSaldo(t.getSaldo() + cantidad);
 			return true;
@@ -63,12 +63,12 @@ public class TarjetaCredito extends Tarjeta implements Serializable {
 	 * @return true si la deshacer la transacción es exitoso, false en caso contrario.
 	 */
 	public boolean deshacerTransaccion(double cantidad, Tarjeta t) {
-		if (creditoMaximo - credito >= cantidad && (t instanceof TarjetaDebito)) {
+		if (CREDITOMAXIMO - credito >= cantidad && (t instanceof TarjetaDebito)) {
 			// Deshacer una transacción desde una tarjeta de débito
 			this.credito += Math.floor(100 * cantidad * t.divisa.getValor() / this.divisa.getValor()) / 100;
 			((TarjetaDebito) t).setSaldo(((TarjetaDebito) t).getSaldo() + cantidad);
 			return true;
-		} else if (creditoMaximo - credito >= cantidad && t instanceof TarjetaCredito && ((TarjetaCredito) t).getEspacio() >= cantidad) {
+		} else if (CREDITOMAXIMO - credito >= cantidad && t instanceof TarjetaCredito && ((TarjetaCredito) t).getEspacio() >= cantidad) {
 			// Deshacer una transacción desde otra tarjeta de crédito
 			this.credito += Math.floor(100 * cantidad * t.divisa.getValor() / this.divisa.getValor()) / 100;
 			((TarjetaCredito) t).setCredito(cantidad);
@@ -84,7 +84,7 @@ public class TarjetaCredito extends Tarjeta implements Serializable {
 	 * @return true si se puede realizar la transferencia, false en caso contrario.
 	 */
 	public boolean puedeTransferir(double monto) {
-		return (creditoMaximo - credito) >= monto;
+		return (CREDITOMAXIMO - credito) >= monto;
 	}
 
 	/**
@@ -92,7 +92,7 @@ public class TarjetaCredito extends Tarjeta implements Serializable {
 	 * @return true si tiene saldo disponible, false en caso contrario.
 	 */
 	public boolean tieneSaldo() {
-		return credito != creditoMaximo;
+		return credito != CREDITOMAXIMO;
 	}
 
 	/**
@@ -100,7 +100,7 @@ public class TarjetaCredito extends Tarjeta implements Serializable {
 	 * @param monto Monto a retirar.
 	 */
 	public void sacarDinero(double monto) {
-		if (this.credito + monto <= this.creditoMaximo) {
+		if (this.credito + monto <= this.CREDITOMAXIMO) {
 			this.credito += monto;
 		}
 	}
@@ -159,7 +159,7 @@ public class TarjetaCredito extends Tarjeta implements Serializable {
 	 * @return Espacio disponible en la tarjeta de crédito.
 	 */
 	public double getEspacio() {
-		return creditoMaximo - credito;
+		return CREDITOMAXIMO - credito;
 	}
 
 	/**
