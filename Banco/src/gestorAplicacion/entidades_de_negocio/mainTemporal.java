@@ -22,7 +22,7 @@ public class mainTemporal {
 		while(true) {
 			System.out.println("Elija el usuario:");
 			for(Cliente c : Banco.getClientes()) {
-				System.out.println(Banco.getClientes().indexOf(c)+1 + ". " + c.getNombre());
+				System.out.println(Banco.getClientes().indexOf(c)+1 + ". " + c.nombre);
 			}
 			System.out.println(Banco.getClientes().size()+1 + ". Para salir");
 			int respuesta1 = scanner.nextInt();
@@ -251,7 +251,7 @@ public class mainTemporal {
 						while (true) {
 							System.out.println("Elija el usuario al que le desea hacer la transaccion:");
 							for (Cliente c : Banco.getClientes()) {
-								System.out.println(Banco.getClientes().indexOf(c) + 1 + ". " + c.getNombre());
+								System.out.println(Banco.getClientes().indexOf(c) + 1 + ". " + c.nombre);
 							}
 							int eleccion_cliente_objetivo = scanner.nextInt();
 							if (eleccion_cliente_objetivo > 0 && eleccion_cliente_objetivo <= Banco.getClientes().size()) {
@@ -351,7 +351,7 @@ public class mainTemporal {
 						}else if(criterioEscogido.equals("2")){		//Se filtran las transacciones por cliente
 							System.out.println("Por favor, escoga el cliente");
 							for(Cliente c : Banco.getClientes()){
-								System.out.println(Banco.getClientes().indexOf(c)+1 + " " + c.getNombre());
+								System.out.println(Banco.getClientes().indexOf(c)+1 + " " + c.nombre);
 							}
 							int eleccion_cliente = scanner.nextInt() - 1;//Obtiene el numero de la divisa escogida
 							Cliente clienteCriterio = Banco.getClientes().get(eleccion_cliente); //Almacena la divisa escogida

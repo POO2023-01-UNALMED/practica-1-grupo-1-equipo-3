@@ -218,18 +218,18 @@ public class Transaccion {
 
 	public String toString(){
 		if(mensaje != null && pendiente){ //Es el toString en caso de que la transacción sea una petición por parte de otro usuario
-			return "El cliente " + clienteOrigen.getNombre() + " quisiera deshacer una transacción por " + Banco.formatearNumero(cantidad) + " " + tarjetaOrigen.getDivisa() + " recibidos por la tarjeta #" + tarjetaObjetivo.getNoTarjeta() + "\nSu mensaje es: " + mensaje;
+			return "El cliente " + clienteOrigen.nombre + " quisiera deshacer una transacción por " + Banco.formatearNumero(cantidad) + " " + tarjetaOrigen.getDivisa() + " recibidos por la tarjeta #" + tarjetaObjetivo.getNoTarjeta() + "\nSu mensaje es: " + mensaje;
 		}
 		if(rechazado){
-			return "Transacción Rechazada\nTotal: " + Banco.formatearNumero(cantidad) + "\nTarjeta de origen: #" + tarjetaOrigen.getNoTarjeta() + "\nTarjeta de destino: #" + tarjetaObjetivo.getNoTarjeta() + "\nProveniente de: " + clienteOrigen.getNombre() + "\n";
+			return "Transacción Rechazada\nTotal: " + Banco.formatearNumero(cantidad) + "\nTarjeta de origen: #" + tarjetaOrigen.getNoTarjeta() + "\nTarjeta de destino: #" + tarjetaObjetivo.getNoTarjeta() + "\nProveniente de: " + clienteOrigen.nombre + "\n";
 		} else if (pendiente){
-			return "Transacción Pendiente\nAprobada por un total de: " + Banco.formatearNumero(cantidad) + "\nTarjeta de origen: #" + tarjetaOrigen.getNoTarjeta() + "\nTarjeta de destino: #" + tarjetaObjetivo.getNoTarjeta() + "\nProveniente de: " + clienteOrigen.getNombre() + "\n";
+			return "Transacción Pendiente\nAprobada por un total de: " + Banco.formatearNumero(cantidad) + "\nTarjeta de origen: #" + tarjetaOrigen.getNoTarjeta() + "\nTarjeta de destino: #" + tarjetaObjetivo.getNoTarjeta() + "\nProveniente de: " + clienteOrigen.nombre + "\n";
 		} else {
 			if (impuesto != 0) {
-				return "Transacción aprobada con éxito\nTotal: " + Banco.formatearNumero(cantidad) + "\nImpuesto: " + impuesto + "\nTarjeta de origen: #" + tarjetaOrigen.getNoTarjeta() + "\nTarjeta de destino: #" + tarjetaObjetivo.getNoTarjeta() + "\nProveniente de: " + clienteOrigen.getNombre() + "\n";
+				return "Transacción aprobada con éxito\nTotal: " + Banco.formatearNumero(cantidad) + "\nImpuesto: " + impuesto + "\nTarjeta de origen: #" + tarjetaOrigen.getNoTarjeta() + "\nTarjeta de destino: #" + tarjetaObjetivo.getNoTarjeta() + "\nProveniente de: " + clienteOrigen.nombre + "\n";
 			}
 			else {
-				return "Transacción aprobada con éxito\nTotal: " + Banco.formatearNumero(cantidad) + "\nTarjeta de origen: #" + tarjetaOrigen.getNoTarjeta() + "\nTarjeta de destino: #" + tarjetaObjetivo.getNoTarjeta() + "\nProveniente de: " + clienteOrigen.getNombre() + "\n";				
+				return "Transacción aprobada con éxito\nTotal: " + Banco.formatearNumero(cantidad) + "\nTarjeta de origen: #" + tarjetaOrigen.getNoTarjeta() + "\nTarjeta de destino: #" + tarjetaObjetivo.getNoTarjeta() + "\nProveniente de: " + clienteOrigen.nombre + "\n";				
 			}
 		}
 	}

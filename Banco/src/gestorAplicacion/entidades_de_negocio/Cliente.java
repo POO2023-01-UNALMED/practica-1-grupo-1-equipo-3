@@ -9,7 +9,7 @@ import java.sql.Array;
 import java.util.ArrayList;
 
 public class Cliente {
-	private String nombre;
+	public String nombre;
 	private int Id;
 	private ArrayList<TarjetaDebito> tarjetasDebito = new ArrayList<>();
 	private ArrayList<TarjetaCredito> tarjetasCredito = new ArrayList<>();
@@ -31,14 +31,6 @@ public class Cliente {
 	}
 
 	//Getters & Setters
-	public String getNombre() {
-		return nombre;
-	}
-
-	public void setNombre(String nombre) {
-		this.nombre = nombre;
-	}
-
 	public int getNoDeIdentificacion() {
 		return Id;
 	}
