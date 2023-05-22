@@ -12,11 +12,11 @@ import gestorAplicacion.entidades_de_negocio.*;
 
 
 public abstract class Tarjeta implements Serializable {
-	protected int noTarjeta; // Número de tarjeta
-	protected Divisa divisa; // Divisa asociada a la tarjeta
+	protected final int noTarjeta; // Número de tarjeta
+	protected final Divisa divisa; // Divisa asociada a la tarjeta
 	protected String estado; // Estado de la tarjeta (ACTIVA, BLOQUEADA, etc.)
 	protected int transaccionesRechazadas; // Cantidad de transacciones rechazadas realizadas con la tarjeta
-	protected static ArrayList<Tarjeta> tarjetas = new ArrayList<>(); // Lista de todas las tarjetas creadas
+	protected static final ArrayList<Tarjeta> tarjetas = new ArrayList<>(); // Lista de todas las tarjetas creadas
 
 	// Constructor de la clase Tarjeta
 	public Tarjeta(int noTarjeta, Divisa divisa) {

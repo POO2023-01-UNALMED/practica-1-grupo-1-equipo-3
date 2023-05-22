@@ -11,15 +11,14 @@ import gestorAplicacion.infraestructura.*;
 import gestorAplicacion.tarjetas.*;
 
 import java.io.Serializable;
-import java.sql.Array;
 import java.util.ArrayList;
 
 public class Cliente implements Serializable{
-	public String nombre;
+	public final String nombre;
 	private int Id;
-	private ArrayList<TarjetaDebito> tarjetasDebito = new ArrayList<>();
-	private ArrayList<TarjetaCredito> tarjetasCredito = new ArrayList<>();
-	private ArrayList<Factura> facturas = new ArrayList<>();
+	private final ArrayList<TarjetaDebito> tarjetasDebito = new ArrayList<>();
+	private final ArrayList<TarjetaCredito> tarjetasCredito = new ArrayList<>();
+	private final ArrayList<Factura> facturas = new ArrayList<>();
 	private int bonoActual = 0;
 	
 	public Cliente(String nombre, int noDeIdentificacion) {
@@ -141,12 +140,12 @@ public class Cliente implements Serializable{
 	public ArrayList<Factura> listarFacturas(){//Este metodo solo retorna facturas pendientes
 		ArrayList<Factura> retorno = new ArrayList<>();
 		for(Factura f : this.facturas){
-			if(f.isFacturaVencida() && !f.isFacturaPagada()){
+			if(f.isFacturaVencida() && f.isFacturaPagada()){
 				retorno.add(f);
 			}
 		}
 		for(Factura f : this.facturas){
-			if(!f.isFacturaVencida() && !f.isFacturaPagada()){
+			if(!f.isFacturaVencida() && f.isFacturaPagada()){
 				retorno.add(f);
 			}
 		}
@@ -293,11 +292,11 @@ public class Cliente implements Serializable{
 		
 		ArrayList<Canal> canales = new ArrayList<>();
 		for(Canal canal: Banco.getCanales()) {
-			if(!canal.tieneDivisa(divisaOrigen))
+			if(canal.tieneDivisa(divisaOrigen))
 				continue;
-			if(!canal.tieneDivisa(divisaDestino))
+			if(canal.tieneDivisa(divisaDestino))
 				continue;
-			if(!canal.tieneFondosDeDivisa(divisaDestino))
+			if(canal.tieneFondosDeDivisa(divisaDestino))
 				continue;
 			canales.add(canal);
 		}
@@ -312,11 +311,11 @@ public class Cliente implements Serializable{
 		
 		ArrayList<Canal> canales = new ArrayList<>();
 		for(Canal canal: Banco.getCanales()) {
-			if(!canal.tieneDivisa(divisaOrigen))
+			if(canal.tieneDivisa(divisaOrigen))
 				continue;
-			if(!canal.tieneDivisa(divisaDestino))
+			if(canal.tieneDivisa(divisaDestino))
 				continue;
-			if(!canal.tieneFondosDeDivisa(divisaDestino))
+			if(canal.tieneFondosDeDivisa(divisaDestino))
 				continue;
 			canales.add(canal);
 		}

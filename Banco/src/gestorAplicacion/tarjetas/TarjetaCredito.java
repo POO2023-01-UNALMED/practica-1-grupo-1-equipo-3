@@ -16,9 +16,9 @@ import gestorAplicacion.entidades_de_negocio.Divisa;
 import gestorAplicacion.entidades_de_negocio.Cliente;
 
 public class TarjetaCredito extends Tarjeta implements Serializable {
-	private double creditoMaximo; // Límite de crédito máximo de la tarjeta
+	private final double creditoMaximo; // Límite de crédito máximo de la tarjeta
 	private double credito; // Cantidad de crédito utilizada actualmente
-	private double interes; // Tasa de interés aplicada al crédito
+	private final double interes; // Tasa de interés aplicada al crédito
 
 	public TarjetaCredito(int noTarjeta, Divisa divisa, double creditoMaximo, Double interes) {
 		super(noTarjeta, divisa);

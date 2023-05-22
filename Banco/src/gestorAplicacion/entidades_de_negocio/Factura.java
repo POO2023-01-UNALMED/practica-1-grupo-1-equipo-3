@@ -12,14 +12,14 @@ import gestorAplicacion.infraestructura.Banco;
 import gestorAplicacion.tarjetas.*;
 
 public class Factura implements Serializable{
-	private Cliente cliente;
-	private Divisa divisa; //Las facturas deben ser pagada en una determinada divisa
-	private double total;
+	private final Cliente cliente;
+	private final Divisa divisa; //Las facturas deben ser pagada en una determinada divisa
+	private final double total;
 	private double valorPagado;
-	private int transfeRestantes; //El tope maximo de transferencias antes de que la factura venza
-	private TarjetaDebito tarjetaDestino;
-	private boolean facturaVencida;
-	private boolean facturaPagada;
+	private final int transfeRestantes; //El tope maximo de transferencias antes de que la factura venza
+	private final TarjetaDebito tarjetaDestino;
+	private final boolean facturaVencida;
+	private final boolean facturaPagada;
 
 	public Factura(Cliente cliente, double total, int transfeRestantes, TarjetaDebito tarjetaDestino) {
 		this.cliente = cliente;
@@ -51,7 +51,7 @@ public class Factura implements Serializable{
 		return facturaVencida;
 	}
 	public boolean isFacturaPagada(){
-		return facturaPagada;
+		return !facturaPagada;
 	}
 
 	public double getPendiente(){

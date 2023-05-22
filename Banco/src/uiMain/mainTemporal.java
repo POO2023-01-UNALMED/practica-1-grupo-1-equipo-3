@@ -2,7 +2,6 @@ package uiMain;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Objects;
 import java.util.Scanner;
 
@@ -176,7 +175,7 @@ public class mainTemporal implements Serializable{
 							int entrada7 = scanner.nextInt() - 1;
 							Canal canalEscogido = listaCanales.get(entrada7);
 							
-							double montoInicial = 0;
+							double montoInicial;
 							
 							System.out.println("Por favor digita el monto a convertir:\n");
 							
@@ -187,7 +186,7 @@ public class mainTemporal implements Serializable{
 									System.out.println("El monto debe ser mayor a 0");
 									continue;									
 								}
-								break monto;
+								break;
 							}
 							
 							ArrayList<Double> conversion = Divisa.convertirDivisas(divisas, canalEscogido, montoInicial); 
@@ -337,39 +336,40 @@ public class mainTemporal implements Serializable{
 					case "8":{
 						System.out.println("Escoga mediante qué criterio desea encontrar la transacción\n1. Divisa\n2. Cliente que recibió la transacción\n3. Para filtrar por tarjetas");
 						String criterioEscogido;
-						while(true){
+						do {
 							criterioEscogido = scanner.nextLine();
-							if(criterioEscogido.equals("1") || criterioEscogido.equals("2") || criterioEscogido.equals("3")){
-								break;
-							}
-						}
+						} while (!criterioEscogido.equals("1") && !criterioEscogido.equals("2") && !criterioEscogido.equals("3"));
 						ArrayList<Transaccion> transacciones= new ArrayList<Transaccion>(); //Almacena las transacciones que el cliente podría deshacer
-						if(criterioEscogido.equals("1")){		//Se filtran las transacciones por Divisa
-							System.out.println("Por favor, escoga la divisa");
-							for (Divisa divisa : Divisa.values()) {//Recorre un array de las divisas
-								System.out.println(divisa.ordinal() + 1 + ". " + divisa);
+						switch (criterioEscogido) {
+							case "1" -> {        //Se filtran las transacciones por Divisa
+								System.out.println("Por favor, escoga la divisa");
+								for (Divisa divisa : Divisa.values()) {//Recorre un array de las divisas
+									System.out.println(divisa.ordinal() + 1 + ". " + divisa);
+								}
+								int eleccion_divisa = scanner.nextInt() - 1;//Obtiene el numero de la divisa escogida
+								Divisa divisaCriterio = Divisa.values()[eleccion_divisa]; //Almacena la divisa escogida
+								System.out.println(divisaCriterio);
+								transacciones = Transaccion.encontrarTransacciones(clienteActual, divisaCriterio);
 							}
-							int eleccion_divisa = scanner.nextInt() - 1;//Obtiene el numero de la divisa escogida
-							Divisa divisaCriterio = Divisa.values()[eleccion_divisa]; //Almacena la divisa escogida
-							System.out.println(divisaCriterio);
-							transacciones = Transaccion.encontrarTransacciones(clienteActual, divisaCriterio);
-						}else if(criterioEscogido.equals("2")){		//Se filtran las transacciones por cliente
-							System.out.println("Por favor, escoga el cliente");
-							for(Cliente c : Banco.getClientes()){
-								System.out.println(Banco.getClientes().indexOf(c)+1 + " " + c.nombre);
+							case "2" -> {        //Se filtran las transacciones por cliente
+								System.out.println("Por favor, escoga el cliente");
+								for (Cliente c : Banco.getClientes()) {
+									System.out.println(Banco.getClientes().indexOf(c) + 1 + " " + c.nombre);
+								}
+								int eleccion_cliente = scanner.nextInt() - 1;//Obtiene el numero de la divisa escogida
+								Cliente clienteCriterio = Banco.getClientes().get(eleccion_cliente); //Almacena la divisa escogida
+								transacciones = Transaccion.encontrarTransacciones(clienteActual, clienteCriterio);
 							}
-							int eleccion_cliente = scanner.nextInt() - 1;//Obtiene el numero de la divisa escogida
-							Cliente clienteCriterio = Banco.getClientes().get(eleccion_cliente); //Almacena la divisa escogida
-							transacciones = Transaccion.encontrarTransacciones(clienteActual, clienteCriterio);
-						}else if(criterioEscogido.equals("3")){		//Se filtran las transacciones por tarjeta
-							System.out.println("Por favor, escoga la tarjeta");
-							for(Tarjeta t : clienteActual.getTarjetas()){
-								System.out.println(clienteActual.getTarjetas().indexOf(t)+1 + " " + t);
+							case "3" -> {        //Se filtran las transacciones por tarjeta
+								System.out.println("Por favor, escoga la tarjeta");
+								for (Tarjeta t : clienteActual.getTarjetas()) {
+									System.out.println(clienteActual.getTarjetas().indexOf(t) + 1 + " " + t);
+								}
+								int eleccion_tarjeta = scanner.nextInt() - 1; //Obtiene el numero de la tarjeta escogida
+								Tarjeta tarjetaCriterio = clienteActual.getTarjetas().get(eleccion_tarjeta);  //Almacena la tarjeta escogida
+								transacciones = Transaccion.encontrarTransacciones(clienteActual, tarjetaCriterio);
+								System.out.println(tarjetaCriterio);
 							}
-							int eleccion_tarjeta = scanner.nextInt()-1; //Obtiene el numero de la tarjeta escogida
-							Tarjeta tarjetaCriterio = clienteActual.getTarjetas().get(eleccion_tarjeta);  //Almacena la tarjeta escogida
-							transacciones = Transaccion.encontrarTransacciones(clienteActual, tarjetaCriterio);
-							System.out.println(tarjetaCriterio);
 						}
 						if(transacciones.isEmpty()){
 							System.out.println("Usted no tiene ninguna transacción que corresponda al criterio especificado");
@@ -395,7 +395,7 @@ public class mainTemporal implements Serializable{
 						for(Transaccion t : transacciones){
 							System.out.println(transacciones.indexOf(t)+1 + " " + t);
 						}
-						System.out.println(String.format("Escoga una de estas transacciones para deshacer, o presione %s para salir", (clienteActual.verPeticiones().size()+1)));
+						System.out.printf("Escoga una de estas transacciones para deshacer, o presione %s para salir%n", (clienteActual.verPeticiones().size()+1));
 						int eleccion_transaccion = scanner.nextInt()-1;
 						if(eleccion_transaccion == transacciones.size()){
 							scanner.nextLine();

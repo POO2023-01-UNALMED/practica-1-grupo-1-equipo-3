@@ -20,8 +20,8 @@ import java.util.Locale;
 
 public class Banco implements Serializable{
 	
-	private static ArrayList<Cliente> clientes = new ArrayList<>();
-	private static ArrayList<Canal> canales = new ArrayList<>();
+	private static final ArrayList<Cliente> clientes = new ArrayList<>();
+	private static final ArrayList<Canal> canales = new ArrayList<>();
 	
 	//Metodos de la clase
 	
@@ -120,9 +120,9 @@ public class Banco implements Serializable{
 		return valor;
 	}
 
-	public static Transaccion generarPeticion(Transaccion transaccion, String mensaje){
+	public static void generarPeticion(Transaccion transaccion, String mensaje){
 		transaccion.setRetornable(false);
-		return new Transaccion(transaccion, mensaje);
+		new Transaccion(transaccion, mensaje);
 	}
 	
 	/**

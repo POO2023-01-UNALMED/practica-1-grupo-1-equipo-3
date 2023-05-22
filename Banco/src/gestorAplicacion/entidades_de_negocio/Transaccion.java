@@ -201,7 +201,7 @@ public class Transaccion implements Serializable{
 	public static ArrayList<Transaccion> encontrarTransacciones(Cliente clienteOrigen, Cliente clienteObjetivo){ //Funciones que permiten filtrar las transacciones según un criterio dado
 		ArrayList<Transaccion> retorno = new ArrayList<Transaccion>();
 		for(Transaccion t : transacciones){
-			if(t.clienteOrigen.equals(clienteOrigen) && t.clienteObjetivo.equals(clienteObjetivo) && t.clienteObjetivo != null && t.isRetornable()&& !t.isPendiente() && !t.isRechazado()){
+			if(t.clienteOrigen.equals(clienteOrigen) && t.clienteObjetivo.equals(clienteObjetivo) && t.isRetornable() && !t.isPendiente() && !t.isRechazado()){
 				retorno.add(t);
 			}
 		}
@@ -271,10 +271,8 @@ public class Transaccion implements Serializable{
 		Tarjeta tarjetaOrigen = tarjetas.get(0);
 		TarjetaDebito tarjetaDestino = (TarjetaDebito) tarjetas.get(1);
 		
-		boolean rechazado = false;
-		if(montoFinal > canal.getFondos(divisaDestino) || !(tarjetaOrigen.puedeTransferir(montoInicial)))
-			rechazado = true;
-		
+		boolean rechazado = montoFinal > canal.getFondos(divisaDestino) || !(tarjetaOrigen.puedeTransferir(montoInicial));
+
 		Transaccion transaccion = new Transaccion(cliente, tarjetaOrigen, tarjetaDestino, montoFinal, impuestoRetorno, canal, rechazado);
 		transaccion.pendiente = !rechazado;
 		return transaccion;
@@ -284,12 +282,11 @@ public class Transaccion implements Serializable{
 		if(!respuesta){
 			transaccion.rechazado = true;
 			transaccion.pendiente = false;
-			return transaccion;
 		}else{
 			transaccion.rechazado = false;
 			transaccion.pendiente = false;
 			transaccion.tarjetaObjetivo.deshacerTransaccion(transaccion.cantidad, transaccion.tarjetaOrigen); // En caso de que el cliente diga que sí, esta función deshace la transaccion.
-			return transaccion;
 		}
+		return transaccion;
 	}
 }
