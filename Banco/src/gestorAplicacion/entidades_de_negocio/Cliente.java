@@ -162,7 +162,7 @@ public class Cliente implements Serializable{
 				continue;
 			if(!tarjeta.tieneSaldo())
 				continue;
-			if(tarjeta.getDivisa().equals(factura.getDivisa())){
+			if(tarjeta.getDivisa().equals(factura.getDIVISA())){
 				tarjetasDisponibles.add(tarjeta);
 			}
 		}
@@ -171,7 +171,7 @@ public class Cliente implements Serializable{
 				continue;
 			if(!tarjeta.tieneSaldo())
 				continue;
-			if(tarjeta.getDivisa().equals(factura.getDivisa())){
+			if(tarjeta.getDivisa().equals(factura.getDIVISA())){
 				tarjetasDisponibles.add(tarjeta);
 			}
 		}

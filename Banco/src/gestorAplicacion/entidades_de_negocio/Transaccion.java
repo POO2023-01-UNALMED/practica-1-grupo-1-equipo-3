@@ -250,11 +250,11 @@ public class Transaccion implements Serializable{
 				vencido = !(factura.getTransfeRestantes() > 1);
 			}
 			pendiente = false;
-			double montoPagado = factura.getTotal() - factura.getPendiente() + cantidad;
+			double montoPagado = factura.getTOTAL() - factura.getPendiente() + cantidad;
 			boolean pagado = factura.getPendiente() == cantidad;
 			tarjetaOrigen.sacarDinero(cantidad);
 			tarjetaObjetivo.introducirDinero(cantidad);
-			return new Factura(clienteOrigen, factura.getTotal(), montoPagado, factura.getTransfeRestantes()-1, tarjetaObjetivo, pagado, vencido);
+			return new Factura(clienteOrigen, factura.getTOTAL(), montoPagado, factura.getTransfeRestantes()-1, tarjetaObjetivo, pagado, vencido);
 
 		}
 		return null;
