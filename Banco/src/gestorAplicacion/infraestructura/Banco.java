@@ -8,6 +8,7 @@ package gestorAplicacion.infraestructura;
 import gestorAplicacion.entidades_de_negocio.*;
 import gestorAplicacion.tarjetas.*;
 
+import java.io.Serializable;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -17,7 +18,7 @@ import java.util.List;
 import java.util.Locale;
 
 
-public class Banco {
+public class Banco implements Serializable{
 	
 	private static ArrayList<Cliente> clientes = new ArrayList<>();
 	private static ArrayList<Canal> canales = new ArrayList<>();

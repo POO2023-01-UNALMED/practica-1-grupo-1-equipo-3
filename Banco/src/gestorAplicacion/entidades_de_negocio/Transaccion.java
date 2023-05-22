@@ -5,6 +5,7 @@
 
 package gestorAplicacion.entidades_de_negocio;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import gestorAplicacion.infraestructura.Banco;
@@ -12,7 +13,7 @@ import gestorAplicacion.infraestructura.Canal;
 import gestorAplicacion.tarjetas.Tarjeta;
 import gestorAplicacion.tarjetas.TarjetaDebito;
 
-public class Transaccion {
+public class Transaccion implements Serializable{
 	private Cliente clienteObjetivo;
 	private Cliente clienteOrigen;
 	private Tarjeta tarjetaOrigen;

@@ -1,17 +1,22 @@
-package gestorAplicacion.entidades_de_negocio;
+package uiMain;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.Scanner;
 
+import gestorAplicacion.entidades_de_negocio.Cliente;
+import gestorAplicacion.entidades_de_negocio.Divisa;
+import gestorAplicacion.entidades_de_negocio.Factura;
+import gestorAplicacion.entidades_de_negocio.Transaccion;
 import gestorAplicacion.infraestructura.Banco;
 import gestorAplicacion.infraestructura.Canal;
 import gestorAplicacion.tarjetas.TarjetaDebito;
 import gestorAplicacion.tarjetas.Tarjeta;
 import gestorAplicacion.tarjetas.TarjetaCredito;
 
-public class mainTemporal {
+public class mainTemporal implements Serializable{
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub

@@ -5,12 +5,13 @@
 
 package gestorAplicacion.entidades_de_negocio;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import gestorAplicacion.infraestructura.Banco;
 import gestorAplicacion.tarjetas.*;
 
-public class Factura {
+public class Factura implements Serializable{
 	private Cliente cliente;
 	private Divisa divisa; //Las facturas deben ser pagada en una determinada divisa
 	private double total;
@@ -85,7 +86,7 @@ public class Factura {
 		return new Transaccion(cliente, tarjetaOrigen, tarjetaDestino, monto, this, !validez);
 	}
 	
-	static int modificarPuntaje(ArrayList<Tarjeta> tarjetasBloqueadas, ArrayList<Tarjeta> tarjetasActivas, Cliente cliente, int puntaje){
+	public static int modificarPuntaje(ArrayList<Tarjeta> tarjetasBloqueadas, ArrayList<Tarjeta> tarjetasActivas, Cliente cliente, int puntaje){
 		for(Factura f : cliente.getFactura()){
 			if(f.facturaVencida){
 				puntaje -= 50;

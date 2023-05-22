@@ -5,10 +5,11 @@
 
 package gestorAplicacion.infraestructura;
 
+import java.io.Serializable;
 import java.util.EnumMap;
-
 import gestorAplicacion.entidades_de_negocio.*;
-public class Canal {
+
+public class Canal implements Serializable{
 	private String tipoCanal;
 	/*	Tipos de Canales:
 	 *	- Cajero Automatico: Solo tienen una divisa disponible. Estos canales no pueden cambiar divisas. Solo se puede retirar de ellos

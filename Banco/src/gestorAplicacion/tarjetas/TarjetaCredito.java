@@ -7,16 +7,15 @@ package gestorAplicacion.tarjetas;
 
 import gestorAplicacion.infraestructura.*;
 
+import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Dictionary;
 import java.util.HashMap;
 import java.util.Map;
 
 import gestorAplicacion.entidades_de_negocio.Divisa;
 import gestorAplicacion.entidades_de_negocio.Cliente;
-import gestorAplicacion.entidades_de_negocio.Factura;
 
-public class TarjetaCredito extends Tarjeta {
+public class TarjetaCredito extends Tarjeta implements Serializable{
 	private double creditoMaximo; // Es el límite de dinero que se puede prestar mediante esta tarjeta
 	private double credito; //Es la cantidad de dinero que el usuario está debiendo en este momento
 	private double interes;

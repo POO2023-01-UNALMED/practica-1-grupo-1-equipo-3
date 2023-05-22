@@ -10,10 +10,11 @@ import java.util.Arrays;
 import gestorAplicacion.infraestructura.*;
 import gestorAplicacion.tarjetas.*;
 
+import java.io.Serializable;
 import java.sql.Array;
 import java.util.ArrayList;
 
-public class Cliente {
+public class Cliente implements Serializable{
 	public String nombre;
 	private int Id;
 	private ArrayList<TarjetaDebito> tarjetasDebito = new ArrayList<>();

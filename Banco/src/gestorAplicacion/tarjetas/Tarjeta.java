@@ -4,11 +4,13 @@
 //Dario Alexander Penagos V.
 
 package gestorAplicacion.tarjetas;
+
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import gestorAplicacion.entidades_de_negocio.*;
 
-public abstract class  Tarjeta {
+public abstract class Tarjeta implements Serializable{
 	protected int noTarjeta;
 	protected Divisa divisa;
 	protected String estado;

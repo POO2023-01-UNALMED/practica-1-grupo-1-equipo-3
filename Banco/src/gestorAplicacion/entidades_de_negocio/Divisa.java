@@ -5,11 +5,12 @@
 
 package gestorAplicacion.entidades_de_negocio;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import gestorAplicacion.infraestructura.Canal;
 
-public enum Divisa {
+public enum Divisa implements Serializable{
 	LIBRA_ESTERLINA(1.25),
 	EURO(1.10),
 	DOLAR(1.0),
