@@ -178,13 +178,12 @@ public class mainTemporal implements Serializable{
 							double montoInicial;
 							
 							System.out.println("Por favor digita el monto a convertir:\n");
-							
-							monto:
-							while(true) {
+
+							while (true) {
 								montoInicial = scanner.nextDouble();
-								if(montoInicial <= 0) {
+								if (montoInicial <= 0) {
 									System.out.println("El monto debe ser mayor a 0");
-									continue;									
+									continue;
 								}
 								break;
 							}
@@ -263,7 +262,7 @@ public class mainTemporal implements Serializable{
 								break;
 							}
 						}
-						ArrayList<TarjetaDebito> tarjetasObjetivo = new ArrayList<TarjetaDebito>(); //tarjetasObjetivo guarda las tarjetas a las cuales se puede hacer una transacción
+						ArrayList<TarjetaDebito> tarjetasObjetivo = new ArrayList<>(); //tarjetasObjetivo guarda las tarjetas a las cuales se puede hacer una transacción
 						for(TarjetaDebito t : clienteObjetivo.getTarjetasDebito()){
 							if(!t.equals(tarjeta_de_origen)){
 								tarjetasObjetivo.add(t);
@@ -339,7 +338,7 @@ public class mainTemporal implements Serializable{
 						do {
 							criterioEscogido = scanner.nextLine();
 						} while (!criterioEscogido.equals("1") && !criterioEscogido.equals("2") && !criterioEscogido.equals("3"));
-						ArrayList<Transaccion> transacciones= new ArrayList<Transaccion>(); //Almacena las transacciones que el cliente podría deshacer
+						ArrayList<Transaccion> transacciones= new ArrayList<>(); //Almacena las transacciones que el cliente podría deshacer
 						switch (criterioEscogido) {
 							case "1" -> {        //Se filtran las transacciones por Divisa
 								System.out.println("Por favor, escoga la divisa");

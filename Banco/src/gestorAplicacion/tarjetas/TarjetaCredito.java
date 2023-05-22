@@ -122,8 +122,8 @@ public class TarjetaCredito extends Tarjeta implements Serializable {
 	 * @return Lista de tarjetas de crédito disponibles.
 	 */
 	public static ArrayList<TarjetaCredito> tarjetasDisponibles(int puntaje, Divisa divisa) {
-		Map<Integer, Double> reqCredMax = new HashMap<Integer, Double>();
-		Map<Integer, Double> reqInteres = new HashMap<Integer, Double>();
+		Map<Integer, Double> reqCredMax = new HashMap<>();
+		Map<Integer, Double> reqInteres = new HashMap<>();
 		reqCredMax.put(0, 100.0);
 		reqInteres.put(0, 10.0);
 		reqCredMax.put(50, 500.0);
@@ -135,7 +135,7 @@ public class TarjetaCredito extends Tarjeta implements Serializable {
 		reqCredMax.put(200, 3000.0);
 		reqInteres.put(200, 3.0);
 
-		ArrayList<TarjetaCredito> tarjetas = new ArrayList<TarjetaCredito>();
+		ArrayList<TarjetaCredito> tarjetas = new ArrayList<>();
 		int noTarjeta;
 		do {
 			noTarjeta = (int) Math.floor(Math.random() * (999999999 - 100000000 + 1) + 100000000);

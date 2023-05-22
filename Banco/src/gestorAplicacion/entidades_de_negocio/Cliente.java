@@ -81,7 +81,7 @@ public class Cliente implements Serializable{
 	}
 
 	public ArrayList<Tarjeta> getTarjetas() {
-		ArrayList<Tarjeta> retorno = new ArrayList<Tarjeta>();
+		ArrayList<Tarjeta> retorno = new ArrayList<>();
 		retorno.addAll(tarjetasDebito);
 		retorno.addAll(tarjetasCredito);
 		return retorno;
@@ -274,7 +274,7 @@ public class Cliente implements Serializable{
 	}
 	
 	public ArrayList<Transaccion> verPeticiones(){
-		ArrayList<Transaccion> retorno = new ArrayList<Transaccion>();
+		ArrayList<Transaccion> retorno = new ArrayList<>();
 		for(Transaccion t : Transaccion.getTransacciones()){
 			if(t.getClienteObjetivo() != null){		//Verifica si la transacción tiene un cliente objetivo. sin esta verificación, la siguiente línea podría soltar un error
 				if(t.getClienteObjetivo().equals(this) && t.getMensaje() != null && t.isPendiente()){

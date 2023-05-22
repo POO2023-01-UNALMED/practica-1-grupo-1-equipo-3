@@ -189,7 +189,7 @@ public class Transaccion implements Serializable{
 	}
 
 	public static ArrayList<Transaccion> encontrarTransacciones(Cliente clienteOrigen, Divisa divisa){ //Funciones que permiten filtrar las transacciones según un criterio dado
-		ArrayList<Transaccion> retorno = new ArrayList<Transaccion>();
+		ArrayList<Transaccion> retorno = new ArrayList<>();
 		for(Transaccion t : transacciones){
 			if(t.divisa.equals(divisa) && t.clienteOrigen.equals(clienteOrigen) && t.clienteObjetivo != null && t.isRetornable() && !t.isPendiente() && !t.isRechazado()){
 				retorno.add(t);
@@ -199,7 +199,7 @@ public class Transaccion implements Serializable{
 	}
 
 	public static ArrayList<Transaccion> encontrarTransacciones(Cliente clienteOrigen, Cliente clienteObjetivo){ //Funciones que permiten filtrar las transacciones según un criterio dado
-		ArrayList<Transaccion> retorno = new ArrayList<Transaccion>();
+		ArrayList<Transaccion> retorno = new ArrayList<>();
 		for(Transaccion t : transacciones){
 			if(t.clienteOrigen.equals(clienteOrigen) && t.clienteObjetivo.equals(clienteObjetivo) && t.isRetornable() && !t.isPendiente() && !t.isRechazado()){
 				retorno.add(t);
@@ -209,7 +209,7 @@ public class Transaccion implements Serializable{
 	}
 
 	public static ArrayList<Transaccion> encontrarTransacciones(Cliente clienteOrigen, Tarjeta tarjeta){ //Funciones que permiten filtrar las transacciones según un criterio dado
-		ArrayList<Transaccion> retorno = new ArrayList<Transaccion>();
+		ArrayList<Transaccion> retorno = new ArrayList<>();
 		for(Transaccion t : transacciones){
 			if(t.clienteOrigen.equals(clienteOrigen) && t.tarjetaOrigen.equals(tarjeta) && t.clienteObjetivo != null && t.isRetornable()&& !t.isPendiente() && !t.isRechazado()){
 				retorno.add(t);
