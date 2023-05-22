@@ -43,31 +43,29 @@ public class Transaccion implements Serializable{
 		transacciones.add(this);
 	}
 	 
-
-	public Transaccion(Cliente clienteOrigen, Tarjeta tarjetaOrigen, TarjetaDebito tarjetaObjetivo, double cantidad, Factura factura, boolean rechazado) {
-		this.clienteOrigen = clienteOrigen;
+	public Transaccion(Cliente clienteOrigen, Tarjeta tarjetaOrigen, TarjetaDebito tarjetaObjetivo, double cantidad, boolean rechazado){
+		this.clienteOrigen=clienteOrigen;
 		this.tarjetaOrigen = tarjetaOrigen;
 		this.tarjetaObjetivo = tarjetaObjetivo;
 		this.cantidad = cantidad;
 		this.rechazado = rechazado;
+		divisa = tarjetaOrigen.getDivisa();
+	}
+
+	public Transaccion(Cliente clienteOrigen, Tarjeta tarjetaOrigen, TarjetaDebito tarjetaObjetivo, double cantidad, Factura factura, boolean rechazado) {
+		this(clienteOrigen, tarjetaOrigen, tarjetaObjetivo, cantidad, rechazado);
 		this.factura = factura;
 		pendiente = true;
 		retornable = true;
-		divisa = tarjetaOrigen.getDivisa();
 		transacciones.add(this);
 	}
 	
 	public Transaccion(Cliente clienteOrigen, Tarjeta tarjetaOrigen, TarjetaDebito tarjetaObjetivo, double cantidad, double impuesto, Canal canalObjetivo, boolean rechazado) {
-		this.clienteOrigen = clienteOrigen;
-		this.tarjetaOrigen = tarjetaOrigen;
-		this.tarjetaObjetivo = tarjetaObjetivo;
-		this.cantidad = cantidad;
+		this(clienteOrigen, tarjetaOrigen, tarjetaObjetivo, cantidad, rechazado);
 		this.impuesto = impuesto;
-		this.rechazado = rechazado;
 		this.canalObjetivo = canalObjetivo;
 		pendiente = true;
 		retornable = true;
-		divisa = tarjetaOrigen.getDivisa();
 		transacciones.add(this);
 	}
 

@@ -19,9 +19,11 @@ public class mainTemporal implements Serializable{
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		
+
+
 		Scanner scanner = new Scanner(System.in);
 		setup();
+
 		
 		while(true) {
 			System.out.println("Elija el usuario:");
