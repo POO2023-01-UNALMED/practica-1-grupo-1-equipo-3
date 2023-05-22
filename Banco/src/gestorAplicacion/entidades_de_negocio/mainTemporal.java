@@ -503,9 +503,6 @@ public class mainTemporal {
 		corresponsal2.setFondos(Divisa.DOLAR, 15000.0);
 		corresponsal2.setFondos(Divisa.EURO, 8000.0);
 		corresponsal2.setFondos(Divisa.RUBLO_RUSO, 350000.0);
-//		
-//		for(Canal canal: Banco.getCanales())
-//			System.out.println(canal.getFondos());
 	}
 
 }
