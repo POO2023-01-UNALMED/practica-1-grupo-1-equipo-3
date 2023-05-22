@@ -20,8 +20,8 @@ import java.util.Locale;
 
 public class Banco implements Serializable{
 	
-	private static final ArrayList<Cliente> clientes = new ArrayList<>();
-	private static final ArrayList<Canal> canales = new ArrayList<>();
+	private static ArrayList<Cliente> clientes = new ArrayList<>();
+	private static ArrayList<Canal> canales = new ArrayList<>();
 	
 	//Metodos de la clase
 	

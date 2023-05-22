@@ -20,7 +20,7 @@ public class Canal implements Serializable{
 	 * */
 	private float impuesto;
 	private int contador;//Este atributo solo es para asignarle un numero a los canales, para rastrearlos mejor. Ej: Sucursal Fisica #2
-	private final EnumMap<Divisa, Double> fondosPorDivisa = new EnumMap<>(Divisa.class);
+	private EnumMap<Divisa, Double> fondosPorDivisa = new EnumMap<>(Divisa.class);
 
 	//Los fondos deben ser proporcionados en el orden en que estan declaradas las divisas
     public Canal(String tipoCanal, float impuesto, double... fondos) {

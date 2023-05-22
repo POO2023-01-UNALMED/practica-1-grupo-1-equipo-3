@@ -16,9 +16,9 @@ import java.util.ArrayList;
 public class Cliente implements Serializable{
 	public final String nombre;
 	private int Id;
-	private final ArrayList<TarjetaDebito> tarjetasDebito = new ArrayList<>();
-	private final ArrayList<TarjetaCredito> tarjetasCredito = new ArrayList<>();
-	private final ArrayList<Factura> facturas = new ArrayList<>();
+	private ArrayList<TarjetaDebito> tarjetasDebito = new ArrayList<>();
+	private ArrayList<TarjetaCredito> tarjetasCredito = new ArrayList<>();
+	private ArrayList<Factura> facturas = new ArrayList<>();
 	private int bonoActual = 0;
 	
 	public Cliente(String nombre, int noDeIdentificacion) {

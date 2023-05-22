@@ -16,7 +16,7 @@ public abstract class Tarjeta implements Serializable {
 	protected final Divisa divisa; // Divisa asociada a la tarjeta
 	protected String estado; // Estado de la tarjeta (ACTIVA, BLOQUEADA, etc.)
 	protected int transaccionesRechazadas; // Cantidad de transacciones rechazadas realizadas con la tarjeta
-	protected static final ArrayList<Tarjeta> tarjetas = new ArrayList<>(); // Lista de todas las tarjetas creadas
+	protected static ArrayList<Tarjeta> tarjetas = new ArrayList<>(); // Lista de todas las tarjetas creadas
 
 	// Constructor de la clase Tarjeta
 	public Tarjeta(int noTarjeta, Divisa divisa) {
