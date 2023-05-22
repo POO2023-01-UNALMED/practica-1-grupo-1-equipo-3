@@ -301,6 +301,12 @@ public class mainTemporal implements Serializable{
 							System.out.println("la transaccion ha fallado porque no hay suficiente dinero en la cuenta");
 							// aca se puede agregar codigo para las transacciones rechazadas
 						}else if(transaccion.isRechazado()) {
+							if(!tarjeta_de_origen.getDivisa().equals(tarjeta_Objetivo.getDivisa())){
+								System.out.println("Error: las tarjetas no tiene la misma divisa");
+							}
+							if(!tarjeta_de_origen.puedeTransferir(monto)){
+								System.out.println("La tarjeta escogida no puede transferir esta cantidad de dinero");
+							}
 							System.out.println("La transacción ha sido rechazada");
 						}else if(!transaccion.isRechazado()){
 							System.out.println("Transacción realizada");
