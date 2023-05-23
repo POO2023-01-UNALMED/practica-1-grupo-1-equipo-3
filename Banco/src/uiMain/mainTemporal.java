@@ -352,7 +352,17 @@ public class mainTemporal implements Serializable{
 						}
 						int eleccion_tarjeta = scanner.nextInt();
 						Tarjeta tarjeta = tarjetas.get(eleccion_tarjeta);
-						
+						ArrayList<Canal> canales = Canal.seleccionarCanal(divisa_escogida, retirar);
+						if(canales.isEmpty()){
+							System.out.println("No hay ningún canal que pueda utilizar en esta transacción");
+							continue;
+						}
+						System.out.println("Por favor, escoga el canal con el cual desea hacer la operación");
+						for(Canal c : canales){
+							System.out.println(canales.indexOf(c)+1 + ". " + c);
+							System.out.println("Este canal tiene: " + c.getFondos(divisa_escogida) + divisa_escogida);
+						}
+
 						break;
 					}
 					case "8":{

@@ -110,8 +110,9 @@ public class Canal implements Serializable{
 		if(retirar) retorno.addAll(Banco.getCanales());
 		else{
 			for(Canal c : Banco.getCanales()){
-				if(c.tieneDivisa(divisa)){
-					if(c.tieneFondosDeDivisa(divisa)){  //Estos chequeos deben hacerce uno después del otro, de otra manera, existe la posibilidad de que el programa lanze un error en caso de que el canal no tenga la divisa
+				if(!c.tieneDivisa(divisa)){
+					System.out.println(c);
+					if(!c.tieneFondosDeDivisa(divisa)){  //Estos chequeos deben hacerce uno después del otro, de otra manera, existe la posibilidad de que el programa lanze un error en caso de que el canal no tenga la divisa
 						retorno.add(c);
 					}
 				}
