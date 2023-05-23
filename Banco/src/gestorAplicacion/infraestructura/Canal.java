@@ -12,7 +12,8 @@ import gestorAplicacion.entidades_de_negocio.*;
 public class Canal implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
-	private String tipoCanal;
+	private final String tipoCanal;
+	
 	/*	Tipos de Canales:
 	 *	- Cajero Automatico: Solo tienen una divisa disponible. Estos canales no pueden cambiar divisas. Solo se puede retirar de ellos
 	 *	- Sucursal Fisica: Tienen todas las divisas disponibles. Pueden cambiar todas las divisas.
@@ -22,7 +23,7 @@ public class Canal implements Serializable{
 	 * */
 	private float impuesto;
 	private int contador;//Este atributo solo es para asignarle un numero a los canales, para rastrearlos mejor. Ej: Sucursal Fisica #2
-	private EnumMap<Divisa, Double> fondosPorDivisa = new EnumMap<>(Divisa.class); 
+	private EnumMap<Divisa, Double> fondosPorDivisa = new EnumMap<>(Divisa.class);
 
 	//Los fondos deben ser proporcionados en el orden en que estan declaradas las divisas
     public Canal(String tipoCanal, float impuesto, double... fondos) {
@@ -77,11 +78,11 @@ public class Canal implements Serializable{
 	}
 	
     public boolean tieneDivisa(Divisa divisa) {
-        return fondosPorDivisa.containsKey(divisa);
+        return !fondosPorDivisa.containsKey(divisa);
     }
     
     public boolean tieneFondosDeDivisa(Divisa divisa) {
-		return fondosPorDivisa.get(divisa) > 0.0;
+		return !(fondosPorDivisa.get(divisa) > 0.0);
 	}
     
     public Transaccion finalizarConversion(Transaccion transaccion, double montoInicial){

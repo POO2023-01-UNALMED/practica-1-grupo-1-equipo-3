@@ -13,35 +13,35 @@ import gestorAplicacion.tarjetas.*;
 
 public class Factura implements Serializable{
 	private static final long serialVersionUID = 1L;
-	
-	private Cliente cliente;
-	private Divisa divisa; //Las facturas deben ser pagada en una determinada divisa
-	private double total;
+
+	private final Cliente CLIENTE;
+	private final Divisa DIVISA; //Las facturas deben ser pagada en una determinada divisa
+	private final double TOTAL;
 	private double valorPagado;
 	private int transfeRestantes; //El tope maximo de transferencias antes de que la factura venza
-	private TarjetaDebito tarjetaDestino;
+	private final TarjetaDebito TARJETADESTINO;
 	private boolean facturaVencida;
 	private boolean facturaPagada;
 
 	public Factura(Cliente cliente, double total, int transfeRestantes, TarjetaDebito tarjetaDestino) {
-		this.cliente = cliente;
-		this.divisa = tarjetaDestino.getDivisa();
-		this.total = total;
+		this.CLIENTE = cliente;
+		this.DIVISA = tarjetaDestino.getDivisa();
+		this.TOTAL = total;
 		this.valorPagado = 0;
 		this.transfeRestantes = transfeRestantes;
-		this.tarjetaDestino = tarjetaDestino;
+		this.TARJETADESTINO = tarjetaDestino;
 		this.facturaVencida = false;
 		this.facturaPagada = false;
 		cliente.agregarFactura(this);
 	}
 
 	public Factura(Cliente cliente, double total, double valorPagado, int transfeRestantes, TarjetaDebito tarjetaDestino, boolean facturaPagada, boolean facturaVencida) { //Se utiliza en el contexto de pagarFactura (método de Transaccion)
-		this.cliente = cliente;
-		this.divisa = tarjetaDestino.getDivisa();
-		this.total = total;
+		this.CLIENTE = cliente;
+		this.DIVISA = tarjetaDestino.getDivisa();
+		this.TOTAL = total;
 		this.valorPagado = valorPagado;
 		this.transfeRestantes = transfeRestantes;
-		this.tarjetaDestino = tarjetaDestino;
+		this.TARJETADESTINO = tarjetaDestino;
 		this.facturaVencida = facturaVencida;
 		this.facturaPagada = facturaPagada;
 	}
@@ -53,39 +53,39 @@ public class Factura implements Serializable{
 		return facturaVencida;
 	}
 	public boolean isFacturaPagada(){
-		return facturaPagada;
+		return !facturaPagada;
 	}
 
 	public double getPendiente(){
-		return total-valorPagado;
+		return TOTAL-valorPagado;
 	}
 
-	public double getTotal(){
-		return total;
+	public double getTOTAL(){
+		return TOTAL;
 	}
 
-	public Divisa getDivisa(){
-		return divisa;
+	public Divisa getDIVISA(){
+		return DIVISA;
 	}
 	
 	public String toString(){
 		String retorno;
 		if(facturaPagada && !facturaVencida){
-			retorno = "Factura pagada ANTES de vencer\nTarjeta objetivo: " + tarjetaDestino.getNoTarjeta() + "\n";
+			retorno = "Factura pagada ANTES de vencer\nTarjeta objetivo: " + TARJETADESTINO.getNoTarjeta() + "\n";
 		} else if (facturaPagada){
-			retorno = "Factura pagada DESPUÉS de vencer\nTarjeta objetivo: " + tarjetaDestino.getNoTarjeta() + "\n";
+			retorno = "Factura pagada DESPUÉS de vencer\nTarjeta objetivo: " + TARJETADESTINO.getNoTarjeta() + "\n";
 		}else if(facturaVencida){
-			retorno = "Factura vencida por pagar.1\nTarjeta objetivo: " + tarjetaDestino.getNoTarjeta() + " faltan " + Banco.formatearNumero((total-valorPagado)) + " " + divisa.name() + " por pagar" + "\n";
+			retorno = "Factura vencida por pagar.1\nTarjeta objetivo: " + TARJETADESTINO.getNoTarjeta() + " faltan " + Banco.formatearNumero((TOTAL-valorPagado)) + " " + DIVISA.name() + " por pagar" + "\n";
 		} else {
-			retorno = "Factura no vencida por pagar.\nTarjeta objetivo: " + tarjetaDestino.getNoTarjeta() + " faltan " + Banco.formatearNumero(total-valorPagado) + " " + divisa.name() + " por pagar en " + transfeRestantes + " transferencias" + "\n";
+			retorno = "Factura no vencida por pagar.\nTarjeta objetivo: " + TARJETADESTINO.getNoTarjeta() + " faltan " + Banco.formatearNumero(TOTAL-valorPagado) + " " + DIVISA.name() + " por pagar en " + transfeRestantes + " transferencias" + "\n";
 		}
 		return retorno;
 	}
 
 	public Transaccion generarTransaccion(double monto, Tarjeta tarjetaOrigen){
-		boolean validez = tarjetaOrigen.puedeTransferir(monto) && tarjetaOrigen.getDivisa().equals(this.tarjetaDestino.getDivisa());
+		boolean validez = tarjetaOrigen.puedeTransferir(monto) && tarjetaOrigen.getDivisa().equals(this.TARJETADESTINO.getDivisa());
 
-		return new Transaccion(cliente, tarjetaOrigen, tarjetaDestino, monto, this, !validez);
+		return new Transaccion(CLIENTE, tarjetaOrigen, TARJETADESTINO, monto, this, !validez);
 	}
 	
 	public static int modificarPuntaje(ArrayList<Tarjeta> tarjetasBloqueadas, ArrayList<Tarjeta> tarjetasActivas, Cliente cliente, int puntaje){
@@ -94,7 +94,7 @@ public class Factura implements Serializable{
 				puntaje -= 50;
 			}
 			if(f.facturaPagada && !f.facturaVencida){
-				puntaje += 0.5 * f.total*f.divisa.getValor();
+				puntaje += 0.5 * f.TOTAL*f.DIVISA.getValor();
 			}
 		}
 		for(Tarjeta t : tarjetasActivas){

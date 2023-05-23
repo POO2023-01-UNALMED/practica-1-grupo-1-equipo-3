@@ -135,9 +135,9 @@ public class Banco implements Serializable{
 		return valor;
 	}
 
-	public static Transaccion generarPeticion(Transaccion transaccion, String mensaje){
+	public static void generarPeticion(Transaccion transaccion, String mensaje){
 		transaccion.setRetornable(false);
-		return new Transaccion(transaccion, mensaje);
+		new Transaccion(transaccion, mensaje);
 	}
 	
 	/**

@@ -11,13 +11,12 @@ import gestorAplicacion.infraestructura.*;
 import gestorAplicacion.tarjetas.*;
 
 import java.io.Serializable;
-import java.sql.Array;
 import java.util.ArrayList;
 
 public class Cliente implements Serializable{
 	private static final long serialVersionUID = 1L;
-	
-	public String nombre;
+
+	public final String nombre;
 	private int Id;
 	private ArrayList<TarjetaDebito> tarjetasDebito = new ArrayList<>();
 	private ArrayList<TarjetaCredito> tarjetasCredito = new ArrayList<>();
@@ -84,7 +83,7 @@ public class Cliente implements Serializable{
 	}
 
 	public ArrayList<Tarjeta> getTarjetas() {
-		ArrayList<Tarjeta> retorno = new ArrayList<Tarjeta>();
+		ArrayList<Tarjeta> retorno = new ArrayList<>();
 		retorno.addAll(tarjetasDebito);
 		retorno.addAll(tarjetasCredito);
 		return retorno;
@@ -143,12 +142,12 @@ public class Cliente implements Serializable{
 	public ArrayList<Factura> listarFacturas(){//Este metodo solo retorna facturas pendientes
 		ArrayList<Factura> retorno = new ArrayList<>();
 		for(Factura f : this.facturas){
-			if(f.isFacturaVencida() && !f.isFacturaPagada()){
+			if(f.isFacturaVencida() && f.isFacturaPagada()){
 				retorno.add(f);
 			}
 		}
 		for(Factura f : this.facturas){
-			if(!f.isFacturaVencida() && !f.isFacturaPagada()){
+			if(!f.isFacturaVencida() && f.isFacturaPagada()){
 				retorno.add(f);
 			}
 		}
@@ -165,7 +164,7 @@ public class Cliente implements Serializable{
 				continue;
 			if(!tarjeta.tieneSaldo())
 				continue;
-			if(tarjeta.getDivisa().equals(factura.getDivisa())){
+			if(tarjeta.getDivisa().equals(factura.getDIVISA())){
 				tarjetasDisponibles.add(tarjeta);
 			}
 		}
@@ -174,7 +173,7 @@ public class Cliente implements Serializable{
 				continue;
 			if(!tarjeta.tieneSaldo())
 				continue;
-			if(tarjeta.getDivisa().equals(factura.getDivisa())){
+			if(tarjeta.getDivisa().equals(factura.getDIVISA())){
 				tarjetasDisponibles.add(tarjeta);
 			}
 		}
@@ -277,7 +276,7 @@ public class Cliente implements Serializable{
 	}
 	
 	public ArrayList<Transaccion> verPeticiones(){
-		ArrayList<Transaccion> retorno = new ArrayList<Transaccion>();
+		ArrayList<Transaccion> retorno = new ArrayList<>();
 		for(Transaccion t : Transaccion.getTransacciones()){
 			if(t.getClienteObjetivo() != null){		//Verifica si la transacción tiene un cliente objetivo. sin esta verificación, la siguiente línea podría soltar un error
 				if(t.getClienteObjetivo().equals(this) && t.getMensaje() != null && t.isPendiente()){
@@ -295,11 +294,11 @@ public class Cliente implements Serializable{
 		
 		ArrayList<Canal> canales = new ArrayList<>();
 		for(Canal canal: Banco.getCanales()) {
-			if(!canal.tieneDivisa(divisaOrigen))
+			if(canal.tieneDivisa(divisaOrigen))
 				continue;
-			if(!canal.tieneDivisa(divisaDestino))
+			if(canal.tieneDivisa(divisaDestino))
 				continue;
-			if(!canal.tieneFondosDeDivisa(divisaDestino))
+			if(canal.tieneFondosDeDivisa(divisaDestino))
 				continue;
 			canales.add(canal);
 		}
@@ -314,11 +313,11 @@ public class Cliente implements Serializable{
 		
 		ArrayList<Canal> canales = new ArrayList<>();
 		for(Canal canal: Banco.getCanales()) {
-			if(!canal.tieneDivisa(divisaOrigen))
+			if(canal.tieneDivisa(divisaOrigen))
 				continue;
-			if(!canal.tieneDivisa(divisaDestino))
+			if(canal.tieneDivisa(divisaDestino))
 				continue;
-			if(!canal.tieneFondosDeDivisa(divisaDestino))
+			if(canal.tieneFondosDeDivisa(divisaDestino))
 				continue;
 			canales.add(canal);
 		}

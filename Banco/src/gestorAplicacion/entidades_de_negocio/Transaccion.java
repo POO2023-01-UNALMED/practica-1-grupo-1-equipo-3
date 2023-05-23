@@ -45,31 +45,29 @@ public class Transaccion implements Serializable{
 		transacciones.add(this);
 	}
 	 
-
-	public Transaccion(Cliente clienteOrigen, Tarjeta tarjetaOrigen, TarjetaDebito tarjetaObjetivo, double cantidad, Factura factura, boolean rechazado) {
-		this.clienteOrigen = clienteOrigen;
+	public Transaccion(Cliente clienteOrigen, Tarjeta tarjetaOrigen, TarjetaDebito tarjetaObjetivo, double cantidad, boolean rechazado){
+		this.clienteOrigen=clienteOrigen;
 		this.tarjetaOrigen = tarjetaOrigen;
 		this.tarjetaObjetivo = tarjetaObjetivo;
 		this.cantidad = cantidad;
 		this.rechazado = rechazado;
+		divisa = tarjetaOrigen.getDivisa();
+	}
+
+	public Transaccion(Cliente clienteOrigen, Tarjeta tarjetaOrigen, TarjetaDebito tarjetaObjetivo, double cantidad, Factura factura, boolean rechazado) {
+		this(clienteOrigen, tarjetaOrigen, tarjetaObjetivo, cantidad, rechazado);
 		this.factura = factura;
 		pendiente = true;
 		retornable = true;
-		divisa = tarjetaOrigen.getDivisa();
 		transacciones.add(this);
 	}
 	
 	public Transaccion(Cliente clienteOrigen, Tarjeta tarjetaOrigen, TarjetaDebito tarjetaObjetivo, double cantidad, double impuesto, Canal canalObjetivo, boolean rechazado) {
-		this.clienteOrigen = clienteOrigen;
-		this.tarjetaOrigen = tarjetaOrigen;
-		this.tarjetaObjetivo = tarjetaObjetivo;
-		this.cantidad = cantidad;
+		this(clienteOrigen, tarjetaOrigen, tarjetaObjetivo, cantidad, rechazado);
 		this.impuesto = impuesto;
-		this.rechazado = rechazado;
 		this.canalObjetivo = canalObjetivo;
 		pendiente = true;
 		retornable = true;
-		divisa = tarjetaOrigen.getDivisa();
 		transacciones.add(this);
 	}
 
@@ -191,7 +189,7 @@ public class Transaccion implements Serializable{
 	}
 
 	public static ArrayList<Transaccion> encontrarTransacciones(Cliente clienteOrigen, Divisa divisa){ //Funciones que permiten filtrar las transacciones según un criterio dado
-		ArrayList<Transaccion> retorno = new ArrayList<Transaccion>();
+		ArrayList<Transaccion> retorno = new ArrayList<>();
 		for(Transaccion t : transacciones){
 			if(t.divisa.equals(divisa) && t.clienteOrigen.equals(clienteOrigen) && t.clienteObjetivo != null && t.isRetornable() && !t.isPendiente() && !t.isRechazado()){
 				retorno.add(t);
@@ -201,9 +199,9 @@ public class Transaccion implements Serializable{
 	}
 
 	public static ArrayList<Transaccion> encontrarTransacciones(Cliente clienteOrigen, Cliente clienteObjetivo){ //Funciones que permiten filtrar las transacciones según un criterio dado
-		ArrayList<Transaccion> retorno = new ArrayList<Transaccion>();
+		ArrayList<Transaccion> retorno = new ArrayList<>();
 		for(Transaccion t : transacciones){
-			if(t.clienteOrigen.equals(clienteOrigen) && t.clienteObjetivo.equals(clienteObjetivo) && t.clienteObjetivo != null && t.isRetornable()&& !t.isPendiente() && !t.isRechazado()){
+			if(t.clienteOrigen.equals(clienteOrigen) && t.clienteObjetivo.equals(clienteObjetivo) && t.isRetornable() && !t.isPendiente() && !t.isRechazado()){
 				retorno.add(t);
 			}
 		}
@@ -211,7 +209,7 @@ public class Transaccion implements Serializable{
 	}
 
 	public static ArrayList<Transaccion> encontrarTransacciones(Cliente clienteOrigen, Tarjeta tarjeta){ //Funciones que permiten filtrar las transacciones según un criterio dado
-		ArrayList<Transaccion> retorno = new ArrayList<Transaccion>();
+		ArrayList<Transaccion> retorno = new ArrayList<>();
 		for(Transaccion t : transacciones){
 			if(t.clienteOrigen.equals(clienteOrigen) && t.tarjetaOrigen.equals(tarjeta) && t.clienteObjetivo != null && t.isRetornable()&& !t.isPendiente() && !t.isRechazado()){
 				retorno.add(t);
@@ -254,11 +252,11 @@ public class Transaccion implements Serializable{
 				vencido = !(factura.getTransfeRestantes() > 1);
 			}
 			pendiente = false;
-			double montoPagado = factura.getTotal() - factura.getPendiente() + cantidad;
+			double montoPagado = factura.getTOTAL() - factura.getPendiente() + cantidad;
 			boolean pagado = factura.getPendiente() == cantidad;
 			tarjetaOrigen.sacarDinero(cantidad);
 			tarjetaObjetivo.introducirDinero(cantidad);
-			return new Factura(clienteOrigen, factura.getTotal(), montoPagado, factura.getTransfeRestantes()-1, tarjetaObjetivo, pagado, vencido);
+			return new Factura(clienteOrigen, factura.getTOTAL(), montoPagado, factura.getTransfeRestantes()-1, tarjetaObjetivo, pagado, vencido);
 
 		}
 		return null;
@@ -273,10 +271,8 @@ public class Transaccion implements Serializable{
 		Tarjeta tarjetaOrigen = tarjetas.get(0);
 		TarjetaDebito tarjetaDestino = (TarjetaDebito) tarjetas.get(1);
 		
-		boolean rechazado = false;
-		if(montoFinal > canal.getFondos(divisaDestino) || !(tarjetaOrigen.puedeTransferir(montoInicial)))
-			rechazado = true;
-		
+		boolean rechazado = montoFinal > canal.getFondos(divisaDestino) || !(tarjetaOrigen.puedeTransferir(montoInicial));
+
 		Transaccion transaccion = new Transaccion(cliente, tarjetaOrigen, tarjetaDestino, montoFinal, impuestoRetorno, canal, rechazado);
 		transaccion.pendiente = !rechazado;
 		return transaccion;
@@ -286,12 +282,11 @@ public class Transaccion implements Serializable{
 		if(!respuesta){
 			transaccion.rechazado = true;
 			transaccion.pendiente = false;
-			return transaccion;
 		}else{
 			transaccion.rechazado = false;
 			transaccion.pendiente = false;
 			transaccion.tarjetaObjetivo.deshacerTransaccion(transaccion.cantidad, transaccion.tarjetaOrigen); // En caso de que el cliente diga que sí, esta función deshace la transaccion.
-			return transaccion;
 		}
+		return transaccion;
 	}
 }
