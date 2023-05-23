@@ -5,21 +5,24 @@
 
 package gestorAplicacion.infraestructura;
 
-import gestorAplicacion.entidades_de_negocio.*;
-import gestorAplicacion.tarjetas.*;
 import baseDatos.Deserializador;
+import gestorAplicacion.entidades_de_negocio.Cliente;
+import gestorAplicacion.entidades_de_negocio.Divisa;
+import gestorAplicacion.entidades_de_negocio.Transaccion;
+import gestorAplicacion.tarjetas.Tarjeta;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 
 
 public class Banco implements Serializable{
+	@Serial
 	private static final long serialVersionUID = 1L;
 	
 	private static List<Cliente> clientes = new ArrayList<>();
@@ -52,32 +55,8 @@ public class Banco implements Serializable{
 	public static void agregarCliente(Cliente cliente) {//Agregar un solo cliente
 		Banco.clientes.add(cliente);
 	}
-	
-	
-	public static void agregarClientes(ArrayList<Cliente> clientes) {//Agregar varios clientes de un arrayList
-		Banco.clientes.addAll(clientes);
-	}
-	
-	public static void agregarClientes(Cliente... clientes) {//Agregar varios clientes de un array
-		Collections.addAll(Banco.clientes, clientes);
-	}
-	
-	public static void eliminarCliente(Cliente cliente) {//Eliminar un solo cliente
-		Banco.clientes.remove(cliente);
-	}
-	
-	public static void eliminarClientes(ArrayList<Cliente> clientes) {//Eliminar varios clientes de un ArrayList
-		for(Cliente clientePorEliminar: clientes) {
-			Banco.clientes.remove(clientePorEliminar);
-		}			
-	}
-	
-	public static void eliminarClientes(Cliente[] clientes) {//Eliminar varios clientes de un Array normal
-		for(Cliente clientePorEliminar: clientes) {
-			Banco.clientes.remove(clientePorEliminar);
-		}			
-	}
-	
+
+
 	public static ArrayList<Canal> getCanales() {
 		return (ArrayList<Canal>) canales;
 	}
@@ -89,33 +68,8 @@ public class Banco implements Serializable{
 	public static void agregarCanal(Canal canal) {//Agregar un solo canal
 		Banco.canales.add(canal);
 	}
-	
-	
-	public static void agregarCanales(Canal... canales) {//Agregar varios canales de un array normal
-		Collections.addAll(Banco.canales, canales);
-	}
-	
-	public static void agregarCanales(ArrayList<Canal> canales) {//Agregar varios canales de un arrayList
-		Banco.canales.addAll(canales);
-	}
-	
-	
-	public static void eliminarCanal(Canal canal) {
-		Banco.canales.remove(canal);
-	}
-	
-	public static void eliminarCanales(Canal... canales) {//Eliminar varios canales de un Array normal
-		for(Canal canalPorEliminar: canales) {
-			Banco.canales.remove(canalPorEliminar);
-		}		
-	}
-	
-	public static void eliminarCanales(ArrayList<Canal> canales) {//Eliminar varios canales de un ArrayList
-		for(Canal canalPorEliminar: canales) {
-			Banco.canales.remove(canalPorEliminar);
-		}			
-	}
-	
+
+
 	public static int calcularPuntaje(ArrayList<Transaccion> trans){
 		int puntaje = 0;
 		for(Transaccion t : trans){
@@ -125,7 +79,7 @@ public class Banco implements Serializable{
 	}
 
 	public static ArrayList<Divisa> seleccionarDivisa(Cliente cliente){
-		ArrayList<Divisa> retorno = new ArrayList<Divisa>();
+		ArrayList<Divisa> retorno = new ArrayList<>();
 		for(Divisa d : Divisa.values()){
 			for(Tarjeta t : cliente.getTarjetas()){
 				if(t.getDivisa().equals(d)){

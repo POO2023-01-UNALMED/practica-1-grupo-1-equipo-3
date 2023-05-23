@@ -5,13 +5,15 @@
 
 package gestorAplicacion.infraestructura;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.EnumMap;
 import gestorAplicacion.entidades_de_negocio.*;
-import gestorAplicacion.tarjetas.*;;
+import gestorAplicacion.tarjetas.*;
 
 public class Canal implements Serializable{
+	@Serial
 	private static final long serialVersionUID = 1L;
 	
 	private final String tipoCanal;
@@ -23,9 +25,8 @@ public class Canal implements Serializable{
 	 *	- Corresponsal Bancario: Solo tienen 3 divisas, dos de ellas son las monedas internacionales mas importantes (DOLAR y EURO) y una tercera que puede ser cualquier otra.
 	 *	Por lo que solo se pueden cambiar esas 3 divisas en estos canales
 	 * */
-	private float impuesto;
-	private int contador;//Este atributo solo es para asignarle un numero a los canales, para rastrearlos mejor. Ej: Sucursal Fisica #2
-	private EnumMap<Divisa, Double> fondosPorDivisa = new EnumMap<>(Divisa.class);
+	private final float impuesto;
+	private final EnumMap<Divisa, Double> fondosPorDivisa = new EnumMap<>(Divisa.class);
 
 	//Los fondos deben ser proporcionados en el orden en que estan declaradas las divisas
     public Canal(String tipoCanal, float impuesto, double... fondos) {
@@ -55,18 +56,10 @@ public class Canal implements Serializable{
     public double getFondos(Divisa divisa) {
         return this.fondosPorDivisa.get(divisa);
     }
-    
-    public EnumMap<Divisa, Double> getFondos() {
-        return fondosPorDivisa;
-    }
-    
-    
-    public double getImpuesto() {
-		return impuesto;
-	}
 
-	public void setImpuesto(float impuesto) {
-		this.impuesto = impuesto;
+
+	public double getImpuesto() {
+		return impuesto;
 	}
 
 	//Metodos de las instancias
@@ -107,7 +100,7 @@ public class Canal implements Serializable{
 	}
 
 	public static ArrayList<Canal> seleccionarCanal(Divisa divisa, boolean retirar){ //Encuentra los canales apropiados para la transaccion, en el contexto de la funcionalidad "retirar o depositar dinero"
-		ArrayList<Canal> retorno = new ArrayList<Canal>();
+		ArrayList<Canal> retorno = new ArrayList<>();
 		if(retirar){
 			for(Canal c : Banco.getCanales()){
 				if(!c.tieneDivisa(divisa)){

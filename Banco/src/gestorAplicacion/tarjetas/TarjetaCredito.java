@@ -7,6 +7,7 @@ package gestorAplicacion.tarjetas;
 
 import gestorAplicacion.infraestructura.*;
 
+import java.io.Serial;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -15,6 +16,7 @@ import gestorAplicacion.entidades_de_negocio.Divisa;
 import gestorAplicacion.entidades_de_negocio.Cliente;
 
 public class TarjetaCredito extends Tarjeta{
+	@Serial
 	private static final long serialVersionUID = 1L;
 
 	private final double CREDITOMAXIMO; // Límite de crédito máximo de la tarjeta
@@ -54,23 +56,20 @@ public class TarjetaCredito extends Tarjeta{
 
 	/**
 	 * Deshace una transacción realizada desde la tarjeta actual a otra tarjeta.
+	 *
 	 * @param cantidad Cantidad a deshacer.
-	 * @param t Tarjeta destino.
-	 * @return true si la deshacer la transacción es exitoso, false en caso contrario.
+	 * @param t        Tarjeta destino.
 	 */
-	public boolean deshacerTransaccion(double cantidad, Tarjeta t) {
+	public void deshacerTransaccion(double cantidad, Tarjeta t) {
 		if (CREDITOMAXIMO - credito >= cantidad && (t instanceof TarjetaDebito)) {
 			// Deshacer una transacción desde una tarjeta de débito
 			this.credito += Math.floor(100 * cantidad * t.divisa.getValor() / this.divisa.getValor()) / 100;
 			((TarjetaDebito) t).setSaldo(((TarjetaDebito) t).getSaldo() + cantidad);
-			return true;
 		} else if (CREDITOMAXIMO - credito >= cantidad && t instanceof TarjetaCredito && ((TarjetaCredito) t).getEspacio() >= cantidad) {
 			// Deshacer una transacción desde otra tarjeta de crédito
 			this.credito += Math.floor(100 * cantidad * t.divisa.getValor() / this.divisa.getValor()) / 100;
 			((TarjetaCredito) t).setCredito(cantidad);
-			return true;
 		} else {
-			return false;
 		}
 	}
 

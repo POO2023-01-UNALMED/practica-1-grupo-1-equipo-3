@@ -5,12 +5,14 @@
 
 package gestorAplicacion.tarjetas;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 
 import gestorAplicacion.entidades_de_negocio.*;
 
 public abstract class Tarjeta implements Serializable{
+	@Serial
 	private static final long serialVersionUID = 1L;
 
 	protected final int noTarjeta; // Número de tarjeta
@@ -44,14 +46,6 @@ public abstract class Tarjeta implements Serializable{
 	 */
 	public Divisa getDivisa() {
 		return divisa;
-	}
-
-	/**
-	 * Obtiene la cantidad de transacciones rechazadas realizadas con la tarjeta.
-	 * @return Cantidad de transacciones rechazadas.
-	 */
-	public int getTransaccionesRechazadas() {
-		return transaccionesRechazadas;
 	}
 
 	/**
@@ -96,11 +90,11 @@ public abstract class Tarjeta implements Serializable{
 
 	/**
 	 * Deshace una transacción realizada con la tarjeta.
+	 *
 	 * @param cantidad Cantidad de dinero de la transacción a deshacer.
-	 * @param t Tarjeta asociada a la transacción.
-	 * @return true si la transacción se deshizo correctamente, false de lo contrario.
+	 * @param t        Tarjeta asociada a la transacción.
 	 */
-	public abstract boolean deshacerTransaccion(double cantidad, Tarjeta t);
+	public abstract void deshacerTransaccion(double cantidad, Tarjeta t);
 
 	/**
 	 * Verifica si la tarjeta tiene saldo disponible (para tarjetas de débito) o crédito disponible (para tarjetas de crédito).

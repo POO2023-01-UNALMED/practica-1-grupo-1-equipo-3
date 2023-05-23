@@ -5,6 +5,7 @@
 
 package gestorAplicacion.entidades_de_negocio;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -12,6 +13,7 @@ import gestorAplicacion.infraestructura.Banco;
 import gestorAplicacion.tarjetas.*;
 
 public class Factura implements Serializable{
+	@Serial
 	private static final long serialVersionUID = 1L;
 
 	private final Cliente CLIENTE;
@@ -107,12 +109,4 @@ public class Factura implements Serializable{
 		return puntaje;
 	}
 
-	public void setValorPagado(double pagado){
-		this.valorPagado = pagado;
-	}
-
-	public double getValorPagado(){
-		return this.valorPagado;
-	}
-	
 }

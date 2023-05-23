@@ -8,8 +8,11 @@ package gestorAplicacion.tarjetas;
 import gestorAplicacion.entidades_de_negocio.Divisa;
 import gestorAplicacion.infraestructura.Banco;
 
-	
+import java.io.Serial;
+
+
 public class TarjetaDebito extends Tarjeta{
+	@Serial
 	private static final long serialVersionUID = 1L;
 	private double saldo;
 
@@ -60,17 +63,14 @@ public class TarjetaDebito extends Tarjeta{
 	 * Si la deshacer transacción es exitosa, se actualizan los saldos y se devuelve true;
 	 * de lo contrario, se devuelve false.
 	 */
-	public boolean deshacerTransaccion(double cantidad, Tarjeta t) {
+	public void deshacerTransaccion(double cantidad, Tarjeta t) {
 		if (saldo >= cantidad && (t instanceof TarjetaDebito)) {
 			this.saldo -= Math.floor(100 * cantidad * t.divisa.getValor() / this.divisa.getValor()) / 100;
 			((TarjetaDebito) t).setSaldo(((TarjetaDebito) t).getSaldo() + cantidad);
-			return true;
 		} else if (saldo >= cantidad && t instanceof TarjetaCredito && ((TarjetaCredito) t).getEspacio() >= cantidad) {
 			this.saldo -= Math.floor(100 * cantidad * t.divisa.getValor() / this.divisa.getValor()) / 100;
 			((TarjetaCredito) t).setCredito(cantidad);
-			return true;
 		} else {
-			return false;
 		}
 	}
 
