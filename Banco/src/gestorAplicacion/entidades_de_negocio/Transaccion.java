@@ -328,7 +328,7 @@ public class Transaccion implements Serializable{
 		}
 		return transaccion;
 	}
-	public Transaccion finalizarTransaccion(Transaccion transaccion, boolean retirar){
+	public static Transaccion finalizarTransaccion(Transaccion transaccion, boolean retirar){
 		return new Transaccion(transaccion, retirar);
 	}
 	
