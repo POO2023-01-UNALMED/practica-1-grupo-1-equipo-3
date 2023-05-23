@@ -198,6 +198,7 @@ public class Main implements Serializable{
 							Transaccion transaccion = Transaccion.crearTransaccion(divisas, montoInicial, conversion, canalEscogido, tarjetasEscogidas, clienteActual);
 							
 							transaccion = canalEscogido.finalizarConversion(transaccion, montoInicial);
+							//condicionar cuando la transaccion sea exitosa o no
 							System.out.println(transaccion);
 
 						}
