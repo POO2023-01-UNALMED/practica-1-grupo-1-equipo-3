@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 import gestorAplicacion.entidades_de_negocio.*;
 
-public abstract class Tarjeta implements Serializable{
+public abstract class Tarjeta implements Serializable, BorrarTarjeta{
 	private static final long serialVersionUID = 1L;
 
 	protected final int noTarjeta; // Número de tarjeta
@@ -18,6 +18,7 @@ public abstract class Tarjeta implements Serializable{
 	protected String estado; // Estado de la tarjeta (ACTIVA, BLOQUEADA, etc.)
 	protected int transaccionesRechazadas; // Cantidad de transacciones rechazadas realizadas con la tarjeta
 	protected static ArrayList<Tarjeta> tarjetas = new ArrayList<>(); // Lista de todas las tarjetas creadas
+	private int erroresActuales;
 
 	// Constructor de la clase Tarjeta
 	public Tarjeta(int noTarjeta, Divisa divisa) {
@@ -25,6 +26,7 @@ public abstract class Tarjeta implements Serializable{
 		this.divisa = divisa;
 		estado = "ACTIVA";
 		transaccionesRechazadas = 0;
+		erroresActuales = 0;
 		tarjetas.add(this); // Agregar la tarjeta actual a la lista de tarjetas
 	}
 
@@ -44,6 +46,10 @@ public abstract class Tarjeta implements Serializable{
 	 */
 	public Divisa getDivisa() {
 		return divisa;
+	}
+
+	public int getErroresActuales(){
+		return erroresActuales;
 	}
 
 	/**
@@ -77,6 +83,18 @@ public abstract class Tarjeta implements Serializable{
 	 */
 	public boolean isActiva() {
 		return getEstado().equalsIgnoreCase("ACTIVA");
+	}
+
+	public boolean tarjetaABorrar(){
+		return this.erroresActuales > BorrarTarjeta.erroresMax;
+	}
+
+	public void setErroresActuales(int errores){
+		erroresActuales = errores;
+	}
+
+	public void anadirError(){
+		erroresActuales++;
 	}
 
 	// Método estático para obtener la lista de todas las tarjetas creadas

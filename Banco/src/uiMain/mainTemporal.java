@@ -12,6 +12,7 @@ import gestorAplicacion.entidades_de_negocio.Transaccion;
 import gestorAplicacion.infraestructura.Banco;
 import gestorAplicacion.infraestructura.Canal;
 import gestorAplicacion.tarjetas.TarjetaDebito;
+import gestorAplicacion.tarjetas.BorrarTarjeta;
 import gestorAplicacion.tarjetas.Tarjeta;
 import gestorAplicacion.tarjetas.TarjetaCredito;
 
@@ -89,6 +90,10 @@ public class mainTemporal implements Serializable{
 						Transaccion transaccion = factura.generarTransaccion(monto, tarjeta);
 						if (transaccion.isRechazado()) { //En caso de que la transacción fue rechazada, se notifica al usuario, y se vuelve al principio
 							System.out.println("La transacción fue rechazada");
+							tarjeta.anadirError();
+							if(tarjeta.tarjetaABorrar()){
+								System.out.println(tarjeta.borrar());
+							}
 							continue;
 						}
 						System.out.println("La transacción ha sido generada. Es la siguiente: " + transaccion);
@@ -99,7 +104,7 @@ public class mainTemporal implements Serializable{
 						} while (!entrada5.equals("2") && !entrada5.equals("1"));
 						Factura facturaNueva = transaccion.pagarFactura();
 						clienteActual.getFactura().set(clienteActual.getFactura().indexOf(factura), facturaNueva); //Remplaza la factura anterior con la factura nueva
-
+						tarjeta.setErroresActuales(0);//en caso de que no se rechaza la transacción, los errores de la tarjeta vuelven a 0
 
 						break;
 					}
@@ -309,9 +314,14 @@ public class mainTemporal implements Serializable{
 							if(!tarjeta_de_origen.puedeTransferir(monto)){
 								System.out.println("La tarjeta escogida no puede transferir esta cantidad de dinero");
 							}
+							tarjeta_de_origen.anadirError();
+							if(tarjeta_de_origen.tarjetaABorrar()){
+								System.out.println(tarjeta_de_origen.borrar());
+							}
 							System.out.println("La transacción ha sido rechazada");
 						}else if(!transaccion.isRechazado()){
 							System.out.println("Transacción realizada");
+							tarjeta_de_origen.setErroresActuales(0);
 						}
 						scanner.nextLine();
 						break;

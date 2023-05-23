@@ -7,6 +7,7 @@ package gestorAplicacion.tarjetas;
 
 import gestorAplicacion.entidades_de_negocio.Divisa;
 import gestorAplicacion.infraestructura.Banco;
+import gestorAplicacion.entidades_de_negocio.Cliente;;
 
 	
 public class TarjetaDebito extends Tarjeta{
@@ -52,6 +53,15 @@ public class TarjetaDebito extends Tarjeta{
 		} else {
 			return false;
 		}
+	}
+
+	public String borrar(){
+		for(Cliente c : Banco.getClientes()){ //En caso de que queramos borrar, necesitamos quitar la tarjeta de todas los clientes que la tienen
+			if(c.getTarjetasDebito().contains(this)){
+				c.getTarjetasDebito().remove(this);
+			}
+		}
+		return "La tarjeta de crédito #" + noTarjeta + " será borrada, ya que tiene demasiadas transacciones rechazadas"; 
 	}
 
 	/**
