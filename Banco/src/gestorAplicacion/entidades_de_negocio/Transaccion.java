@@ -106,9 +106,8 @@ public class Transaccion implements Serializable{
 			this.tarjetaOrigen = transaccion.tarjetaOrigen;
 			this.cantidad = transaccion.cantidad;
 			this.canal = transaccion.canal;
-			rechazado = tarjetaOrigen.puedeTransferir(cantidad) && canal.getFondos(tarjetaOrigen.getDivisa()) >= cantidad; //En caso de que el cliente quiera retirar, es necesario chequear estas dos condiciones
-			System.out.println(tarjetaOrigen.puedeTransferir(cantidad));
-			System.out.println(canal.getFondos(tarjetaOrigen.getDivisa()));
+			this.divisa = tarjetaOrigen.getDivisa();
+			rechazado = !(tarjetaOrigen.puedeTransferir(cantidad) && canal.getFondos(tarjetaOrigen.getDivisa()) >= cantidad); //En caso de que el cliente quiera retirar, es necesario chequear estas dos condiciones
 			if(!rechazado){
 				tarjetaOrigen.sacarDinero(cantidad);
 				canal.setFondos(divisa, canal.getFondos(divisa)-cantidad);
@@ -118,6 +117,7 @@ public class Transaccion implements Serializable{
 			this.tarjetaObjetivo = (TarjetaDebito)transaccion.tarjetaObjetivo;
 			this.cantidad = transaccion.cantidad;
 			this.canal = transaccion.canal;
+			divisa = tarjetaObjetivo.getDivisa();
 			rechazado = false;
 			tarjetaObjetivo.introducirDinero(cantidad);
 			canal.setFondos(divisa, canal.getFondos(divisa)+cantidad);
