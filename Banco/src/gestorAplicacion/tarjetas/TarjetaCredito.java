@@ -33,12 +33,7 @@ public class TarjetaCredito extends Tarjeta{
 	 * @return Cadena con la información de la tarjeta de crédito.
 	 */
 	public String toString() {
-		return "Tipo de tarjeta: Crédito\n" +
-				"Número de tarjeta: %s\n" +
-				"Límite: %s %s\n" +
-				"Crédito: %s %s\n" +
-				"Tasa de interés: %s\n"
-						.formatted(noTarjeta, Banco.formatearNumero(CREDITOMAXIMO), divisa.name(), Banco.formatearNumero(credito), divisa.name(), INTERES);
+		return "Tipo de tarjeta: Crédito\n Número de tarjeta: %s\n Límite: %s %s\n Crédito: %s %s\n Tasa de interés: %s\n".formatted(noTarjeta, Banco.formatearNumero(CREDITOMAXIMO), divisa.name(), Banco.formatearNumero(credito), divisa.name(), INTERES);
 	}
 
 	/**

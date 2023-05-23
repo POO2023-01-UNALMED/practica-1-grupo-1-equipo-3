@@ -20,8 +20,8 @@ public class Main implements Serializable{
 	private static final long serialVersionUID = 1L;
 
 	public static void main(String[] args) {
-//		setup();
 		Banco banco = new Banco();
+//		setup();
 		Serializador.serializar(banco);
 		Scanner scanner = new Scanner(System.in);
 		
@@ -446,6 +446,7 @@ public class Main implements Serializable{
 		Cliente cliente1 = new Cliente("Dario", 1);
 		Cliente cliente2 = new Cliente("Esteban", 2);
 		Cliente cliente3 = new Cliente("Marta", 3);
+		Cliente cliente4 = new Cliente("Sandra", 4);
 		
 		//TARJETAS DEBITO
 		//Para la serializacion hay que volver los montos a valores reales, como millones en el caso del peso colombiano, para que algunas funcionalidades tengan mas sentido
@@ -518,6 +519,7 @@ public class Main implements Serializable{
 		corresponsal2.setFondos(Divisa.DOLAR, 15000.0);
 		corresponsal2.setFondos(Divisa.EURO, 8000.0);
 		corresponsal2.setFondos(Divisa.RUBLO_RUSO, 350000.0);
+		
 	}
 
 }
