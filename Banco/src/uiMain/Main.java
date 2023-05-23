@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.Objects;
 import java.util.Scanner;
 
+import baseDatos.Serializador;
 import gestorAplicacion.entidades_de_negocio.Cliente;
 import gestorAplicacion.entidades_de_negocio.Divisa;
 import gestorAplicacion.entidades_de_negocio.Factura;
@@ -16,13 +17,16 @@ import gestorAplicacion.tarjetas.TarjetaDebito;
 import gestorAplicacion.tarjetas.Tarjeta;
 import gestorAplicacion.tarjetas.TarjetaCredito;
 
-public class mainTemporal implements Serializable{
+public class Main implements Serializable{
+	private static final long serialVersionUID = 1L;
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		
+		// TODO Auto-generated method stub
+//		setup();
+		Banco banco = new Banco();
+		Serializador.serializar(banco);
 		Scanner scanner = new Scanner(System.in);
-		setup();
 		
 		while(true) {
 			System.out.println("Elija el usuario:");
@@ -432,6 +436,8 @@ public class mainTemporal implements Serializable{
 	}
 
 	public static void setup(){ //Función que inicializa algunos objetos para comenzar a experimentar
+		
+		
 		//CLIENTES
 		Cliente cliente1 = new Cliente("Dario", 1);
 		Cliente cliente2 = new Cliente("Esteban", 2);

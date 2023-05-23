@@ -12,6 +12,8 @@ import gestorAplicacion.infraestructura.Banco;
 import gestorAplicacion.tarjetas.*;
 
 public class Factura implements Serializable{
+	private static final long serialVersionUID = 1L;
+	
 	private Cliente cliente;
 	private Divisa divisa; //Las facturas deben ser pagada en una determinada divisa
 	private double total;

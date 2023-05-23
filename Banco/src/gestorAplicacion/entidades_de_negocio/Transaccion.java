@@ -14,6 +14,8 @@ import gestorAplicacion.tarjetas.Tarjeta;
 import gestorAplicacion.tarjetas.TarjetaDebito;
 
 public class Transaccion implements Serializable{
+	private static final long serialVersionUID = 1L;
+	
 	private Cliente clienteObjetivo;
 	private Cliente clienteOrigen;
 	private Tarjeta tarjetaOrigen;

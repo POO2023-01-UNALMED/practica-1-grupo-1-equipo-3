@@ -7,6 +7,7 @@ package gestorAplicacion.infraestructura;
 
 import gestorAplicacion.entidades_de_negocio.*;
 import gestorAplicacion.tarjetas.*;
+import baseDatos.Deserializador;
 
 import java.io.Serializable;
 import java.text.DecimalFormat;
@@ -19,9 +20,14 @@ import java.util.Locale;
 
 
 public class Banco implements Serializable{
+	private static final long serialVersionUID = 1L;
 	
-	private static ArrayList<Cliente> clientes = new ArrayList<>();
-	private static ArrayList<Canal> canales = new ArrayList<>();
+	private static List<Cliente> clientes = new ArrayList<>();
+	private static List<Canal> canales = new ArrayList<>();
+	
+	public Banco() {
+		Deserializador.deserializar(this);
+	}
 	
 	//Metodos de la clase
 	
@@ -34,8 +40,13 @@ public class Banco implements Serializable{
 	/*Los getters y los setters contienen metodos que permiten, por ejemplo
 	 * Eliminar un solo usuario del arrayList o eliminar varios (metodos separados)
 	 */
+	
 	public static ArrayList<Cliente> getClientes() {
-		return clientes;
+		return (ArrayList<Cliente>) clientes;
+	}
+	
+	public static void setClientes(ArrayList<Cliente> clientes) {
+		Banco.clientes = clientes;
 	}
 	
 	public static void agregarCliente(Cliente cliente) {//Agregar un solo cliente
@@ -68,7 +79,11 @@ public class Banco implements Serializable{
 	}
 	
 	public static ArrayList<Canal> getCanales() {
-		return canales;
+		return (ArrayList<Canal>) canales;
+	}
+	
+	public static void setCanales(ArrayList<Canal> canales) {
+		Banco.canales = canales;
 	}
 	
 	public static void agregarCanal(Canal canal) {//Agregar un solo canal
@@ -108,7 +123,7 @@ public class Banco implements Serializable{
 		}
 		return puntaje;
 	}
-	
+
 	public static boolean numeroExistente(int num) { // Evalua si un número de tarjeta corresponde a algúna tarjeta de algún cliente
 		boolean valor = false;
 		for(Tarjeta t : Tarjeta.getTarjetas()) {

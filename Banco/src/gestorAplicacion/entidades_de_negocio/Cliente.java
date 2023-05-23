@@ -15,6 +15,8 @@ import java.sql.Array;
 import java.util.ArrayList;
 
 public class Cliente implements Serializable{
+	private static final long serialVersionUID = 1L;
+	
 	public String nombre;
 	private int Id;
 	private ArrayList<TarjetaDebito> tarjetasDebito = new ArrayList<>();

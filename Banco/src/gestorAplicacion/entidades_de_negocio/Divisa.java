@@ -18,6 +18,7 @@ public enum Divisa implements Serializable{
 	YEN_JAPONES(0.0074),
 	PESO_COLOMBIANO(0.00022);
 	
+	private static final long serialVersionUID = 1L;
 	private double valor;
 
 	Divisa(double valor) {

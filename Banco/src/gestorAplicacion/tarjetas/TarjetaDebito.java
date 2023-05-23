@@ -5,13 +5,13 @@
 
 package gestorAplicacion.tarjetas;
 
-import java.io.Serializable;
-
 import gestorAplicacion.entidades_de_negocio.Divisa;
 import gestorAplicacion.infraestructura.Banco;
 import gestorAplicacion.entidades_de_negocio.Factura;;
 
-public class TarjetaDebito extends Tarjeta implements Serializable{
+public class TarjetaDebito extends Tarjeta{
+	private static final long serialVersionUID = 1L;
+	
 	private double saldo;
 
 	public TarjetaDebito(int noTarjeta, Divisa divisa, double saldo){
