@@ -61,29 +61,6 @@ public class Transaccion implements Serializable{
 		retornable = false;
 	}
 
-	public Transaccion(Transaccion transaccion, boolean retirar){
-		if(retirar){
-			this.clienteOrigen = transaccion.clienteOrigen;
-			this.tarjetaOrigen = transaccion.tarjetaOrigen;
-			this.cantidad = transaccion.cantidad;
-			this.canal = transaccion.canal;
-			rechazado = tarjetaOrigen.puedeTransferir(cantidad);
-			if(!rechazado){
-				tarjetaOrigen.sacarDinero(cantidad);
-			}
-		}else{
-			this.clienteObjetivo = transaccion.clienteObjetivo;
-			this.tarjetaObjetivo = (TarjetaDebito)transaccion.tarjetaObjetivo;
-			this.cantidad = transaccion.cantidad;
-			this.canal = transaccion.canal;
-			rechazado = tarjetaObjetivo.puedeTransferir(cantidad);
-			tarjetaObjetivo.introducirDinero(cantidad);
-		}
-		pendiente = false;
-		retornable = false;
-		transacciones.add(this);
-	}
-	 
 	public Transaccion(Cliente clienteOrigen, Tarjeta tarjetaOrigen, TarjetaDebito tarjetaObjetivo, double cantidad, boolean rechazado){
 		this.clienteOrigen=clienteOrigen;
 		this.tarjetaOrigen = tarjetaOrigen;
@@ -122,6 +99,34 @@ public class Transaccion implements Serializable{
 		retornable = false;
 		transacciones.add(this);
 	}
+
+	public Transaccion(Transaccion transaccion, boolean retirar){
+		if(retirar){
+			this.clienteOrigen = transaccion.clienteOrigen;
+			this.tarjetaOrigen = transaccion.tarjetaOrigen;
+			this.cantidad = transaccion.cantidad;
+			this.canal = transaccion.canal;
+			this.divisa = tarjetaOrigen.getDivisa();
+			rechazado = !(tarjetaOrigen.puedeTransferir(cantidad) && canal.getFondos(tarjetaOrigen.getDivisa()) >= cantidad); //En caso de que el cliente quiera retirar, es necesario chequear estas dos condiciones
+			if(!rechazado){
+				tarjetaOrigen.sacarDinero(cantidad);
+				canal.setFondos(divisa, canal.getFondos(divisa)-cantidad);
+			}
+		}else{
+			this.clienteObjetivo = transaccion.clienteObjetivo;
+			this.tarjetaObjetivo = (TarjetaDebito)transaccion.tarjetaObjetivo;
+			this.cantidad = transaccion.cantidad;
+			this.canal = transaccion.canal;
+			divisa = tarjetaObjetivo.getDivisa();
+			rechazado = false;
+			tarjetaObjetivo.introducirDinero(cantidad);
+			canal.setFondos(divisa, canal.getFondos(divisa)+cantidad);
+		}
+		pendiente = false;
+		retornable = false;
+		transacciones.add(this);
+	}
+
 	
 	public boolean isRechazado() {
 		return rechazado;

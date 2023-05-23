@@ -44,7 +44,7 @@ public class mainTemporal implements Serializable{
 			}
 			label:
 			while(true) { // el loop principal que se ejecuta para cada cliente
-				System.out.println("1. Para ver facturas\n2. Para ver las tarjetas disponibles\n3. Para pagar una factura\n4. Cambiar Divisas\n5. Solicitar una tarjeta de crédito\n6. Para hacer una transferencia\n7. Para retirar dinero\n8. Para deshacer una transacción\n9. Para ver peticiones\n10. Para salir");
+				System.out.println("1. Para ver facturas\n2. Para ver las tarjetas disponibles\n3. Para pagar una factura\n4. Cambiar Divisas\n5. Solicitar una tarjeta de crédito\n6. Para hacer una transferencia\n7. Para retirar o depositar dinero\n8. Para deshacer una transacción\n9. Para ver peticiones\n10. Para salir");
 				String entrada2 = scanner.nextLine();//Se lee la elección del usuario
 				switch (entrada2) {
 					case "1":
@@ -350,7 +350,7 @@ public class mainTemporal implements Serializable{
 						for(Tarjeta t : tarjetas){
 							System.out.println(tarjetas.indexOf(t)+1 + ". " + t);
 						}
-						int eleccion_tarjeta = scanner.nextInt();
+						int eleccion_tarjeta = scanner.nextInt()-1;
 						Tarjeta tarjeta = tarjetas.get(eleccion_tarjeta);
 						ArrayList<Canal> canales = Canal.seleccionarCanal(divisa_escogida, retirar);
 						if(canales.isEmpty()){
@@ -359,18 +359,23 @@ public class mainTemporal implements Serializable{
 						}
 						System.out.println("Por favor, escoga el canal con el cual desea hacer la operación");
 						for(Canal c : canales){
-							System.out.println(canales.indexOf(c)+1 + ". " + c);
-							System.out.println("Este canal tiene: " + c.getFondos(divisa_escogida) + divisa_escogida);
+							System.out.print(canales.indexOf(c)+1 + ". " + c);
+							System.out.println("Este canal tiene: " + c.getFondos(divisa_escogida) + " " + divisa_escogida + "\n");
 						}
-						int eleccion_canal = scanner.nextInt();
+						int eleccion_canal = scanner.nextInt()-1;
 						Canal canal = canales.get(eleccion_canal);
 						System.out.println("Ingrese cuanto quiere retirar/depositar");
 						double monto = scanner.nextDouble();
 						Transaccion transaccionInicial = canal.generarTransaccion(tarjeta, monto, clienteActual, retirar);
 						Transaccion transaccionFinal = Transaccion.finalizarTransaccion(transaccionInicial, retirar);
 						if(transaccionFinal.isRechazado()){
+							if(!tarjeta.puedeTransferir(monto)) System.out.println("La tarjeta no puede transferir el monto necesario");
+							if(canal.getFondos(divisa_escogida) >= monto) System.out.println("El canal no tiene suficientes fondos para hacer la transacción");
 							System.out.println("La transacción ha sido rechazada");
+						} else{
+							System.out.println("Operación realizada con éxito");
 						}
+						scanner.nextLine();
 						break;
 					}
 					case "8":{
