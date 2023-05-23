@@ -317,29 +317,43 @@ public class mainTemporal implements Serializable{
 						break;
 					}
 					case "7": {
-						System.out.println("Estas son las tarjetas débito que tiene disponibles:\n");
-						for (TarjetaDebito tarjeta : clienteActual.getTarjetasDebito()) {
-							System.out.println("Numero de tarjeta: " + tarjeta.getNoTarjeta());
-							System.out.println("Divisa de la tarjeta: " + tarjeta.getDivisa());
-							System.out.println("Saldo de la tarjeta: " + tarjeta.getSaldo());
-							System.out.println(tarjeta.getEstado());
-							System.out.println();
-						}
-						int eleccion_de_tarjeta_debito;
-						TarjetaDebito tarjeta_de_origen;
-
-						while (true) {
-							eleccion_de_tarjeta_debito = scanner.nextInt();
-
-							if (eleccion_de_tarjeta_debito > 0 && eleccion_de_tarjeta_debito <= clienteActual.getTarjetasDebito().size()) {
-								tarjeta_de_origen = clienteActual.getTarjetasDebito().get(eleccion_de_tarjeta_debito - 1);
+						System.out.println("1. Si quiere retirar\n2. Si quiere depositar");
+						boolean retirar;
+						while(true){
+							String respuesta = scanner.nextLine();
+							if(respuesta.equals("1")){
+								retirar = true;
 								break;
-							} else {
-								System.out.println("Por favor, elige un número válido de tarjeta.");
+							}else if(respuesta.equals("2")){
+								retirar = false;
+								break;
 							}
+							System.out.println("Por favor, ingrese 1 o 2");
 						}
-						System.out.println(tarjeta_de_origen);
+						System.out.println("Por favor, ingrese la divisa que desea retirar");
+						ArrayList<Divisa> divisas = Banco.seleccionarDivisa(clienteActual);
+						if(divisas.isEmpty()){
+							System.out.println("Usted no tiene ningúna divisa que pueda utilizar en esta transacción");
+							continue;
+						}
+						for(Divisa d : divisas){
+							System.out.println(divisas.indexOf(d)+1 + ". " + d);
+						}
+						int eleccion_divisa = scanner.nextInt()-1;
+						Divisa divisa_escogida = divisas.get(eleccion_divisa);
+						ArrayList<Tarjeta> tarjetas = clienteActual.seleccionarTarjeta(divisa_escogida);
+						if(tarjetas.isEmpty()){
+							System.out.println("Usted no tiene ningúna tarjeta que pueda utilizar en esta transacción");
+							continue;
+						}
+						System.out.println("Por favor, escoga la tarjeta con la cual desea hacer la operación");
+						for(Tarjeta t : tarjetas){
+							System.out.println(tarjetas.indexOf(t)+1 + ". " + t);
+						}
+						int eleccion_tarjeta = scanner.nextInt();
+						Tarjeta tarjeta = tarjetas.get(eleccion_tarjeta);
 						
+						break;
 					}
 					case "8":{
 						System.out.println("Escoga mediante qué criterio desea encontrar la transacción\n1. Divisa\n2. Cliente que recibió la transacción\n3. Para filtrar por tarjetas");

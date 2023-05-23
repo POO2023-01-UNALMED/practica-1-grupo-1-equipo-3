@@ -100,6 +100,17 @@ public class Cliente implements Serializable{
 	public void agregarTarjetasCredito(TarjetaCredito... tarjetasCredito) {//Agregar varios tarjetas una por una Ej. (tarjeta1, tarjeta2, etc)
 		this.tarjetasCredito.addAll(Arrays.asList(tarjetasCredito));
 	}
+
+	public ArrayList<Tarjeta> seleccionarTarjeta(Divisa divisa){
+		ArrayList<Tarjeta> retorno = new ArrayList<Tarjeta>();
+		for(TarjetaDebito t : tarjetasDebito){
+			if(t.getDivisa().equals(divisa)) retorno.add(t);
+		}
+		for(TarjetaCredito t : tarjetasCredito){
+			if(t.getDivisa().equals(divisa)) retorno.add(t);
+		}
+		return retorno;
+	}
 	
 	public void eliminarTarjetaCredito(TarjetaCredito tarjetaCredito) {
 		this.tarjetasCredito.remove(tarjetaCredito);

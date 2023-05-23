@@ -6,6 +6,7 @@
 package gestorAplicacion.infraestructura;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.EnumMap;
 import gestorAplicacion.entidades_de_negocio.*;
 
@@ -27,16 +28,13 @@ public class Canal implements Serializable{
 
 	//Los fondos deben ser proporcionados en el orden en que estan declaradas las divisas
     public Canal(String tipoCanal, float impuesto, double... fondos) {
-    	this.tipoCanal = tipoCanal;
-    	this.impuesto = impuesto;
+    	this(tipoCanal, impuesto);
     	
     	for(int i = 0; i < Divisa.values().length && i < fondos.length; i++) {
     		Divisa divisa = Divisa.values()[i];
     		double fondo = fondos[i];
     		this.fondosPorDivisa.put(divisa, fondo);
     	}
-    	
-    	Banco.agregarCanal(this);
     }
     
     //Constructor para configurar solo el tipo de canal y los impuestos, los fondos seran configurados uno por uno
@@ -105,5 +103,20 @@ public class Canal implements Serializable{
 		transaccion.setPendiente(false);
 				
 		return transaccion;
+	}
+
+	public static ArrayList<Canal> seleccionarCanal(Divisa divisa, boolean retirar){ //Encuentra los canales apropiados para la transaccion, en el contexto de la funcionalidad "retirar o depositar dinero"
+		ArrayList<Canal> retorno = new ArrayList<Canal>();
+		if(retirar) retorno.addAll(Banco.getCanales());
+		else{
+			for(Canal c : Banco.getCanales()){
+				if(c.tieneDivisa(divisa)){
+					if(c.tieneFondosDeDivisa(divisa)){  //Estos chequeos deben hacerce uno después del otro, de otra manera, existe la posibilidad de que el programa lanze un error en caso de que el canal no tenga la divisa
+						retorno.add(c);
+					}
+				}
+			}
+		}
+		return retorno;
 	}
 }

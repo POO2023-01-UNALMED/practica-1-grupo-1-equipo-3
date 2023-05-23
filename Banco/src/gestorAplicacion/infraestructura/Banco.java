@@ -124,6 +124,19 @@ public class Banco implements Serializable{
 		return puntaje;
 	}
 
+	public static ArrayList<Divisa> seleccionarDivisa(Cliente cliente){
+		ArrayList<Divisa> retorno = new ArrayList<Divisa>();
+		for(Divisa d : Divisa.values()){
+			for(Tarjeta t : cliente.getTarjetas()){
+				if(t.getDivisa().equals(d)){
+					retorno.add(d);
+					break;
+				}
+			}
+		}
+		return retorno;
+	}
+
 	public static boolean numeroExistente(int num) { // Evalua si un número de tarjeta corresponde a algúna tarjeta de algún cliente
 		boolean valor = false;
 		for(Tarjeta t : Tarjeta.getTarjetas()) {
