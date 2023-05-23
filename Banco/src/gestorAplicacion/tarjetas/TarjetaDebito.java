@@ -7,7 +7,7 @@ package gestorAplicacion.tarjetas;
 
 import gestorAplicacion.entidades_de_negocio.Divisa;
 import gestorAplicacion.infraestructura.Banco;
-import gestorAplicacion.entidades_de_negocio.Cliente;;
+import gestorAplicacion.entidades_de_negocio.Cliente;
 
 import java.io.Serial;
 
