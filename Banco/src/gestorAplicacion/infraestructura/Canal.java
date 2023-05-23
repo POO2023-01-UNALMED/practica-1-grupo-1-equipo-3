@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.EnumMap;
 import gestorAplicacion.entidades_de_negocio.*;
+import gestorAplicacion.tarjetas.*;;
 
 public class Canal implements Serializable{
 	private static final long serialVersionUID = 1L;
@@ -91,14 +92,14 @@ public class Canal implements Serializable{
 			return null;
 		
 		Divisa divisaOrigen = transaccion.getDivisa();
-		double fondosOrigen = transaccion.getCanalObjetivo().getFondos(divisaOrigen);
+		double fondosOrigen = transaccion.getCanal().getFondos(divisaOrigen);
 		
 		Divisa divisaDestino = transaccion.getTarjetaObjetivo().getDivisa();
-		double fondosDestino = transaccion.getCanalObjetivo().getFondos(divisaDestino);
+		double fondosDestino = transaccion.getCanal().getFondos(divisaDestino);
 		
 		transaccion.getTarjetaOrigen().sacarDinero(montoInicial);//Sacando dinero de la tarjeta de origen
-		transaccion.getCanalObjetivo().setFondos(divisaOrigen, fondosOrigen + montoInicial);//Ingresando el dinero de la divisa de origen al canal
-		transaccion.getCanalObjetivo().setFondos(divisaDestino, fondosDestino - transaccion.getCantidad());//Sacando dinero de la divisa de destino del canal
+		transaccion.getCanal().setFondos(divisaOrigen, fondosOrigen + montoInicial);//Ingresando el dinero de la divisa de origen al canal
+		transaccion.getCanal().setFondos(divisaDestino, fondosDestino - transaccion.getCantidad());//Sacando dinero de la divisa de destino del canal
 		transaccion.getTarjetaObjetivo().introducirDinero(transaccion.getCantidad());//Ingresando la divisa de destino a la tarjeta de destino
 		transaccion.setPendiente(false);
 				
@@ -119,5 +120,9 @@ public class Canal implements Serializable{
 			}
 		}
 		return retorno;
+	}
+
+	public Transaccion generarTransaccion(Tarjeta tarjeta, double monto, Cliente cliente, boolean retirar){
+		return new Transaccion(cliente, tarjeta, monto, this, retirar);
 	}
 }

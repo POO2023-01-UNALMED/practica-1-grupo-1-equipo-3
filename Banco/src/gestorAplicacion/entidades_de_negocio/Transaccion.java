@@ -20,7 +20,7 @@ public class Transaccion implements Serializable{
 	private Cliente clienteOrigen;
 	private Tarjeta tarjetaOrigen;
 	private TarjetaDebito tarjetaObjetivo;
-	private Canal canalObjetivo; //Cuando una transaccion requiera retornar el valor de un impuesto al banco (se retorna a un canal) 
+	private Canal canal; //Cuando una transaccion requiera retornar el valor de un impuesto al banco (se retorna a un canal) 
 	private double cantidad;
 	private double impuesto;//Algunas transaccion pueden descontar un pequeño impuesto
 	private boolean rechazado;
@@ -44,6 +44,45 @@ public class Transaccion implements Serializable{
 		divisa = tarjetaOrigen.getDivisa();
 		transacciones.add(this);
 	}
+
+	public Transaccion(Cliente cliente, Tarjeta tarjeta, double cantidad, Canal canal, boolean retirar){ // Se utiliza en la funcionalidad "retirar o depositar dinero"
+		if(retirar){
+			this.clienteOrigen = cliente;
+			this.tarjetaOrigen = tarjeta;
+			this.cantidad = cantidad;
+			this.canal = canal;
+		}else{
+			this.clienteObjetivo = cliente;
+			this.tarjetaObjetivo = (TarjetaDebito)tarjeta;
+			this.cantidad = cantidad;
+			this.canal = canal;
+		}
+		pendiente = true;
+		retornable = false;
+	}
+
+	public Transaccion(Transaccion transaccion, boolean retirar){
+		if(retirar){
+			this.clienteOrigen = transaccion.clienteOrigen;
+			this.tarjetaOrigen = transaccion.tarjetaOrigen;
+			this.cantidad = transaccion.cantidad;
+			this.canal = transaccion.canal;
+			rechazado = tarjetaOrigen.puedeTransferir(cantidad);
+			if(!rechazado){
+				tarjetaOrigen.sacarDinero(cantidad);
+			}
+		}else{
+			this.clienteObjetivo = transaccion.clienteObjetivo;
+			this.tarjetaObjetivo = (TarjetaDebito)transaccion.tarjetaObjetivo;
+			this.cantidad = transaccion.cantidad;
+			this.canal = transaccion.canal;
+			rechazado = tarjetaObjetivo.puedeTransferir(cantidad);
+			tarjetaObjetivo.introducirDinero(cantidad);
+		}
+		pendiente = false;
+		retornable = false;
+		transacciones.add(this);
+	}
 	 
 	public Transaccion(Cliente clienteOrigen, Tarjeta tarjetaOrigen, TarjetaDebito tarjetaObjetivo, double cantidad, boolean rechazado){
 		this.clienteOrigen=clienteOrigen;
@@ -65,7 +104,7 @@ public class Transaccion implements Serializable{
 	public Transaccion(Cliente clienteOrigen, Tarjeta tarjetaOrigen, TarjetaDebito tarjetaObjetivo, double cantidad, double impuesto, Canal canalObjetivo, boolean rechazado) {
 		this(clienteOrigen, tarjetaOrigen, tarjetaObjetivo, cantidad, rechazado);
 		this.impuesto = impuesto;
-		this.canalObjetivo = canalObjetivo;
+		this.canal = canalObjetivo;
 		pendiente = true;
 		retornable = true;
 		transacciones.add(this);
@@ -120,8 +159,8 @@ public class Transaccion implements Serializable{
 		return tarjetaObjetivo;
 	}
 
-	public Canal getCanalObjetivo() {
-		return canalObjetivo;
+	public Canal getCanal() {
+		return canal;
 	}
 
 	public Factura getFactura() {
@@ -172,8 +211,8 @@ public class Transaccion implements Serializable{
 		this.tarjetaObjetivo = tarjetaObjetivo;
 	}
 
-	public void setCanalObjetivo(Canal canalObjetivo) {
-		this.canalObjetivo = canalObjetivo;
+	public void setCanal(Canal canalObjetivo) {
+		this.canal = canalObjetivo;
 	}
 
 	public void setFactura(Factura factura) {
@@ -289,4 +328,9 @@ public class Transaccion implements Serializable{
 		}
 		return transaccion;
 	}
+	public Transaccion finalizarTransaccion(Transaccion transaccion, boolean retirar){
+		return new Transaccion(transaccion, retirar);
+	}
+	
+
 }

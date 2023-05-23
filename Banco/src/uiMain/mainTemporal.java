@@ -341,7 +341,7 @@ public class mainTemporal implements Serializable{
 						}
 						int eleccion_divisa = scanner.nextInt()-1;
 						Divisa divisa_escogida = divisas.get(eleccion_divisa);
-						ArrayList<Tarjeta> tarjetas = clienteActual.seleccionarTarjeta(divisa_escogida);
+						ArrayList<Tarjeta> tarjetas = clienteActual.seleccionarTarjeta(divisa_escogida, retirar);
 						if(tarjetas.isEmpty()){
 							System.out.println("Usted no tiene ningúna tarjeta que pueda utilizar en esta transacción");
 							continue;
@@ -362,7 +362,15 @@ public class mainTemporal implements Serializable{
 							System.out.println(canales.indexOf(c)+1 + ". " + c);
 							System.out.println("Este canal tiene: " + c.getFondos(divisa_escogida) + divisa_escogida);
 						}
-
+						int eleccion_canal = scanner.nextInt();
+						Canal canal = canales.get(eleccion_canal);
+						System.out.println("Ingrese cuanto quiere retirar/depositar");
+						double monto = scanner.nextDouble();
+						Transaccion transaccionInicial = canal.generarTransaccion(tarjeta, monto, clienteActual, retirar);
+						Transaccion transaccionFinal = Transaccion.finalizarTransaccion(transaccionInicial, retirar);
+						if(transaccionFinal.isRechazado()){
+							System.out.println("La transacción ha sido rechazada");
+						}
 						break;
 					}
 					case "8":{
