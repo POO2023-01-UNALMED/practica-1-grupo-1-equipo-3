@@ -108,11 +108,15 @@ public class Canal implements Serializable{
 
 	public static ArrayList<Canal> seleccionarCanal(Divisa divisa, boolean retirar){ //Encuentra los canales apropiados para la transaccion, en el contexto de la funcionalidad "retirar o depositar dinero"
 		ArrayList<Canal> retorno = new ArrayList<Canal>();
-		if(retirar) retorno.addAll(Banco.getCanales());
-		else{
+		if(retirar){
 			for(Canal c : Banco.getCanales()){
 				if(!c.tieneDivisa(divisa)){
-					System.out.println(c);
+					retorno.add(c);
+				}
+			}
+		}else{
+			for(Canal c : Banco.getCanales()){
+				if(!c.tieneDivisa(divisa)){
 					if(!c.tieneFondosDeDivisa(divisa)){  //Estos chequeos deben hacerce uno después del otro, de otra manera, existe la posibilidad de que el programa lanze un error en caso de que el canal no tenga la divisa
 						retorno.add(c);
 					}
