@@ -29,20 +29,6 @@ public enum Divisa implements Serializable{
 		return valor;
 	}
 
-	public void setValor(double valor) {
-		this.valor = valor;
-	}
-	
-	public static ArrayList<Divisa> getDivisas(){
-		ArrayList<Divisa> retorno = new ArrayList<>();
-		retorno.add(Divisa.DOLAR);
-		retorno.add(Divisa.EURO);
-		retorno.add(Divisa.RUBLO_RUSO);
-		retorno.add(Divisa.YEN_JAPONES);
-		retorno.add(Divisa.PESO_COLOMBIANO);
-		return retorno;
-	}
-	
 	/**
 	 * verifica si una divisa está en la posición correcta en una lista de divisas, dependiendo del orden especificado
 	 * 
@@ -64,28 +50,8 @@ public enum Divisa implements Serializable{
 		
 		return false;
 	}
-	
-	//Recibe un array normal
-	public static boolean verificarOrden(Divisa[] divisas, Divisa divisa, String orden) {
-		ArrayList<Divisa> listaDivisa = new ArrayList<>();
-		listaDivisa.add(divisas[0]);//divisa de origen
-		listaDivisa.add(divisas[1]);//divisa de destino
-		
-		if(orden.equalsIgnoreCase("Origen")) {
-			int index = listaDivisa.indexOf(divisa);
-			return listaDivisa.get(index) == listaDivisa.get(0);
-		}
-		
-		else if(orden.equalsIgnoreCase("Destino")) {
-			int index = listaDivisa.indexOf(divisa);
-			return listaDivisa.get(index) == listaDivisa.get(0);
-		}
-		
-		return false;
-	}
-	
-	
-	
+
+
 	/**
 	 * Realiza la conversión de la divisa de origen a la divisa de destino, aplicandole los impuestos del canal correspondiente
 	 * 
@@ -122,33 +88,5 @@ public enum Divisa implements Serializable{
 
 		return montos;
 	}
-	
-	public static ArrayList<Double> convertirDivisas(Divisa[] divisas, Canal canal, double monto) {
-		Divisa divisaOrigen = divisas[0];
-		Divisa divisaDestino = divisas[1];
-		ArrayList<Double> montos = new ArrayList<>();
-		double montoFinal = monto;
-		
-		double impuesto = monto * (canal.getImpuesto() / 100);
-		impuesto = (impuesto * 100.0) / 100.0;
-		montoFinal -= impuesto;
-		
-		//convertimos la divisa de origen a dolar
-		montoFinal = montoFinal * divisaOrigen.getValor();
-		if (divisaDestino.equals(Divisa.DOLAR)) {
-			//redondea a un maximo de dos decimales, pero solo cuando se va a retornar DOLAR
-			montoFinal = Math.round(montoFinal * 100.0) / 100.0;
-			montos.add(montoFinal);
-			montos.add(impuesto);
-			
-			return montos;			
-		} 
-		
-		//convertimos la divisa ya en dolares, a la divisa de destino
-		montoFinal = Math.round((montoFinal / divisaDestino.getValor()) * 100.0) / 100.0;
-		montos.add(montoFinal);
-		montos.add(impuesto);
 
-		return montos;
-	}
 }
