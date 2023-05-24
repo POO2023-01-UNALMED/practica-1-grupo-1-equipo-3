@@ -7,9 +7,13 @@ package gestorAplicacion.tarjetas;
 
 import gestorAplicacion.entidades_de_negocio.Divisa;
 import gestorAplicacion.infraestructura.Banco;
+import gestorAplicacion.entidades_de_negocio.Cliente;
 
-	
+import java.io.Serial;
+
+
 public class TarjetaDebito extends Tarjeta{
+	@Serial
 	private static final long serialVersionUID = 1L;
 	private double saldo;
 
@@ -54,23 +58,29 @@ public class TarjetaDebito extends Tarjeta{
 		}
 	}
 
+	public String borrar(){
+		for(Cliente c : Banco.getClientes()){ //En caso de que queramos borrar, necesitamos quitar la tarjeta de todas los clientes que la tienen
+			if(c.getTarjetasDebito().contains(this)){
+				c.getTarjetasDebito().remove(this);
+			}
+		}
+		return "La tarjeta de crédito #" + noTarjeta + " será borrada, ya que tiene demasiadas transacciones rechazadas"; 
+	}
+
 	/**
 	 * Deshace una transacción anteriormente realizada desde esta tarjeta de débito a otra tarjeta.
 	 * Se verifica si el saldo es suficiente y si el tipo de tarjeta coincide.
 	 * Si la deshacer transacción es exitosa, se actualizan los saldos y se devuelve true;
 	 * de lo contrario, se devuelve false.
 	 */
-	public boolean deshacerTransaccion(double cantidad, Tarjeta t) {
+	public void deshacerTransaccion(double cantidad, Tarjeta t) {
 		if (saldo >= cantidad && (t instanceof TarjetaDebito)) {
 			this.saldo -= Math.floor(100 * cantidad * t.divisa.getValor() / this.divisa.getValor()) / 100;
 			((TarjetaDebito) t).setSaldo(((TarjetaDebito) t).getSaldo() + cantidad);
-			return true;
 		} else if (saldo >= cantidad && t instanceof TarjetaCredito && ((TarjetaCredito) t).getEspacio() >= cantidad) {
 			this.saldo -= Math.floor(100 * cantidad * t.divisa.getValor() / this.divisa.getValor()) / 100;
 			((TarjetaCredito) t).setCredito(cantidad);
-			return true;
 		} else {
-			return false;
 		}
 	}
 

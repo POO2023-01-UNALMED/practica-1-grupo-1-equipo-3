@@ -12,6 +12,7 @@ import gestorAplicacion.entidades_de_negocio.Transaccion;
 import gestorAplicacion.infraestructura.Banco;
 import gestorAplicacion.infraestructura.Canal;
 import gestorAplicacion.tarjetas.TarjetaDebito;
+import gestorAplicacion.tarjetas.BorrarTarjeta;
 import gestorAplicacion.tarjetas.Tarjeta;
 import gestorAplicacion.tarjetas.TarjetaCredito;
 
@@ -44,7 +45,7 @@ public class mainTemporal implements Serializable{
 			}
 			label:
 			while(true) { // el loop principal que se ejecuta para cada cliente
-				System.out.println("1. Para ver facturas\n2. Para ver las tarjetas disponibles\n3. Para pagar una factura\n4. Cambiar Divisas\n5. Solicitar una tarjeta de crédito\n6. Para hacer una transferencia\n7. Para retirar dinero\n8. Para deshacer una transacción\n9. Para ver peticiones\n10. Para salir");
+				System.out.println("1. Para ver facturas\n2. Para ver las tarjetas disponibles\n3. Para pagar una factura\n4. Cambiar Divisas\n5. Solicitar una tarjeta de crédito\n6. Para hacer una transferencia\n7. Para retirar o depositar dinero\n8. Para deshacer una transacción\n9. Para ver peticiones\n10. Para salir");
 				String entrada2 = scanner.nextLine();//Se lee la elección del usuario
 				switch (entrada2) {
 					case "1":
@@ -89,6 +90,10 @@ public class mainTemporal implements Serializable{
 						Transaccion transaccion = factura.generarTransaccion(monto, tarjeta);
 						if (transaccion.isRechazado()) { //En caso de que la transacción fue rechazada, se notifica al usuario, y se vuelve al principio
 							System.out.println("La transacción fue rechazada");
+							tarjeta.anadirError();
+							if(tarjeta.tarjetaABorrar()){
+								System.out.println(tarjeta.borrar());
+							}
 							continue;
 						}
 						System.out.println("La transacción ha sido generada. Es la siguiente: " + transaccion);
@@ -99,7 +104,7 @@ public class mainTemporal implements Serializable{
 						} while (!entrada5.equals("2") && !entrada5.equals("1"));
 						Factura facturaNueva = transaccion.pagarFactura();
 						clienteActual.getFactura().set(clienteActual.getFactura().indexOf(factura), facturaNueva); //Remplaza la factura anterior con la factura nueva
-
+						tarjeta.setErroresActuales(0);//en caso de que no se rechaza la transacción, los errores de la tarjeta vuelven a 0
 
 						break;
 					}
@@ -309,37 +314,79 @@ public class mainTemporal implements Serializable{
 							if(!tarjeta_de_origen.puedeTransferir(monto)){
 								System.out.println("La tarjeta escogida no puede transferir esta cantidad de dinero");
 							}
+							tarjeta_de_origen.anadirError();
+							if(tarjeta_de_origen.tarjetaABorrar()){
+								System.out.println(tarjeta_de_origen.borrar());
+							}
 							System.out.println("La transacción ha sido rechazada");
 						}else if(!transaccion.isRechazado()){
 							System.out.println("Transacción realizada");
+							tarjeta_de_origen.setErroresActuales(0);
 						}
 						scanner.nextLine();
 						break;
 					}
 					case "7": {
-						System.out.println("Estas son las tarjetas débito que tiene disponibles:\n");
-						for (TarjetaDebito tarjeta : clienteActual.getTarjetasDebito()) {
-							System.out.println("Numero de tarjeta: " + tarjeta.getNoTarjeta());
-							System.out.println("Divisa de la tarjeta: " + tarjeta.getDivisa());
-							System.out.println("Saldo de la tarjeta: " + tarjeta.getSaldo());
-							System.out.println(tarjeta.getEstado());
-							System.out.println();
-						}
-						int eleccion_de_tarjeta_debito;
-						TarjetaDebito tarjeta_de_origen;
-
-						while (true) {
-							eleccion_de_tarjeta_debito = scanner.nextInt();
-
-							if (eleccion_de_tarjeta_debito > 0 && eleccion_de_tarjeta_debito <= clienteActual.getTarjetasDebito().size()) {
-								tarjeta_de_origen = clienteActual.getTarjetasDebito().get(eleccion_de_tarjeta_debito - 1);
+						System.out.println("1. Si quiere retirar\n2. Si quiere depositar");
+						boolean retirar;
+						while(true){
+							String respuesta = scanner.nextLine();
+							if(respuesta.equals("1")){
+								retirar = true;
 								break;
-							} else {
-								System.out.println("Por favor, elige un número válido de tarjeta.");
+							}else if(respuesta.equals("2")){
+								retirar = false;
+								break;
 							}
+							System.out.println("Por favor, ingrese 1 o 2");
 						}
-						System.out.println(tarjeta_de_origen);
-						
+						System.out.println("Por favor, ingrese la divisa que desea retirar");
+						ArrayList<Divisa> divisas = Banco.seleccionarDivisa(clienteActual);
+						if(divisas.isEmpty()){
+							System.out.println("Usted no tiene ningúna divisa que pueda utilizar en esta transacción");
+							continue;
+						}
+						for(Divisa d : divisas){
+							System.out.println(divisas.indexOf(d)+1 + ". " + d);
+						}
+						int eleccion_divisa = scanner.nextInt()-1;
+						Divisa divisa_escogida = divisas.get(eleccion_divisa);
+						ArrayList<Tarjeta> tarjetas = clienteActual.seleccionarTarjeta(divisa_escogida, retirar);
+						if(tarjetas.isEmpty()){
+							System.out.println("Usted no tiene ningúna tarjeta que pueda utilizar en esta transacción");
+							continue;
+						}
+						System.out.println("Por favor, escoga la tarjeta con la cual desea hacer la operación");
+						for(Tarjeta t : tarjetas){
+							System.out.println(tarjetas.indexOf(t)+1 + ". " + t);
+						}
+						int eleccion_tarjeta = scanner.nextInt()-1;
+						Tarjeta tarjeta = tarjetas.get(eleccion_tarjeta);
+						ArrayList<Canal> canales = Canal.seleccionarCanal(divisa_escogida, retirar);
+						if(canales.isEmpty()){
+							System.out.println("No hay ningún canal que pueda utilizar en esta transacción");
+							continue;
+						}
+						System.out.println("Por favor, escoga el canal con el cual desea hacer la operación");
+						for(Canal c : canales){
+							System.out.print(canales.indexOf(c)+1 + ". " + c);
+							System.out.println("Este canal tiene: " + c.getFondos(divisa_escogida) + " " + divisa_escogida + "\n");
+						}
+						int eleccion_canal = scanner.nextInt()-1;
+						Canal canal = canales.get(eleccion_canal);
+						System.out.println("Ingrese cuanto quiere retirar/depositar");
+						double monto = scanner.nextDouble();
+						Transaccion transaccionInicial = canal.generarTransaccion(tarjeta, monto, clienteActual, retirar);
+						Transaccion transaccionFinal = Transaccion.finalizarTransaccion(transaccionInicial, retirar);
+						if(transaccionFinal.isRechazado()){
+							if(!tarjeta.puedeTransferir(monto)) System.out.println("La tarjeta no puede transferir el monto necesario");
+							if(canal.getFondos(divisa_escogida) >= monto) System.out.println("El canal no tiene suficientes fondos para hacer la transacción");
+							System.out.println("La transacción ha sido rechazada");
+						} else{
+							System.out.println("Operación realizada con éxito");
+						}
+						scanner.nextLine();
+						break;
 					}
 					case "8":{
 						System.out.println("Escoga mediante qué criterio desea encontrar la transacción\n1. Divisa\n2. Cliente que recibió la transacción\n3. Para filtrar por tarjetas");

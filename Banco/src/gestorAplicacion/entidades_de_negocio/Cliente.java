@@ -5,6 +5,7 @@
 
 package gestorAplicacion.entidades_de_negocio;
 
+import java.io.Serial;
 import java.util.Arrays;
 
 import gestorAplicacion.infraestructura.*;
@@ -14,6 +15,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public class Cliente implements Serializable{
+	@Serial
 	private static final long serialVersionUID = 1L;
 
 	public final String nombre;
@@ -37,15 +39,6 @@ public class Cliente implements Serializable{
 		return "\n\nNombre: %s\nIdentificacion: %s\nNúmero de Tarjetas de Debito: %s\nNúmero de Tarjetas de Credito: %s\nBono Actual: %s".formatted(nombre, Id, tarjetasDebito.size(), tarjetasCredito.size(), bonoActual);
 	}
 
-	//Getters & Setters
-	public int getNoDeIdentificacion() {
-		return Id;
-	}
-
-	public void setNoDeIdentificacion(int noDeIdentificacion) {
-		this.Id = noDeIdentificacion;
-	}
-
 	public ArrayList<TarjetaDebito>  getTarjetasDebito() {
 		return tarjetasDebito;
 	}
@@ -53,29 +46,9 @@ public class Cliente implements Serializable{
 	public void agregarTarjetDebito(TarjetaDebito tarjetaDebito) {
 		this.tarjetasDebito.add(tarjetaDebito);
 	}
-	
-	public void agregarTarjetasDebito(ArrayList<TarjetaDebito> tarjetasDebito) {//Agregar varias tarjetas de un arrayList
-		this.tarjetasDebito.addAll(tarjetasDebito);
-	}
-	
+
 	public void agregarTarjetasDebito(TarjetaDebito... tarjetasDebito) {//Agregar varios tarjetas una por una Ej. (tarjeta1, tarjeta2, etc)
 		this.tarjetasDebito.addAll(Arrays.asList(tarjetasDebito));
-	}
-	
-	public void eliminarTarjetaDebito(TarjetaDebito tarjetaDebito) {
-		this.tarjetasDebito.remove(tarjetaDebito);
-	}
-	
-	public  void eliminarTarjetaDebito(ArrayList<TarjetaDebito> tarjetasDebito) {//Eliminar varias tarjetas de un ArrayList
-		for(TarjetaDebito tarjetaDebito: tarjetasDebito) {
-			this.tarjetasDebito.remove(tarjetaDebito);
-		}			
-	}
-	
-	public void eliminarTarjetaDebito(TarjetaDebito[] tarjetasDebito) {//Eliminar varias tarjetas de un Array Ej (tarjeta1, tarjeta2, etc)
-		for(TarjetaDebito tarjetaDebito: tarjetasDebito) {
-			this.tarjetasDebito.remove(tarjetaDebito);
-		}			
 	}
 
 	public ArrayList<TarjetaCredito> getTarjetasCredito() {
@@ -89,32 +62,21 @@ public class Cliente implements Serializable{
 		return retorno;
 	}
 
-	public void agregarTarjetasCredito(TarjetaCredito tarjetaCredito) {
-		this.tarjetasCredito.add(tarjetaCredito);
-	}
-	
-	public void agregarTarjetasCredito(ArrayList<TarjetaCredito> tarjetasCredito) {//Agregar varias tarjetas de un arrayList
-		this.tarjetasCredito.addAll(tarjetasCredito);
-	}
-	
 	public void agregarTarjetasCredito(TarjetaCredito... tarjetasCredito) {//Agregar varios tarjetas una por una Ej. (tarjeta1, tarjeta2, etc)
 		this.tarjetasCredito.addAll(Arrays.asList(tarjetasCredito));
 	}
-	
-	public void eliminarTarjetaCredito(TarjetaCredito tarjetaCredito) {
-		this.tarjetasCredito.remove(tarjetaCredito);
-	}
-	
-	public  void eliminarTarjetasCredito(ArrayList<TarjetaCredito> tarjetasCredito) {//Eliminar varias tarjetas de un ArrayList
-		for(TarjetaCredito tarjetaCredito: tarjetasCredito) {
-			this.tarjetasCredito.remove(tarjetaCredito);
-		}			
-	}
-	
-	public void eliminarTarjetasCredito(TarjetaCredito[] tarjetasCredito) {//Eliminar varias tarjetas de un Array Ej (tarjeta1, tarjeta2, etc)
-		for(TarjetaCredito tarjetaCredito: tarjetasCredito) {
-			this.tarjetasCredito.remove(tarjetaCredito);
-		}			
+
+	public ArrayList<Tarjeta> seleccionarTarjeta(Divisa divisa, boolean retirar){
+		ArrayList<Tarjeta> retorno = new ArrayList<>();
+		for(TarjetaDebito t : tarjetasDebito){
+			if(t.getDivisa().equals(divisa)) retorno.add(t);
+		}
+		if(!retirar){
+			for(TarjetaCredito t : tarjetasCredito){
+				if(t.getDivisa().equals(divisa)) retorno.add(t);
+			}
+		}
+		return retorno;
 	}
 
 	public ArrayList<Factura> getFactura() {
@@ -123,10 +85,6 @@ public class Cliente implements Serializable{
 
 	public void agregarFactura(Factura factura) {
 		this.facturas.add(factura);
-	}
-	
-	public void eliminarFactura(Factura factura) {
-		this.facturas.remove(factura);
 	}
 
 	public int getBonoActual() {
@@ -242,39 +200,7 @@ public class Cliente implements Serializable{
 		//Si no se retornó anteriormente, es porque el cliente no tiene tarjetas con dicha divisa
 		return null;
 	}
-	
-	public Divisa[] escogerDivisas2(Divisa origen, Divisa destino) {//Retorna un Array normal
-		Divisa[] divisas = new Divisa[2];
-		divisas[0] = origen;
-		divisas[1] = destino;
-		
-		//Verificar que el cliente tenga una tarjeta de origen con la divisa que escogió
-		for(TarjetaDebito tarjetaDebito: this.getTarjetasDebito()) {
-			if(!tarjetaDebito.isActiva())
-				continue;
-			if(!tarjetaDebito.tieneSaldo())
-				continue;
-			if(!tarjetaDebito.getDivisa().equals(origen))
-				continue;
-			//Si existe al menos una tarjeta que cumpla con lo requerido, retornamos.
-			return divisas;
-		}
-		
-		//Si no existen aun tarjetas con dicha divisa (ya que no se retornó) se recorren las tarjetas de credito
-		for(TarjetaCredito tarjetaCredito: this.getTarjetasCredito()) {
-			if(!tarjetaCredito.isActiva())
-				continue;
-			if(!tarjetaCredito.tieneSaldo())
-				continue;
-			if(!tarjetaCredito.getDivisa().equals(origen))
-				continue;
-			return divisas;
-		}
-		
-		//Si no se retornó anteriormente, es porque el cliente no tiene tarjetas con dicha divisa
-		return null;
-	}
-	
+
 	public ArrayList<Transaccion> verPeticiones(){
 		ArrayList<Transaccion> retorno = new ArrayList<>();
 		for(Transaccion t : Transaccion.getTransacciones()){
@@ -286,25 +212,6 @@ public class Cliente implements Serializable{
 			
 		}
 		return retorno;
-	}
-
-	public ArrayList<Canal> listarCanales(Divisa[] divisas) {//Recibe un array normal
-		Divisa divisaOrigen = divisas[0];
-		Divisa divisaDestino = divisas[1];
-		
-		ArrayList<Canal> canales = new ArrayList<>();
-		for(Canal canal: Banco.getCanales()) {
-			if(canal.tieneDivisa(divisaOrigen))
-				continue;
-			if(canal.tieneDivisa(divisaDestino))
-				continue;
-			if(canal.tieneFondosDeDivisa(divisaDestino))
-				continue;
-			canales.add(canal);
-		}
-		
-		//ordenar por menos impuestos de menor a mayor
-		return Banco.ordenarCanalesPorImpuestos(canales);
 	}
 
 	public ArrayList<Canal> listarCanales(ArrayList<Divisa> divisas) {//recibe un arrayList
