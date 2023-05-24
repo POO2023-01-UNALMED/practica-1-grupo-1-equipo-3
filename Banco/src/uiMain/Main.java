@@ -622,7 +622,7 @@ public class Main implements Serializable{
 			return;
 		}
 		Transaccion transaccion = transacciones.get(eleccion_transaccion);
-		System.out.println("Quiere conceder o negar esta petición ( si / no)");
+		System.out.println("Quiere conceder o negar esta petición (Si / No)");
 		boolean acceptar;
 		while(true){
 			scanner.nextLine();

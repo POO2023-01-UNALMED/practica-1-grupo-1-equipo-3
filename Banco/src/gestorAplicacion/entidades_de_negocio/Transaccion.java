@@ -57,6 +57,7 @@ public class Transaccion implements Serializable{
 		}
 		this.cantidad = cantidad;
 		this.canal = canal;
+		divisa = tarjeta.getDivisa();
 		pendiente = true;
 		retornable = false;
 	}
@@ -94,6 +95,7 @@ public class Transaccion implements Serializable{
 		this.tarjetaObjetivo = transaccion.tarjetaObjetivo;
 		this.cantidad = transaccion.cantidad;
 		this.mensaje = mensaje;
+		this.divisa = tarjetaOrigen.getDivisa();
 		pendiente = true;
 		rechazado = false;
 		retornable = false;

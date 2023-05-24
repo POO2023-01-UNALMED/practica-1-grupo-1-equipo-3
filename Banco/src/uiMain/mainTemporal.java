@@ -102,6 +102,7 @@ public class mainTemporal implements Serializable{
 							System.out.println("Quiere continuar con el proceso?\n1. Si\n2. No");
 							entrada5 = scanner.nextLine();
 						} while (!entrada5.equals("2") && !entrada5.equals("1"));
+						
 						Factura facturaNueva = transaccion.pagarFactura();
 						clienteActual.getFactura().set(clienteActual.getFactura().indexOf(factura), facturaNueva); //Remplaza la factura anterior con la factura nueva
 						tarjeta.setErroresActuales(0);//en caso de que no se rechaza la transacción, los errores de la tarjeta vuelven a 0
