@@ -66,15 +66,15 @@ public class Main implements Serializable{
 			opcion = readInt();
 
 			switch (opcion) {
-				case 1 -> pagarFactura(banco);
-				case 2 -> cambiarDivisa(banco);
-				case 3 -> retirarOrDepositar(banco);
+				case 1 -> pagarFactura();
+				case 2 -> cambiarDivisa();
+				case 3 -> retirarOrDepositar();
 				case 4 -> solicitarTarjetaCredito(banco);
-				case 5 -> deshacerTransaccion(banco);
-				case 6 -> verPeticiones(banco);
-				case 7 -> verFacturas(banco);
-				case 8 -> verTarjetasDisponibles(banco);
-				case 9 -> hacerTransferencia(banco);
+				case 5 -> deshacerTransaccion();
+				case 6 -> verPeticiones();
+				case 7 -> verFacturas();
+				case 8 -> verTarjetasDisponibles();
+				case 9 -> hacerTransferencia();
 				case 0 -> salir(banco);
 				default -> System.out.println("Digita una opción válida\n");
 			}
@@ -84,43 +84,43 @@ public class Main implements Serializable{
 	/**
 	 * Permite escoger el usuario sobre el cual se realizará la funcionalidad
 	 * */
-	static Cliente elejirUsuario(Banco banco) {
+	static Cliente elejirUsuario() {
 		System.out.println("Elige el usuario:");
 		
 		//Se listan los clientes del banco
-		for(Cliente cliente : banco.getClientes()) {
-			System.out.println(banco.getClientes().indexOf(cliente) + 1 + ". " + cliente.nombre);
+		for(Cliente cliente : Banco.getClientes()) {
+			System.out.println(Banco.getClientes().indexOf(cliente) + 1 + ". " + cliente.nombre);
 		}
-		System.out.println(banco.getClientes().size() + 1 + ". [ Atras ]");
+		System.out.println(Banco.getClientes().size() + 1 + ". [ Atras ]");
 		
 		int opcion = readInt();
 		Cliente clienteEscogido = null;
 		
 		do {
-			if(opcion > 0 && opcion <= banco.getClientes().size()){
-				clienteEscogido = banco.getClientes().get(opcion - 1);
+			if(opcion > 0 && opcion <= Banco.getClientes().size()){
+				clienteEscogido = Banco.getClientes().get(opcion - 1);
 				break;
-			} else if (opcion == banco.getClientes().size() + 1){
+			} else if (opcion == Banco.getClientes().size() + 1){
 				return null;
 			}
 			else {
 				System.out.println("Digita una opción válida:");
 				opcion = readInt();
 			}
-		}while(opcion != banco.getClientes().size() + 1);
+		}while(opcion != Banco.getClientes().size() + 1);
 		
 		return clienteEscogido;
 	}
 		
-	static void pagarFactura(Banco banco){				
-		Cliente clienteEscogido = elejirUsuario(banco);
+	static void pagarFactura(){
+		Cliente clienteEscogido = elejirUsuario();
 		
 		if(clienteEscogido == null)
 			return;
 		
 		if (clienteEscogido.listarFacturas().isEmpty()) {
 			System.out.println("No hay facturas por pagar\n");
-			pagarFactura(banco);//Se le permite al usuario escoger otro cliente
+			pagarFactura();//Se le permite al usuario escoger otro cliente
 			return;//return para asegurarnos de salir del bucle de recursión
 		} else {
 			System.out.println("Escoge la factura que deseas pagar:\n");
@@ -165,10 +165,10 @@ public class Main implements Serializable{
 		String opcion3 = readString();
 		
 		while (!opcion3.equalsIgnoreCase("Si") && !opcion3.equalsIgnoreCase("No")) {
-			if(!opcion3.equalsIgnoreCase("") && opcion3.equalsIgnoreCase("No"))
+			if(opcion3.equalsIgnoreCase("No"))
 				break;
 			
-			if(!opcion3.equalsIgnoreCase("") && opcion3.equalsIgnoreCase("Si"))
+			if(opcion3.equalsIgnoreCase("Si"))
 				break;
 			
 			if(!opcion3.equalsIgnoreCase("") && !opcion3.equalsIgnoreCase("Si") && !opcion3.equalsIgnoreCase("No"))
@@ -189,8 +189,8 @@ public class Main implements Serializable{
 		System.out.println(transaccion);
 	}
 	
-	static void cambiarDivisa(Banco banco) {
-		Cliente clienteEscogido = elejirUsuario(banco);
+	static void cambiarDivisa() {
+		Cliente clienteEscogido = elejirUsuario();
 		
 		if(clienteEscogido == null)
 			return;
@@ -305,8 +305,8 @@ public class Main implements Serializable{
 		System.out.println(transaccion);
 	}
 	
-	static void retirarOrDepositar(Banco banco) {
-		Cliente clienteEscogido = elejirUsuario(banco);
+	static void retirarOrDepositar() {
+		Cliente clienteEscogido = elejirUsuario();
 			
 		if(clienteEscogido == null)
 			return;
@@ -407,7 +407,7 @@ public class Main implements Serializable{
 	}
 	
 	static void solicitarTarjetaCredito(Banco banco) {
-		Cliente clienteEscogido = elejirUsuario(banco);
+		Cliente clienteEscogido = elejirUsuario();
 		
 		if(clienteEscogido == null)
 			return;
@@ -448,8 +448,8 @@ public class Main implements Serializable{
 		scanner.nextLine();
 	}
 	
-	static void deshacerTransaccion(Banco banco) {
-		Cliente clienteEscogido = elejirUsuario(banco);
+	static void deshacerTransaccion() {
+		Cliente clienteEscogido = elejirUsuario();
 		
 		if(clienteEscogido == null)
 			return;
@@ -509,8 +509,8 @@ public class Main implements Serializable{
 		Banco.generarPeticion(transaccion, mensaje);
 	}
 	
-	static void hacerTransferencia(Banco banco) {
-		Cliente clienteEscogido = elejirUsuario(banco);
+	static void hacerTransferencia() {
+		Cliente clienteEscogido = elejirUsuario();
 		
 		if(clienteEscogido == null)
 			return;
@@ -605,8 +605,8 @@ public class Main implements Serializable{
 		}
 	}
 	
-	static void verPeticiones(Banco banco) {
-		Cliente clienteEscogido = elejirUsuario(banco);
+	static void verPeticiones() {
+		Cliente clienteEscogido = elejirUsuario();
 		
 		if(clienteEscogido == null)
 			return;
@@ -640,8 +640,8 @@ public class Main implements Serializable{
 		Transaccion transNueva = Transaccion.completarTransaccion(transaccion, acceptar);
 		Transaccion.getTransacciones().set(Transaccion.getTransacciones().indexOf(transaccion), transNueva); //Reemplaza la transacción anterior con la nueva transacción
 	}
-	static void verFacturas(Banco banco) {
-		Cliente clienteEscogido = elejirUsuario(banco);
+	static void verFacturas() {
+		Cliente clienteEscogido = elejirUsuario();
 				
 		if(clienteEscogido == null)
 			return;
@@ -655,8 +655,8 @@ public class Main implements Serializable{
 		}
 	}
 	
-	static void verTarjetasDisponibles(Banco banco) {
-		Cliente clienteEscogido = elejirUsuario(banco);
+	static void verTarjetasDisponibles() {
+		Cliente clienteEscogido = elejirUsuario();
 		
 		if(clienteEscogido == null)
 			return;
