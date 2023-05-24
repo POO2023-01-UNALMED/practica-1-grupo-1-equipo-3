@@ -18,18 +18,18 @@ public class Serializador {
 		File[] docs = rutaTemp.listFiles();
 		PrintWriter pw;
 		
-		try {
-            // Crear archivo de clientes
-            File archivoClientes = new File(rutaTemp, "clientes.dat");
-            archivoClientes.createNewFile();
-
-            // Crear archivo de canales
-            File archivoCanales = new File(rutaTemp, "canales.dat");
-            archivoCanales.createNewFile();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+//		try {
+//            // Crear archivo de clientes
+//            File archivoClientes = new File(rutaTemp, "clientes.dat");
+//            archivoClientes.createNewFile();
+//
+//            // Crear archivo de canales
+//            File archivoCanales = new File(rutaTemp, "canales.dat");
+//            archivoCanales.createNewFile();
+//
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
 		
 		for(File file: docs) {
 			try {
