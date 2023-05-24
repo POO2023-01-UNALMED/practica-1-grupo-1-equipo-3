@@ -1,5 +1,6 @@
 package uiMain;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Objects;
@@ -17,6 +18,7 @@ import gestorAplicacion.tarjetas.Tarjeta;
 import gestorAplicacion.tarjetas.TarjetaCredito;
 
 public class Main implements Serializable{
+	@Serial
 	private static final long serialVersionUID = 1L;
 	static Scanner scanner = new Scanner(System.in);
 	
@@ -62,29 +64,19 @@ public class Main implements Serializable{
 			System.out.println("0. Salir");
 			
 			opcion = readInt();
-			
-			switch(opcion) {
-				case 1: pagarFactura(banco); 
-					break;
-				case 2: cambiarDivisa(banco);
-					break;
-				case 3: retirarOrDepositar(banco);
-					break;
-				case 4: solicitarTarjetaCredito(banco);
-					break;
-				case 5: deshacerTransaccion(banco);
-					break;
-				case 6: verPeticiones(banco);
-					break;
-				case 7: verFacturas(banco);
-					break;
-				case 8: verTarjetasDisponibles(banco);
-					break;
-				case 9: hacerTransferencia(banco);
-					break;
-				case 0: salir(banco);
-					break;
-				default: System.out.println("Digita una opción válida\n");
+
+			switch (opcion) {
+				case 1 -> pagarFactura(banco);
+				case 2 -> cambiarDivisa(banco);
+				case 3 -> retirarOrDepositar(banco);
+				case 4 -> solicitarTarjetaCredito(banco);
+				case 5 -> deshacerTransaccion(banco);
+				case 6 -> verPeticiones(banco);
+				case 7 -> verFacturas(banco);
+				case 8 -> verTarjetasDisponibles(banco);
+				case 9 -> hacerTransferencia(banco);
+				case 0 -> salir(banco);
+				default -> System.out.println("Digita una opción válida\n");
 			}
 		}while (opcion != 0);
 	}	
@@ -114,7 +106,6 @@ public class Main implements Serializable{
 			else {
 				System.out.println("Digita una opción válida:");
 				opcion = readInt();
-				continue;
 			}
 		}while(opcion != banco.getClientes().size() + 1);
 		
@@ -214,9 +205,7 @@ public class Main implements Serializable{
 		int opcion = readInt();//Obtiene el numero de la divisa escogida
 		
 		//mientras el valor sea diferente del de las divisas listadas
-		while(true) {
-			if(opcion > 0 && opcion <= Divisa.values().length)
-				break;
+		while (opcion <= 0 || opcion > Divisa.values().length) {
 			System.out.println("Escoge un valor válido:");
 			opcion = readInt();
 		}
@@ -229,10 +218,8 @@ public class Main implements Serializable{
 		}
 		
 		opcion = readInt();//Escogiendo divisa destino
-		
-		while(true) {
-			if(opcion > 0 && opcion <= Divisa.values().length)
-				break;
+
+		while (opcion <= 0 || opcion > Divisa.values().length) {
 			System.out.println("Escoge un valor válido:");
 			opcion = readInt();
 		}
@@ -332,19 +319,14 @@ public class Main implements Serializable{
 		boolean retirar = false;
 		
 		do {
-			switch(opcionString) {
-				case 1:
-					retirar = true;
-					break;
-				case 2:
-					retirar = false;
-					break;
-				case 0:
-					opcionString = readInt();
-					break;
-				default:
+			switch (opcionString) {
+				case 1 -> retirar = true;
+				case 2 -> retirar = false;
+				case 0 -> opcionString = readInt();
+				default -> {
 					System.out.println("Escoge un valor válido");
 					opcionString = readInt();
+				}
 			}
 		}while(opcionString != 1 && opcionString != 2);
 		
@@ -361,9 +343,7 @@ public class Main implements Serializable{
 		}
 		
 		int eleccion_divisa = readInt();
-		while(true) {
-			if(eleccion_divisa > 0 && eleccion_divisa <= divisas.size())
-				break;
+		while (eleccion_divisa <= 0 || eleccion_divisa > divisas.size()) {
 			System.out.println("Escoge un valor válido:");
 			eleccion_divisa = readInt();
 		}
@@ -382,10 +362,8 @@ public class Main implements Serializable{
 		}
 		
 		int eleccion_tarjeta = readInt();
-		
-		while(true) {
-			if(eleccion_tarjeta > 0 && eleccion_tarjeta <= tarjetas.size())
-				break;
+
+		while (eleccion_tarjeta <= 0 || eleccion_tarjeta > tarjetas.size()) {
 			System.out.println("Escoge un valor válido:");
 			eleccion_tarjeta = readInt();
 		}	
@@ -405,10 +383,8 @@ public class Main implements Serializable{
 		}
 		
 		int eleccion_canal = readInt();
-		
-		while(true) {
-			if(eleccion_canal > 0 && eleccion_canal <= canales.size())
-				break;
+
+		while (eleccion_canal <= 0 || eleccion_canal > canales.size()) {
 			System.out.println("Escoge un valor válido:");
 			eleccion_tarjeta = readInt();
 		}	
@@ -470,7 +446,6 @@ public class Main implements Serializable{
 		TarjetaCredito.anadirTarjetaCredito(tarjetasDisponibles.get(opcion), clienteEscogido, bono);
 
 		scanner.nextLine();
-		return;
 	}
 	
 	static void deshacerTransaccion(Banco banco) {
