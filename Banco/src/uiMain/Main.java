@@ -86,7 +86,6 @@ public class Main implements Serializable{
 	 * */
 	static Cliente elejirUsuario() {
 		System.out.println("Elige el usuario:");
-		
 		//Se listan los clientes del banco
 		for(Cliente cliente : Banco.getClientes()) {
 			System.out.println(Banco.getClientes().indexOf(cliente) + 1 + ". " + cliente.NOMBRE);
@@ -304,15 +303,10 @@ public class Main implements Serializable{
 			opcion = readInt() - 1;
 			tarjetasEscogidas.add(0, tarjetas.get(opcion));
 		}
-<<<<<<< HEAD
-		
 
-		
 		boolean disponibleDebito = false;//Servirá para comprobar que el usuario si tenga tarjetas de debito con la divisaDestino
-=======
 
 		// Escoger la tarjeta de destino
->>>>>>> 3140e2f0fd2d4a39af32499426109e8175b03f29
 		System.out.println("Escoja la tarjeta con la divisa de Destino:\n");
 		for (Tarjeta tarjeta : tarjetas) {
 			if (tarjeta instanceof TarjetaCredito) // La divisa de destino solo puede ser una tarjeta de débito
@@ -322,18 +316,12 @@ public class Main implements Serializable{
 			System.out.println(tarjetas.indexOf(tarjeta) + 1 + ". " + tarjeta);
 			disponibleDebito = true;
 		}
-<<<<<<< HEAD
 		
 		if(!disponibleDebito) {
 			System.out.println("Parece que no tienes tarjetas de debito acorde a la divisa de destino que escogiste...");
 			return;
 		}
-			
-		opcion = readInt() - 1;
-=======
-
 		opcion = readInt() - 1; // Obtener la opción de tarjeta de destino seleccionada
->>>>>>> 3140e2f0fd2d4a39af32499426109e8175b03f29
 		tarjetasEscogidas.add(tarjetas.get(opcion));
 
 		// Verificar que la tarjeta de destino seleccionada tenga la divisa correspondiente
