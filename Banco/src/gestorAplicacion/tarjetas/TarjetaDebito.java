@@ -60,9 +60,7 @@ public class TarjetaDebito extends Tarjeta{
 
 	public String borrar(){
 		for(Cliente c : Banco.getClientes()){ //En caso de que queramos borrar, necesitamos quitar la tarjeta de todas los clientes que la tienen
-			if(c.getTarjetasDebito().contains(this)){
-				c.getTarjetasDebito().remove(this);
-			}
+			c.getTarjetasDebito().remove(this);
 		}
 		return "La tarjeta de crédito #" + noTarjeta + " será borrada, ya que tiene demasiadas transacciones rechazadas"; 
 	}
@@ -80,7 +78,6 @@ public class TarjetaDebito extends Tarjeta{
 		} else if (saldo >= cantidad && t instanceof TarjetaCredito && ((TarjetaCredito) t).getEspacio() >= cantidad) {
 			this.saldo -= Math.floor(100 * cantidad * t.divisa.getValor() / this.divisa.getValor()) / 100;
 			((TarjetaCredito) t).setCredito(cantidad);
-		} else {
 		}
 	}
 

@@ -5,12 +5,13 @@
 
 package gestorAplicacion.infraestructura;
 
+import gestorAplicacion.entidades_de_negocio.Divisa;
+import gestorAplicacion.entidades_de_negocio.Transaccion;
+
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.EnumMap;
-import gestorAplicacion.entidades_de_negocio.*;
-import gestorAplicacion.tarjetas.*;
 
 public class Canal implements Serializable {
 	@Serial

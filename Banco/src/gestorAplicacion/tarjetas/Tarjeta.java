@@ -50,10 +50,6 @@ public abstract class Tarjeta implements Serializable, BorrarTarjeta{
 		return divisa;
 	}
 
-	public int getErroresActuales(){
-		return erroresActuales;
-	}
-
 	/**
 	 * Añade una transacción rechazada y actualiza el estado de la tarjeta si es necesario.
 	 */

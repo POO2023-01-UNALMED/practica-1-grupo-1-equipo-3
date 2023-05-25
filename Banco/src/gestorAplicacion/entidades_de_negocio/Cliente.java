@@ -43,10 +43,6 @@ public class Cliente implements Serializable{
 		return tarjetasDebito;
 	}
 
-	public void agregarTarjetDebito(TarjetaDebito tarjetaDebito) {
-		this.tarjetasDebito.add(tarjetaDebito);
-	}
-
 	public void agregarTarjetasDebito(TarjetaDebito... tarjetasDebito) {//Agregar varios tarjetas una por una Ej. (tarjeta1, tarjeta2, etc)
 		this.tarjetasDebito.addAll(Arrays.asList(tarjetasDebito));
 	}
