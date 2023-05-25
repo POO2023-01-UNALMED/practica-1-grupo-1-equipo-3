@@ -1,9 +1,0 @@
-//Este archivo fue creado con el fin de describir de mejor manera los cambios realizados en los commits
-
-- Cambio en algunos toStrring, solo por legibilidad.
-- Cambio en atributos de la clase Tarjeta a protected, para cumplir con lo del documento.
-- Listar tarjetas ahora también verifica que los fondos no sean 0 y el credito no haya alcanzado el limite, ademas de otras validaciones
-
-Pendiente para la funcionalidad de pagar factura:
-Agregar mas validaciones por las que una transaccion pueda ser rechazada
-Aun falta avisarle al usuario cuando las transacciones no fueron exitosa
