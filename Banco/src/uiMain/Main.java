@@ -259,13 +259,24 @@ public class Main implements Serializable{
 			tarjetasEscogidas.add(0, tarjetas.get(opcion));
 		}
 		
+
+		
+		boolean disponibleDebito = false;//Servirá para comprobar que el usuario si tenga tarjetas de debito con la divisaDestino
 		System.out.println("Escoja la tarjeta con la divisa de Destino:\n");
 		for (Tarjeta tarjeta : tarjetas) {
 			if (tarjeta instanceof TarjetaCredito)//La divisa de destino solo puede ser una tarjeta debito
 				continue;
+			if(!tarjeta.getDivisa().equals(divisaDestino))
+				continue;
 			System.out.println(tarjetas.indexOf(tarjeta) + 1 + ". " + tarjeta);
+			disponibleDebito = true;
 		}
-
+		
+		if(!disponibleDebito) {
+			System.out.println("Parece que no tienes tarjetas de debito acorde a la divisa de destino que escogiste...");
+			return;
+		}
+			
 		opcion = readInt() - 1;
 		tarjetasEscogidas.add(tarjetas.get(opcion));
 		
@@ -315,7 +326,7 @@ public class Main implements Serializable{
 		System.out.println("1. Retirar");
 		System.out.println("2. Depositar");
 		
-		int opcionString = 0;
+		int opcionString = readInt();
 		boolean retirar = false;
 		
 		do {
@@ -330,13 +341,15 @@ public class Main implements Serializable{
 			}
 		}while(opcionString != 1 && opcionString != 2);
 		
+		String proceso = retirar ? "Retiro": "Depósito";
+		
 		ArrayList<Divisa> divisas = Banco.seleccionarDivisa(clienteEscogido);
 		if(divisas.isEmpty()){
 			System.out.println("No tienes ningúna divisa que puedas utilizar en esta transacción");
 			return;
 		}
 		
-		System.out.println("Por favor, escoge la divisa que deseas retirar:");
+		System.out.println("Por favor, escoge la divisa con la que quieres realizar el " + proceso.toLowerCase() + ":");
 		
 		for(Divisa d : divisas){
 			System.out.println(divisas.indexOf(d)+1 + ". " + d);
@@ -376,10 +389,9 @@ public class Main implements Serializable{
 			return;
 		}
 		
-		System.out.println("Por favor, escoge el canal con el cual deseas hacer la operación");
+		System.out.println("Por favor, escoge el canal con el cual deseas hacer la operación\n");
 		for(Canal c : canales){
-			System.out.print(canales.indexOf(c)+1 + ". " + c);
-			System.out.println("Este canal tiene: " + c.getFondos(divisa_escogida) + " " + divisa_escogida + "\n");
+			System.out.print(canales.indexOf(c)+1 + ". " + c + "\n");
 		}
 		
 		int eleccion_canal = readInt();
@@ -392,18 +404,47 @@ public class Main implements Serializable{
 		
 		Canal canal = canales.get(eleccion_canal);
 		
-		System.out.println("Ingresa cuanto quieres retirar/depositar");
+		System.out.println("Ingresa de cuanto será el " + proceso.toLowerCase() + ":");
 		double monto = readDouble();
-		Transaccion transaccionInicial = canal.generarTransaccion(tarjeta, monto, clienteEscogido, retirar);
-		Transaccion transaccionFinal = Transaccion.finalizarTransaccion(transaccionInicial, retirar);
-		if(transaccionFinal.isRechazado()){
-			if(!tarjeta.puedeTransferir(monto)) System.out.println("La tarjeta no puede transferir el monto necesario");
-			if(canal.getFondos(divisa_escogida) >= monto) System.out.println("El canal no tiene suficientes fondos para hacer la transacción");
-			System.out.println("La transacción ha sido rechazada");
-		} else{
-			System.out.println("Operación realizada con éxito");
-//			System.out.println(transaccionFinal);
+		Transaccion transaccionInicial = Transaccion.crearTransaccion(clienteEscogido, tarjeta, monto, canal, retirar);
+		
+		System.out.println("La transacción ha sido generada: \n" + 
+							"Proceso: " + proceso +
+							"\n" + transaccionInicial + "\n");
+		
+		if(transaccionInicial.isRechazado()){
+			if(!tarjeta.puedeTransferir(monto)) 
+				System.out.println("La tarjeta no puede transferir el monto necesario");
+			if(canal.getFondos(divisa_escogida) < monto) 
+				System.out.println("El canal no tiene suficientes fondos para hacer el " + proceso.toLowerCase());
+			return;
+		} 
+		
+		System.out.println("\n¿Estás seguro que deseas continuar con el proceso?\n(Si / No)");
+		String opcion = readString();
+		
+		while (!opcion.equalsIgnoreCase("Si") && !opcion.equalsIgnoreCase("No")) {
+			if(opcion.equalsIgnoreCase("No"))
+				break;
+			
+			if(opcion.equalsIgnoreCase("Si"))
+				break;
+			
+			if(!opcion.equalsIgnoreCase("") && !opcion.equalsIgnoreCase("Si") && !opcion.equalsIgnoreCase("No"))
+				System.out.println("Digita un valor válido");
+			
+			opcion = readString();
 		}
+		
+		if(opcion.equalsIgnoreCase("No")) {
+			System.out.println("¡El " + proceso.toLowerCase() + " fue cancelado!");
+			return;
+		}
+		
+		Transaccion transaccionFinal = Canal.finalizarTransaccion(transaccionInicial, retirar);
+
+		System.out.println("\n" + proceso + " realizado con éxito");
+		System.out.println(transaccionFinal);
 	}
 	
 	static void solicitarTarjetaCredito(Banco banco) {
@@ -444,8 +485,6 @@ public class Main implements Serializable{
 			return;
 		
 		TarjetaCredito.anadirTarjetaCredito(tarjetasDisponibles.get(opcion), clienteEscogido, bono);
-
-		scanner.nextLine();
 	}
 	
 	static void deshacerTransaccion() {

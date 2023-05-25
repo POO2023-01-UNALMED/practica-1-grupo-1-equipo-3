@@ -60,6 +60,10 @@ public class Canal implements Serializable {
 	}
 
 	// Getters y Setters
+	
+	public String getTipoCanal() {
+		return tipoCanal;
+	}	
 
 	/**
 	 * Establece los fondos disponibles para una divisa específica en el canal.
@@ -70,6 +74,7 @@ public class Canal implements Serializable {
 	public void setFondos(Divisa divisa, double monto) {
 		this.fondosPorDivisa.put(divisa, monto);
 	}
+	
 
 	/**
 	 * Obtiene los fondos disponibles para una divisa específica en el canal.
@@ -162,33 +167,44 @@ public class Canal implements Serializable {
 	public static ArrayList<Canal> seleccionarCanal(Divisa divisa, boolean retirar) {
 		ArrayList<Canal> retorno = new ArrayList<>();
 		if (retirar) {
-			for (Canal c : Banco.getCanales()) {
-				if (!c.tieneDivisa(divisa)) {
-					retorno.add(c);
+			for (Canal canal : Banco.getCanales()) {
+				if (!canal.tieneDivisa(divisa)) {
+					retorno.add(canal);
 				}
 			}
 		} else {
-			for (Canal c : Banco.getCanales()) {
-				if (!c.tieneDivisa(divisa)) {
-					if (!c.tieneFondosDeDivisa(divisa)) { // Estos chequeos deben hacerse uno después del otro, de otra manera, existe la posibilidad de que el programa lance un error en caso de que el canal no tenga la divisa
-						retorno.add(c);
+			for (Canal canal : Banco.getCanales()) {
+				if (!canal.tieneDivisa(divisa)) {
+					if(canal.getTipoCanal().equals("Cajero"))//No se puede depositar en un cajero
+						continue;
+					if (!canal.tieneFondosDeDivisa(divisa)) { // Estos chequeos deben hacerse uno después del otro, de otra manera, existe la posibilidad de que el programa lance un error en caso de que el canal no tenga la divisa
+						retorno.add(canal);
 					}
 				}
 			}
 		}
 		return retorno;
 	}
+	
+	public static Transaccion finalizarTransaccion(Transaccion transaccion, boolean retirar){
+		if (transaccion.isRechazado())
+			transaccion.getTarjetaOrigen().anadirTransaccionRechazada();
 
-	/**
-	 * Genera una nueva transacción con los parámetros especificados.
-	 *
-	 * @param tarjeta  La tarjeta asociada a la transacción.
-	 * @param monto    El monto de la transacción.
-	 * @param cliente  El cliente que realiza la transacción.
-	 * @param retirar  true si la operación es retirar dinero, false si es depositar dinero.
-	 * @return La nueva transacción generada.
-	 */
-	public Transaccion generarTransaccion(Tarjeta tarjeta, double monto, Cliente cliente, boolean retirar) {
-		return new Transaccion(cliente, tarjeta, monto, this, retirar);
-	}
+		if (!transaccion.isPendiente())
+			return null;
+		
+		if(retirar) {
+			//Se saca dinero de la tarjeta y del canal
+			transaccion.getTarjetaOrigen().sacarDinero(transaccion.getCantidad()); // Sacando dinero de la tarjeta
+			transaccion.getCanal().setFondos(transaccion.getDivisa(), transaccion.getCanal().getFondos(transaccion.getDivisa()) - transaccion.getCantidad()); // Sacando dinero de la divisa del canal
+		}
+		else {
+			//se deposita dinero al canal y a la tarjeta 
+			transaccion.getTarjetaObjetivo().introducirDinero(transaccion.getCantidad());
+			transaccion.getCanal().setFondos(transaccion.getDivisa(), transaccion.getCanal().getFondos(transaccion.getDivisa()) + transaccion.getCantidad()); // Ingresando el dinero de la divisa de origen al canal
+		}
+		transaccion.setPendiente(false);
+		
+		return new Transaccion(transaccion, retirar);
+	}	
 }

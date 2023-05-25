@@ -47,7 +47,7 @@ public class Transaccion implements Serializable{
 		transacciones.add(this);
 	}
 
-	public Transaccion(Cliente cliente, Tarjeta tarjeta, double cantidad, Canal canal, boolean retirar){ // Se utiliza en la funcionalidad "retirar o depositar dinero"
+	public Transaccion(Cliente cliente, Tarjeta tarjeta, double cantidad, double impuesto, Canal canal, boolean retirar, boolean rechazado){ // Se utiliza en la funcionalidad "retirar o depositar dinero"
 		if(retirar){
 			this.clienteOrigen = cliente;
 			this.tarjetaOrigen = tarjeta;
@@ -56,9 +56,10 @@ public class Transaccion implements Serializable{
 			this.tarjetaObjetivo = (TarjetaDebito)tarjeta;
 		}
 		this.cantidad = cantidad;
+		this.impuesto = impuesto;
 		this.canal = canal;
 		divisa = tarjeta.getDivisa();
-		pendiente = true;
+		this.rechazado = rechazado;
 		retornable = false;
 	}
 
@@ -225,15 +226,86 @@ public class Transaccion implements Serializable{
 			return "El cliente " + clienteOrigen.nombre + " quisiera deshacer una transacción por " + Banco.formatearNumero(cantidad) + " " + tarjetaOrigen.getDivisa() + " recibidos por la tarjeta #" + tarjetaObjetivo.getNoTarjeta() + "\nSu mensaje es: " + mensaje;
 		}
 		if(rechazado){
-			return "Transacción Rechazada\nTotal: " + Banco.formatearNumero(cantidad) + "\nTarjeta de origen: #" + tarjetaOrigen.getNoTarjeta() + "\nTarjeta de destino: #" + tarjetaObjetivo.getNoTarjeta() + "\nProveniente de: " + clienteOrigen.nombre + "\n";
-		} else if (pendiente){
-			return "Transacción Pendiente\nAprobada por un total de: " + Banco.formatearNumero(cantidad) + "\nTarjeta de origen: #" + tarjetaOrigen.getNoTarjeta() + "\nTarjeta de destino: #" + tarjetaObjetivo.getNoTarjeta() + "\nProveniente de: " + clienteOrigen.nombre + "\n";
-		} else {
-			if (impuesto != 0) {
-				return "Transacción aprobada con éxito\nTotal: " + Banco.formatearNumero(cantidad) + "\nImpuesto: " + impuesto + "\nTarjeta de origen: #" + tarjetaOrigen.getNoTarjeta() + "\nTarjeta de destino: #" + tarjetaObjetivo.getNoTarjeta() + "\nProveniente de: " + clienteOrigen.nombre + "\n";
+			if(tarjetaObjetivo == null) {
+				return "Transacción Rechazada\nTotal: " + Banco.formatearNumero(cantidad) + 
+						"\nTarjeta: #" + tarjetaOrigen.getNoTarjeta();
+			}
+			if(tarjetaOrigen == null) {
+				return "Transacción Rechazada\nTotal: " + Banco.formatearNumero(cantidad) + 
+						"\nTarjeta de destino: #" + tarjetaObjetivo.getNoTarjeta();			}
+			if(clienteOrigen == null) {
+				return "Transacción Rechazada\nTotal: " + Banco.formatearNumero(cantidad) + 
+					"\nTarjeta de origen: #" + tarjetaOrigen.getNoTarjeta() + 
+					"\nTarjeta de destino: #" + tarjetaObjetivo.getNoTarjeta(); 
 			}
 			else {
-				return "Transacción aprobada con éxito\nTotal: " + Banco.formatearNumero(cantidad) + "\nTarjeta de origen: #" + tarjetaOrigen.getNoTarjeta() + "\nTarjeta de destino: #" + tarjetaObjetivo.getNoTarjeta() + "\nProveniente de: " + clienteOrigen.nombre + "\n";				
+				return "Transacción Rechazada\nTotal: " + Banco.formatearNumero(cantidad) + 
+					"\nTarjeta de origen: #" + tarjetaOrigen.getNoTarjeta() + 
+					"\nTarjeta de destino: #" + tarjetaObjetivo.getNoTarjeta() + 
+					"\nProveniente de: " + clienteOrigen.nombre + "\n";
+			}
+		} else if (pendiente){
+			if(tarjetaObjetivo == null) {
+				return "Transacción Pendiente\nAprobada por un total de: " + Banco.formatearNumero(cantidad) + 
+						"\nTarjeta: #" + tarjetaOrigen.getNoTarjeta();
+			}
+			if(tarjetaOrigen == null) {
+				return "Transacción Pendiente\nAprobada por un total de: " + Banco.formatearNumero(cantidad) + 
+						"\nTarjeta de destino: #" + tarjetaObjetivo.getNoTarjeta();
+			}
+			if(clienteOrigen == null) {
+				return "Transacción Pendiente\\nAprobada por un total de: " + Banco.formatearNumero(cantidad) + 
+					"\nTarjeta de origen: #" + tarjetaOrigen.getNoTarjeta() + 
+					"\nTarjeta de destino: #" + tarjetaObjetivo.getNoTarjeta(); 
+			}
+			else {
+				return "Transacción Pendiente\nAprobada por un total de: " + Banco.formatearNumero(cantidad) + 
+						"\nTarjeta de origen: #" + tarjetaOrigen.getNoTarjeta() + 
+						"\nTarjeta de destino: #" + tarjetaObjetivo.getNoTarjeta() + 
+						"\nProveniente de: " + clienteOrigen.nombre + "\n";				
+			}
+		} else {
+			if (impuesto != 0) {
+				if(tarjetaObjetivo == null) {
+					return "Transacción aprobada con éxito\nTotal: " + Banco.formatearNumero(cantidad) + 
+							"\nTarjeta: #" + tarjetaOrigen.getNoTarjeta();
+				}
+				if(tarjetaOrigen == null) {
+					return "Transacción aprobada con éxito\\nTotal: " + Banco.formatearNumero(cantidad) + 
+							"\nTarjeta de destino: #" + tarjetaObjetivo.getNoTarjeta();
+				}
+				if(clienteOrigen == null) {
+					return "Transacción aprobada con éxito\\\\nTotal: " + Banco.formatearNumero(cantidad) + 
+						"\nTarjeta de origen: #" + tarjetaOrigen.getNoTarjeta() + 
+						"\nTarjeta de destino: #" + tarjetaObjetivo.getNoTarjeta(); 
+				}
+				else {	
+					return "Transacción aprobada con éxito\nTotal: " + Banco.formatearNumero(cantidad) + 
+							"\nImpuesto: " + Banco.formatearNumero(impuesto) + 
+							"\nTarjeta de origen: #" + tarjetaOrigen.getNoTarjeta() + 
+							"\nTarjeta de destino: #" + tarjetaObjetivo.getNoTarjeta() + 
+					
+							"\nProveniente de: " + clienteOrigen.nombre + "\n";
+				}
+			}
+			else {
+				if(tarjetaObjetivo == null) {
+					return "Transacción aprobada con éxito\\nTotal: " + Banco.formatearNumero(cantidad) + 
+							"\nTarjeta: #" + tarjetaOrigen.getNoTarjeta();
+				}
+				if(tarjetaOrigen == null) {
+					return "Transacción aprobada con éxito\nTotal: " + Banco.formatearNumero(cantidad) + 
+							"\nTarjeta de destino: #" + tarjetaObjetivo.getNoTarjeta();
+				}
+				if(clienteOrigen == null) {
+					return "Transacción aprobada con éxito\\\\nTotal: " + Banco.formatearNumero(cantidad) + 
+						"\nTarjeta de origen: #" + tarjetaOrigen.getNoTarjeta() + 
+						"\nTarjeta de destino: #" + tarjetaObjetivo.getNoTarjeta(); 
+				}
+				return "Transacción aprobada con éxito\nTotal: " + Banco.formatearNumero(cantidad) + 
+						"\nTarjeta de origen: #" + tarjetaOrigen.getNoTarjeta() + 
+						"\nTarjeta de destino: #" + tarjetaObjetivo.getNoTarjeta() + 
+						"\nProveniente de: " + clienteOrigen.nombre + "\n";				
 			}
 		}
 	}
@@ -274,6 +346,29 @@ public class Transaccion implements Serializable{
 		transaccion.pendiente = !rechazado;
 		return transaccion;
 	}
+	
+	
+	//Retirar o depositar
+	public static Transaccion crearTransaccion(Cliente cliente, Tarjeta tarjeta, double monto, Canal canal, boolean retirar) {
+		
+		//valor que se descontará a el usuario, como costo de la transaccion
+		double impuesto = monto * (canal.getImpuesto() / 100);
+		monto -= impuesto;
+		
+		boolean rechazado;
+		//Si se va a retirar, tanto el canal como la tarjeta deben tener el monto necesario
+		if(retirar)
+			rechazado = monto > canal.getFondos(tarjeta.getDivisa()) || !(tarjeta.puedeTransferir(monto));
+		//Si se va a depositar, la tarjeta debe tener el monto necesario
+		else
+			rechazado = !(tarjeta.puedeTransferir(monto));
+
+		Transaccion transaccion = new Transaccion(cliente, tarjeta, monto, impuesto, canal, retirar, rechazado);
+		transaccion.pendiente = !rechazado;
+		return transaccion;
+	}
+	
+	
 
 	public static Transaccion completarTransaccion(Transaccion transaccion, Boolean respuesta){
 		if(!respuesta){
@@ -285,8 +380,5 @@ public class Transaccion implements Serializable{
 			transaccion.tarjetaObjetivo.deshacerTransaccion(transaccion.cantidad, transaccion.tarjetaOrigen); // En caso de que el cliente diga que sí, esta función deshace la transaccion.
 		}
 		return transaccion;
-	}
-	public static Transaccion finalizarTransaccion(Transaccion transaccion, boolean retirar){
-		return new Transaccion(transaccion, retirar);
 	}
 }
