@@ -89,7 +89,7 @@ public class Main implements Serializable{
 		
 		//Se listan los clientes del banco
 		for(Cliente cliente : Banco.getClientes()) {
-			System.out.println(Banco.getClientes().indexOf(cliente) + 1 + ". " + cliente.nombre);
+			System.out.println(Banco.getClientes().indexOf(cliente) + 1 + ". " + cliente.NOMBRE);
 		}
 		System.out.println(Banco.getClientes().size() + 1 + ". [ Atras ]");
 		
@@ -474,7 +474,7 @@ public class Main implements Serializable{
 			case "2" -> {        //Se filtran las transacciones por cliente
 				System.out.println("Por favor, escoga el cliente");
 				for (Cliente c : Banco.getClientes()) {
-					System.out.println(Banco.getClientes().indexOf(c) + 1 + " " + c.nombre);
+					System.out.println(Banco.getClientes().indexOf(c) + 1 + " " + c.NOMBRE);
 				}
 				int eleccion_cliente = scanner.nextInt() - 1;//Obtiene el numero de la divisa escogida
 				Cliente clienteCriterio = Banco.getClientes().get(eleccion_cliente); //Almacena la divisa escogida
@@ -541,7 +541,7 @@ public class Main implements Serializable{
 		while (true) {
 			System.out.println("Elija el usuario al que le desea hacer la transaccion:");
 			for (Cliente c : Banco.getClientes()) {
-				System.out.println(Banco.getClientes().indexOf(c) + 1 + ". " + c.nombre);
+				System.out.println(Banco.getClientes().indexOf(c) + 1 + ". " + c.NOMBRE);
 			}
 			int eleccion_cliente_objetivo = scanner.nextInt();
 			if (eleccion_cliente_objetivo > 0 && eleccion_cliente_objetivo <= Banco.getClientes().size()) {

@@ -18,7 +18,7 @@ public class Cliente implements Serializable{
 	@Serial
 	private static final long serialVersionUID = 1L;
 
-	public final String nombre;
+	public final String NOMBRE;
 	private int Id;
 	private ArrayList<TarjetaDebito> tarjetasDebito = new ArrayList<>();
 	private ArrayList<TarjetaCredito> tarjetasCredito = new ArrayList<>();
@@ -26,7 +26,7 @@ public class Cliente implements Serializable{
 	private int bonoActual = 0;
 	
 	public Cliente(String nombre, int noDeIdentificacion) {
-		this.nombre = nombre;
+		this.NOMBRE = nombre;
 		this.Id = noDeIdentificacion;
 		Banco.agregarCliente(this);
 	}
@@ -36,7 +36,7 @@ public class Cliente implements Serializable{
 	
 	@Override
 	public String toString(){
-		return "\n\nNombre: %s\nIdentificacion: %s\nNúmero de Tarjetas de Debito: %s\nNúmero de Tarjetas de Credito: %s\nBono Actual: %s".formatted(nombre, Id, tarjetasDebito.size(), tarjetasCredito.size(), bonoActual);
+		return "\n\nNombre: %s\nIdentificacion: %s\nNúmero de Tarjetas de Debito: %s\nNúmero de Tarjetas de Credito: %s\nBono Actual: %s".formatted(NOMBRE, Id, tarjetasDebito.size(), tarjetasCredito.size(), bonoActual);
 	}
 
 	public ArrayList<TarjetaDebito>  getTarjetasDebito() {
