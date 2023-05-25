@@ -89,7 +89,7 @@ public class Main implements Serializable{
 		
 		//Se listan los clientes del banco
 		for(Cliente cliente : Banco.getClientes()) {
-			System.out.println(Banco.getClientes().indexOf(cliente) + 1 + ". " + cliente.nombre);
+			System.out.println(Banco.getClientes().indexOf(cliente) + 1 + ". " + cliente.NOMBRE);
 		}
 		System.out.println(Banco.getClientes().size() + 1 + ". [ Atras ]");
 		
@@ -111,166 +111,218 @@ public class Main implements Serializable{
 		
 		return clienteEscogido;
 	}
-		
-	static void pagarFactura(){
+
+	/**
+	 * Realiza el proceso de pago de una factura para un cliente.
+	 */
+	static void pagarFactura() {
+		// Seleccionar cliente
 		Cliente clienteEscogido = elejirUsuario();
-		
-		if(clienteEscogido == null)
+
+		// Verificar si se seleccionó un cliente válido
+		if (clienteEscogido == null)
 			return;
-		
+
+		// Verificar si el cliente tiene facturas pendientes
 		if (clienteEscogido.listarFacturas().isEmpty()) {
 			System.out.println("No hay facturas por pagar\n");
-			pagarFactura();//Se le permite al usuario escoger otro cliente
-			return;//return para asegurarnos de salir del bucle de recursión
+			pagarFactura(); // Permite al usuario escoger otro cliente
+			return; // Salir del bucle de recursión
 		} else {
+			// Mostrar las facturas disponibles para pagar
 			System.out.println("Escoge la factura que deseas pagar:\n");
 			for (Factura factura : clienteEscogido.listarFacturas()) {
 				System.out.println(clienteEscogido.listarFacturas().indexOf(factura) + 1 + ". " + factura);
 			}
 		}
-		
+
+		// Obtener la opción de factura seleccionada por el usuario
 		int opcion = readInt() - 1;
-		Factura factura = clienteEscogido.listarFacturas().get(opcion);//el usuario escoge la factura por pagar
-		
-		System.out.println("Escoge la tarjeta que quiere utilizar para pagar:\n");
+		Factura factura = clienteEscogido.listarFacturas().get(opcion);
+
+		// Mostrar las tarjetas disponibles para pagar
+		System.out.println("Escoge la tarjeta que quieres utilizar para pagar:\n");
 		ArrayList<Tarjeta> tarjetasPosibles = clienteEscogido.listarTarjetas(factura);
-		
+
 		for (Tarjeta tarjeta : tarjetasPosibles) {
 			System.out.println(tarjetasPosibles.indexOf(tarjeta) + 1 + ". " + tarjeta);
 		}
-		
+
+		// Obtener la opción de tarjeta seleccionada por el usuario
 		int opcion2 = readInt() - 1;
-		Tarjeta tarjeta = tarjetasPosibles.get(opcion2);//Se obtiene la tarjeta con la que el usuario quiere pagar
-		
-		System.out.println("Escoge la cantidad de dinero que desea transferir:\n");
+		Tarjeta tarjeta = tarjetasPosibles.get(opcion2);
+
+		// Obtener el monto a transferir
+		System.out.println("Escoge la cantidad de dinero que deseas transferir:\n");
 		double monto = readDouble();
-		
+
+		// Generar la transacción
 		Transaccion transaccion = factura.generarTransaccion(monto, tarjeta);
-		if (transaccion.isRechazado()) { //En caso de que la transacción fue rechazada, se notifica al usuario, y se vuelve al principio
+
+		// Verificar si la transacción fue rechazada
+		if (transaccion.isRechazado()) {
 			System.out.println("¡La transacción fue rechazada!");
-			if(tarjeta.puedeTransferir(monto))
+
+			// Notificar las posibles razones del rechazo
+			if (tarjeta.puedeTransferir(monto))
 				System.out.println("Parece que el monto que ingresaste supera los fondos de tu tarjeta");
-			if(tarjeta.getDivisa().equals(factura.getDIVISA()))
+
+			if (tarjeta.getDivisa().equals(factura.getDIVISA()))
 				System.out.println("La divisa de la tarjeta escogida no corresponde con la de la factura");
+
 			tarjeta.anadirError();
-			if(tarjeta.tarjetaABorrar()){
+
+			// Verificar si se debe eliminar la tarjeta
+			if (tarjeta.tarjetaABorrar()) {
 				System.out.println(tarjeta.borrar());
 			}
+
 			return;
 		}
-		
+
 		System.out.println("La transacción ha sido generada: " + transaccion);
-		
+
+		// Confirmar si se desea continuar con el proceso de pago
 		System.out.println("¿Estás seguro que deseas continuar con el proceso?\n(Si / No)");
 		String opcion3 = readString();
-		
+
+		// Validar la respuesta del usuario
 		while (!opcion3.equalsIgnoreCase("Si") && !opcion3.equalsIgnoreCase("No")) {
-			if(opcion3.equalsIgnoreCase("No"))
+			if (opcion3.equalsIgnoreCase("No")) {
 				break;
-			
-			if(opcion3.equalsIgnoreCase("Si"))
+			}
+
+			if (opcion3.equalsIgnoreCase("Si")) {
 				break;
-			
-			if(!opcion3.equalsIgnoreCase("") && !opcion3.equalsIgnoreCase("Si") && !opcion3.equalsIgnoreCase("No"))
+			}
+
+			if (!opcion3.equalsIgnoreCase("") && !opcion3.equalsIgnoreCase("Si") && !opcion3.equalsIgnoreCase("No")) {
 				System.out.println("Digita un valor válido");
-			
+			}
+
 			opcion3 = readString();
 		}
-		
-		if(opcion3.equalsIgnoreCase("No")) {
+
+		// Cancelar el pago si el usuario decide no continuar
+		if (opcion3.equalsIgnoreCase("No")) {
 			System.out.println("¡El pago fue cancelado!");
 			return;
 		}
-			
+
+		// Realizar el pago de la factura
 		Factura facturaNueva = transaccion.pagarFactura();
-		clienteEscogido.getFactura().set(clienteEscogido.getFactura().indexOf(factura), facturaNueva); //Remplaza la factura anterior con la factura nueva
-		tarjeta.setErroresActuales(0);//en caso de que no se rechaza la transacción, los errores de la tarjeta vuelven a 0
+
+		// Reemplazar la factura anterior con la factura nueva
+		int indiceFacturaAnterior = clienteEscogido.getFactura().indexOf(factura);
+		clienteEscogido.getFactura().set(indiceFacturaAnterior, facturaNueva);
+
+		// Restablecer los errores de la tarjeta a cero
+		tarjeta.setErroresActuales(0);
+
 		System.out.println("¡El pago fue exitoso!\n");
 		System.out.println(transaccion);
 	}
-	
+
+
+	/**
+	 * Realiza el proceso de cambio de divisas para un cliente.
+	 */
 	static void cambiarDivisa() {
+		// Seleccionar cliente
 		Cliente clienteEscogido = elejirUsuario();
-		
-		if(clienteEscogido == null)
+
+		// Verificar si se seleccionó un cliente válido
+		if (clienteEscogido == null)
 			return;
-		
+
 		System.out.println("Escoge las divisas que deseas cambiar");
+
+		// Escoger la divisa de origen
 		System.out.println("Escoge la divisa de origen:\n");
-		
-		for (Divisa divisa : Divisa.values()) {//Recorre un array de las divisas
+		for (Divisa divisa : Divisa.values()) {
 			System.out.println(divisa.ordinal() + 1 + ". " + divisa);
 		}
-		
-		int opcion = readInt();//Obtiene el numero de la divisa escogida
-		
-		//mientras el valor sea diferente del de las divisas listadas
+
+		int opcion = readInt(); // Obtener el número de la divisa de origen seleccionada
+
+		// Validar la opción seleccionada
 		while (opcion <= 0 || opcion > Divisa.values().length) {
 			System.out.println("Escoge un valor válido:");
 			opcion = readInt();
 		}
+
 		opcion -= 1;
-		Divisa divisaOrigen = Divisa.values()[opcion]; //Almacena la referencia de la divisa escogida
-		
+		Divisa divisaOrigen = Divisa.values()[opcion]; // Almacenar la referencia de la divisa de origen seleccionada
+
+		// Escoger la divisa de destino
 		System.out.println("Escoge la divisa de destino:\n");
 		for (Divisa divisa : Divisa.values()) {
 			System.out.println(divisa.ordinal() + 1 + ". " + divisa);
 		}
-		
-		opcion = readInt();//Escogiendo divisa destino
 
+		opcion = readInt(); // Obtener el número de la divisa de destino seleccionada
+
+		// Validar la opción seleccionada
 		while (opcion <= 0 || opcion > Divisa.values().length) {
 			System.out.println("Escoge un valor válido:");
 			opcion = readInt();
 		}
+
 		opcion -= 1;
-		Divisa divisaDestino = Divisa.values()[opcion];
-		
-		//Si el cliente escoge la misma divisa de Origen y de destino
-		if(divisaOrigen.equals(divisaDestino)) {
+		Divisa divisaDestino = Divisa.values()[opcion]; // Almacenar la referencia de la divisa de destino seleccionada
+
+		// Verificar si se seleccionó la misma divisa de origen y destino
+		if (divisaOrigen.equals(divisaDestino)) {
 			System.out.println("Debes escoger dos divisas distintas para hacer la conversión\n");
 			return;
 		}
-		
-		//Si el cliente no tiene ninguna tarjeta de cada divisa respectivamente
-		if(Objects.isNull(clienteEscogido.escogerDivisas(divisaOrigen, divisaDestino))) {
+
+		// Verificar si el cliente tiene tarjetas correspondientes a las divisas seleccionadas
+		ArrayList<Divisa> divisas = clienteEscogido.escogerDivisas(divisaOrigen, divisaDestino);
+
+		if (Objects.isNull(divisas)) {
 			System.out.println("No tienes tarjetas que cumplan con la divisa que escogiste\n");
 			return;
-		} 
-		
-		ArrayList<Divisa> divisas = clienteEscogido.escogerDivisas(divisaOrigen, divisaDestino);
-		ArrayList<Tarjeta> tarjetas = clienteEscogido.listarTarjetas(divisas);
+		}
 
+		ArrayList<Tarjeta> tarjetas = clienteEscogido.listarTarjetas(divisas);
 		ArrayList<Tarjeta> tarjetasEscogidas = new ArrayList<>();
 
+		// Escoger la tarjeta de origen
 		System.out.println("Escoge la tarjeta con la divisa de origen: " + divisaOrigen + "\n");
 		for (Tarjeta tarjeta : tarjetas) {
 			System.out.println(tarjetas.indexOf(tarjeta) + 1 + ". " + tarjeta);
 		}
-		
-		opcion = readInt() - 1;//Escogiendo tarjeta de origen
+
+		opcion = readInt() - 1; // Obtener la opción de tarjeta de origen seleccionada
 		tarjetasEscogidas.add(tarjetas.get(opcion));
-		
-		//La tarjeta de origen que escoja el usuario debe corresponder con la divisa de origen (el orden debe ser el mismo)
-		while(!Divisa.verificarOrden(divisas, tarjetasEscogidas.get(0).getDivisa(), "Origen")) {
+
+		// Verificar que la tarjeta de origen seleccionada tenga la divisa correspondiente
+		while (!Divisa.verificarOrden(divisas, tarjetasEscogidas.get(0).getDivisa(), "Origen")) {
 			System.out.println("Debes escoger una tarjeta de origen con una divisa acorde a la divisa que quieres cambiar");
 			System.out.println("Escoge una opción válida:");
 			opcion = readInt() - 1;
 			tarjetasEscogidas.add(0, tarjetas.get(opcion));
 		}
+<<<<<<< HEAD
 		
 
 		
 		boolean disponibleDebito = false;//Servirá para comprobar que el usuario si tenga tarjetas de debito con la divisaDestino
+=======
+
+		// Escoger la tarjeta de destino
+>>>>>>> 3140e2f0fd2d4a39af32499426109e8175b03f29
 		System.out.println("Escoja la tarjeta con la divisa de Destino:\n");
 		for (Tarjeta tarjeta : tarjetas) {
-			if (tarjeta instanceof TarjetaCredito)//La divisa de destino solo puede ser una tarjeta debito
+			if (tarjeta instanceof TarjetaCredito) // La divisa de destino solo puede ser una tarjeta de débito
 				continue;
 			if(!tarjeta.getDivisa().equals(divisaDestino))
 				continue;
 			System.out.println(tarjetas.indexOf(tarjeta) + 1 + ". " + tarjeta);
 			disponibleDebito = true;
 		}
+<<<<<<< HEAD
 		
 		if(!disponibleDebito) {
 			System.out.println("Parece que no tienes tarjetas de debito acorde a la divisa de destino que escogiste...");
@@ -278,28 +330,35 @@ public class Main implements Serializable{
 		}
 			
 		opcion = readInt() - 1;
+=======
+
+		opcion = readInt() - 1; // Obtener la opción de tarjeta de destino seleccionada
+>>>>>>> 3140e2f0fd2d4a39af32499426109e8175b03f29
 		tarjetasEscogidas.add(tarjetas.get(opcion));
-		
-		while(Divisa.verificarOrden(divisas, tarjetasEscogidas.get(1).getDivisa(), "Destino")) {
+
+		// Verificar que la tarjeta de destino seleccionada tenga la divisa correspondiente
+		while (Divisa.verificarOrden(divisas, tarjetasEscogidas.get(1).getDivisa(), "Destino")) {
 			System.out.println("Debes escoger una tarjeta de destino con una divisa acorde a la divisa que quieres obtener");
 			System.out.println("Escoge una opción válida:");
 			opcion = readInt() - 1;
 			tarjetasEscogidas.add(1, tarjetas.get(opcion));
 		}
 
+		// Listar los canales disponibles para el cliente
 		ArrayList<Canal> listaCanales = clienteEscogido.listarCanales(divisas);
 		System.out.println("Escoge el canal donde realizará el proceso");
 		for (Canal canal : listaCanales) {
 			System.out.println(listaCanales.indexOf(canal) + 1 + ". " + canal);
 		}
 
-		opcion = readInt() - 1;
+		opcion = readInt() - 1; // Obtener la opción de canal seleccionada
 		Canal canalEscogido = listaCanales.get(opcion);
-		
+
 		double montoInicial;
-		
+
 		System.out.println("Por favor digita el monto a convertir:\n");
 
+		// Solicitar y validar el monto a convertir
 		while (true) {
 			montoInicial = readDouble();
 			if (montoInicial <= 0) {
@@ -308,14 +367,20 @@ public class Main implements Serializable{
 			}
 			break;
 		}
-			
-		ArrayList<Double> conversion = Divisa.convertirDivisas(divisas, canalEscogido, montoInicial); 
+
+		// Realizar la conversión de divisas
+		ArrayList<Double> conversion = Divisa.convertirDivisas(divisas, canalEscogido, montoInicial);
+
+		// Crear la transacción
 		Transaccion transaccion = Transaccion.crearTransaccion(divisas, montoInicial, conversion, canalEscogido, tarjetasEscogidas, clienteEscogido);
-		
+
+		// Finalizar la conversión a través del canal seleccionado
 		transaccion = canalEscogido.finalizarConversion(transaccion, montoInicial);
+
 		System.out.println(transaccion);
 	}
-	
+
+
 	static void retirarOrDepositar() {
 		Cliente clienteEscogido = elejirUsuario();
 			
@@ -513,7 +578,7 @@ public class Main implements Serializable{
 			case "2" -> {        //Se filtran las transacciones por cliente
 				System.out.println("Por favor, escoga el cliente");
 				for (Cliente c : Banco.getClientes()) {
-					System.out.println(Banco.getClientes().indexOf(c) + 1 + " " + c.nombre);
+					System.out.println(Banco.getClientes().indexOf(c) + 1 + " " + c.NOMBRE);
 				}
 				int eleccion_cliente = scanner.nextInt() - 1;//Obtiene el numero de la divisa escogida
 				Cliente clienteCriterio = Banco.getClientes().get(eleccion_cliente); //Almacena la divisa escogida
@@ -580,7 +645,7 @@ public class Main implements Serializable{
 		while (true) {
 			System.out.println("Elija el usuario al que le desea hacer la transaccion:");
 			for (Cliente c : Banco.getClientes()) {
-				System.out.println(Banco.getClientes().indexOf(c) + 1 + ". " + c.nombre);
+				System.out.println(Banco.getClientes().indexOf(c) + 1 + ". " + c.NOMBRE);
 			}
 			int eleccion_cliente_objetivo = scanner.nextInt();
 			if (eleccion_cliente_objetivo > 0 && eleccion_cliente_objetivo <= Banco.getClientes().size()) {
