@@ -227,39 +227,40 @@ public class Transaccion implements Serializable{
 		}
 		if(rechazado){
 			if(tarjetaObjetivo == null) {
-				return "Transacción Rechazada\nTotal: " + Banco.formatearNumero(cantidad) + 
+				return "Transacción Rechazada\nTotal: " + Banco.formatearNumero(cantidad) + " " + tarjetaOrigen.getDivisa() +
 						"\nTarjeta: #" + tarjetaOrigen.getNoTarjeta();
 			}
 			if(tarjetaOrigen == null) {
-				return "Transacción Rechazada\nTotal: " + Banco.formatearNumero(cantidad) + 
-						"\nTarjeta de destino: #" + tarjetaObjetivo.getNoTarjeta();			}
+				return "Transacción Rechazada\nTotal: " + Banco.formatearNumero(cantidad) + " " + tarjetaObjetivo.getDivisa() +
+						"\nTarjeta de destino: #" + tarjetaObjetivo.getNoTarjeta();			
+			}
 			if(clienteOrigen == null) {
-				return "Transacción Rechazada\nTotal: " + Banco.formatearNumero(cantidad) + 
+				return "Transacción Rechazada\nTotal: " + Banco.formatearNumero(cantidad) + " " + tarjetaObjetivo.getDivisa() +
 					"\nTarjeta de origen: #" + tarjetaOrigen.getNoTarjeta() + 
 					"\nTarjeta de destino: #" + tarjetaObjetivo.getNoTarjeta(); 
 			}
 			else {
-				return "Transacción Rechazada\nTotal: " + Banco.formatearNumero(cantidad) + 
+				return "Transacción Rechazada\nTotal: " + Banco.formatearNumero(cantidad) + " " + tarjetaObjetivo.getDivisa() +
 					"\nTarjeta de origen: #" + tarjetaOrigen.getNoTarjeta() + 
 					"\nTarjeta de destino: #" + tarjetaObjetivo.getNoTarjeta() + 
 					"\nProveniente de: " + clienteOrigen.NOMBRE + "\n";
 			}
 		} else if (pendiente){
 			if(tarjetaObjetivo == null) {
-				return "Transacción Pendiente\nAprobada por un total de: " + Banco.formatearNumero(cantidad) + 
+				return "Transacción Pendiente\nAprobada por un total de: " + Banco.formatearNumero(cantidad) + " " + tarjetaOrigen.getDivisa() +
 						"\nTarjeta: #" + tarjetaOrigen.getNoTarjeta();
 			}
 			if(tarjetaOrigen == null) {
-				return "Transacción Pendiente\nAprobada por un total de: " + Banco.formatearNumero(cantidad) + 
+				return "Transacción Pendiente\nAprobada por un total de: " + Banco.formatearNumero(cantidad) + " " + tarjetaObjetivo.getDivisa() +
 						"\nTarjeta de destino: #" + tarjetaObjetivo.getNoTarjeta();
 			}
 			if(clienteOrigen == null) {
-				return "Transacción Pendiente\\nAprobada por un total de: " + Banco.formatearNumero(cantidad) + 
+				return "Transacción Pendiente\nAprobada por un total de: " + Banco.formatearNumero(cantidad) + " " + tarjetaObjetivo.getDivisa() +
 					"\nTarjeta de origen: #" + tarjetaOrigen.getNoTarjeta() + 
 					"\nTarjeta de destino: #" + tarjetaObjetivo.getNoTarjeta(); 
 			}
 			else {
-				return "Transacción Pendiente\nAprobada por un total de: " + Banco.formatearNumero(cantidad) + 
+				return "Transacción Pendiente\nAprobada por un total de: " + Banco.formatearNumero(cantidad) + " " + tarjetaObjetivo.getDivisa() +
 						"\nTarjeta de origen: #" + tarjetaOrigen.getNoTarjeta() + 
 						"\nTarjeta de destino: #" + tarjetaObjetivo.getNoTarjeta() + 
 						"\nProveniente de: " + clienteOrigen.NOMBRE + "\n";				
@@ -267,20 +268,20 @@ public class Transaccion implements Serializable{
 		} else {
 			if (impuesto != 0) {
 				if(tarjetaObjetivo == null) {
-					return "Transacción aprobada con éxito\nTotal: " + Banco.formatearNumero(cantidad) + 
+					return "Transacción aprobada con éxito\nTotal: " + Banco.formatearNumero(cantidad) + " " + tarjetaOrigen.getDivisa() +
 							"\nTarjeta: #" + tarjetaOrigen.getNoTarjeta();
 				}
 				if(tarjetaOrigen == null) {
-					return "Transacción aprobada con éxito\\nTotal: " + Banco.formatearNumero(cantidad) + 
+					return "Transacción aprobada con éxito\nTotal: " + Banco.formatearNumero(cantidad) + " " + tarjetaObjetivo.getDivisa() +
 							"\nTarjeta de destino: #" + tarjetaObjetivo.getNoTarjeta();
 				}
 				if(clienteOrigen == null) {
-					return "Transacción aprobada con éxito\\\\nTotal: " + Banco.formatearNumero(cantidad) + 
+					return "Transacción aprobada con éxito\nTotal: " + Banco.formatearNumero(cantidad) + " " + tarjetaObjetivo.getDivisa() +
 						"\nTarjeta de origen: #" + tarjetaOrigen.getNoTarjeta() + 
 						"\nTarjeta de destino: #" + tarjetaObjetivo.getNoTarjeta(); 
 				}
 				else {	
-					return "Transacción aprobada con éxito\nTotal: " + Banco.formatearNumero(cantidad) + 
+					return "Transacción aprobada con éxito\nTotal: " + Banco.formatearNumero(cantidad) + " " + tarjetaObjetivo.getDivisa() +
 							"\nImpuesto: " + Banco.formatearNumero(impuesto) + 
 							"\nTarjeta de origen: #" + tarjetaOrigen.getNoTarjeta() + 
 							"\nTarjeta de destino: #" + tarjetaObjetivo.getNoTarjeta() + 
@@ -290,19 +291,19 @@ public class Transaccion implements Serializable{
 			}
 			else {
 				if(tarjetaObjetivo == null) {
-					return "Transacción aprobada con éxito\\nTotal: " + Banco.formatearNumero(cantidad) + 
+					return "Transacción aprobada con éxito\nTotal: " + Banco.formatearNumero(cantidad) + " " + tarjetaOrigen.getDivisa() +
 							"\nTarjeta: #" + tarjetaOrigen.getNoTarjeta();
 				}
 				if(tarjetaOrigen == null) {
-					return "Transacción aprobada con éxito\nTotal: " + Banco.formatearNumero(cantidad) + 
+					return "Transacción aprobada con éxito\nTotal: " + Banco.formatearNumero(cantidad) + " " + tarjetaObjetivo.getDivisa() +
 							"\nTarjeta de destino: #" + tarjetaObjetivo.getNoTarjeta();
 				}
 				if(clienteOrigen == null) {
-					return "Transacción aprobada con éxito\\\\nTotal: " + Banco.formatearNumero(cantidad) + 
+					return "Transacción aprobada con éxito\nTotal: " + Banco.formatearNumero(cantidad) + " " + tarjetaObjetivo.getDivisa() +
 						"\nTarjeta de origen: #" + tarjetaOrigen.getNoTarjeta() + 
 						"\nTarjeta de destino: #" + tarjetaObjetivo.getNoTarjeta(); 
 				}
-				return "Transacción aprobada con éxito\nTotal: " + Banco.formatearNumero(cantidad) + 
+				return "Transacción aprobada con éxito\nTotal: " + Banco.formatearNumero(cantidad) + " " + tarjetaObjetivo.getDivisa() +
 						"\nTarjeta de origen: #" + tarjetaOrigen.getNoTarjeta() + 
 						"\nTarjeta de destino: #" + tarjetaObjetivo.getNoTarjeta() + 
 						"\nProveniente de: " + clienteOrigen.NOMBRE + "\n";				
