@@ -1,7 +1,7 @@
 from tkinter import Frame, Label, Entry
 
 class FieldFrame(Frame):
-
+    
     def __init__(self, ventana, tituloCriterios, criterios, tituloValores, valores = None, habilitado = None):
         super().__init__(ventana, width=2000, height = 1000, highlightthickness=2, highlightbackground="black")
         tituloC = Label(self, text = tituloCriterios)
