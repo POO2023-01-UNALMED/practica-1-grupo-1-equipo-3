@@ -22,6 +22,13 @@ frameArchivo.pack(fill="both", expand=True)
 frameProcesos.pack(fill="both", expand=True)
 frameAyuda.pack(fill="both", expand=True)
 
+def aceptar():
+    messagebox.showinfo(message="Mensaje", title="Título")
+
+
+FF = FieldFrame(frameProcesos, "Titulo", ["Crit1", "Crit2", "Crit3"], "TituloValores", aceptar, [None, None, ["Op1", "Op2", "Op3"]])
+FF.pack()
+
 
 notebook.add(frameArchivo, text = "Archivo")
 notebook.add(frameProcesos, text = "Procesos y Consultas")
