@@ -46,3 +46,9 @@ class Divisa(Enum):
         montos.append(impuesto)
 
         return tuple(montos)
+    
+    @staticmethod
+    def encontrarDivisa(nomDivisa):
+        for d in Divisa:
+            if d.name == nomDivisa:
+                return d

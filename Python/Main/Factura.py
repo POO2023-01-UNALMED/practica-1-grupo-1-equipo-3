@@ -3,6 +3,7 @@ from typing import Tuple
 from Tarjeta import Tarjeta
 from TarjetaDebito import TarjetaDebito
 from Transaccion import Transaccion
+from Cliente import Cliente
 
 class Factura:
     def _init_(self, cliente, total: float, transfeRestantes: int, tarjetaDestino):
@@ -50,8 +51,8 @@ class Factura:
         return Transaccion(self.CLIENTE, tarjetaOrigen, self.TARJETADESTINO, monto, self, not validez)
 
     @staticmethod
-    def modificarPuntaje(tarjetasBloqueadas: List[Tarjeta], tarjetasActivas: List[Tarjeta], cliente, puntaje: int) -> int:
-        for f in cliente.getFactura():
+    def modificarPuntaje(tarjetasBloqueadas: List[Tarjeta], tarjetasActivas: List[Tarjeta], cliente: Cliente, puntaje: int) -> int:
+        for f in cliente.getFacturas():
             if f.facturaVencida:
                 puntaje -= 50
             if f.facturaPagada and not f.facturaVencida:
@@ -59,6 +60,7 @@ class Factura:
         for t in tarjetasActivas:
             if isinstance(t, TarjetaDebito):
                 puntaje += int(0.1 * (t.getSaldo() * t.getDivisa().getValor()))
-        puntaje -= 100 * len(tarjetasBloqueadas) / (len(tarjetasActivas) + len(tarjetasBloqueadas))
-        puntaje += cliente.getBonoActual()
+        if len(tarjetasActivas) + len(tarjetasBloqueadas) != 0:
+            puntaje -= 100 * len(tarjetasBloqueadas) / (len(tarjetasActivas) + len(tarjetasBloqueadas))
+        puntaje += cliente.bonoActual
         return puntaje

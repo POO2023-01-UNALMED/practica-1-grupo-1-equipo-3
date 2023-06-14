@@ -11,10 +11,9 @@ class FieldFrame(Frame):
         tituloV.grid(row = 0, column= 1, padx = 10, pady = 10)
         labels = []
         entrys = []
-
+        Vals = [None]*len(criterios)
         for i in range(len(criterios)):
             labels.append(Label(self, text = criterios[i]))
-            Vals = [None]*len(criterios)
             if not opciones is None:
                 if opciones[i] is None:
                     entrys.append(Entry(self))
@@ -47,10 +46,9 @@ class FieldFrame(Frame):
     def getValores(self):
         retorno = []
         for i in range(len(self.entrys)):
-            print(self.Vals)
             if isinstance(self.entrys[i], Entry):
                 retorno.append(self.entrys[i].get())
             else:
-                retorno.append(self.Vals[i].set(""))
+                retorno.append(self.Vals[i].get())
         return retorno
     

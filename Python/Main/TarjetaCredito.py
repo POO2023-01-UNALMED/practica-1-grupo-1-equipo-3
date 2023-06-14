@@ -1,9 +1,9 @@
 from typing import List
 from random import randint
-from infraestructura.Banco import Banco
-from entidades_de_negocio.Divisa import Divisa
+from Divisa import Divisa
 from Tarjeta import Tarjeta
 from TarjetaDebito import TarjetaDebito
+from Cliente import Cliente
 
 
 class TarjetaCredito(Tarjeta):
@@ -16,6 +16,7 @@ class TarjetaCredito(Tarjeta):
         self.INTERES = interes
 
     def _str_(self):
+        from Banco import Banco
         return "Tipo de tarjeta: Crédito\n Número de tarjeta: {}\n Límite: {} {}\n Crédito: {} {}\n Tasa de interés: {}\n".format(
             self.noTarjeta, Banco.formatearNumero(self.CREDITOMAXIMO), self.divisa.name(), Banco.formatearNumero(self.credito), self.divisa.name(), self.INTERES
         )
@@ -29,6 +30,7 @@ class TarjetaCredito(Tarjeta):
             return False
 
     def borrar(self) -> str:
+        from Banco import Banco
         for c in Banco.getClientes():  # En caso de que queramos borrar, necesitamos quitar la tarjeta de todas los clientes que la tienen
             c.getTarjetasCredito().remove(self)
         return "La tarjeta de crédito #{} será borrada, ya que tiene demasiadas transacciones rechazadas".format(self.noTarjeta)
@@ -67,6 +69,7 @@ class TarjetaCredito(Tarjeta):
 
     @staticmethod
     def tarjetasDisponibles(puntaje: int, divisa: Divisa) -> List["TarjetaCredito"]:
+        from Banco import Banco
         reqCredMax = {0: 100.0, 50: 500.0, 100: 1000.0, 150: 2000.0, 200: 3000.0}
         reqInteres = {0: 10.0, 50: 7.0, 100: 5.0, 150: 4.0, 200: 3.0}
 

@@ -1,9 +1,7 @@
 from typing import List
 from random import randint
 from Tarjeta import Tarjeta
-from entidades_de_negocio.Divisa import Divisa
-from infraestructura.Banco import Banco
-from TarjetaCredito import TarjetaCredito
+from Divisa import Divisa
 
 class TarjetaDebito(Tarjeta):
     serialVersionUID = 1
@@ -13,6 +11,7 @@ class TarjetaDebito(Tarjeta):
         self.saldo = saldo
 
     def _str_(self):
+        from Banco import Banco
         return "Tipo de tarjeta: Débito\nNúmero de tarjeta: {}\nSaldo: {} {}\n".format(
             self.noTarjeta, Banco.formatearNumero(self.saldo), self.divisa.name()
         )
@@ -26,6 +25,7 @@ class TarjetaDebito(Tarjeta):
             return False
 
     def borrar(self) -> str:
+        from Banco import Banco
         for c in Banco.getClientes():
             c.getTarjetasDebito().remove(self)
         return "La tarjeta de crédito #{} será borrada, ya que tiene demasiadas transacciones rechazadas".format(
@@ -33,6 +33,7 @@ class TarjetaDebito(Tarjeta):
         )
 
     def deshacerTransaccion(self, cantidad: float, t: Tarjeta) -> None:
+        from TarjetaCredito import TarjetaCredito
         if self.saldo >= cantidad and isinstance(t, TarjetaDebito):
             self.saldo -= int(100 * cantidad * t.divisa.getValor() / self.divisa.getValor()) / 100
             t.setSaldo(t.getSaldo() + cantidad)

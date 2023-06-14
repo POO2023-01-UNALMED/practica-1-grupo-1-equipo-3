@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from BorrarTarjeta import BorrarTarjeta
 import pickle
 
 class Tarjeta(ABC):
@@ -100,6 +101,7 @@ class TarjetaDebito(Tarjeta):
         self.saldo = saldo
 
     def _str_(self):
+        from Banco import Banco
         return f"Tipo de tarjeta: Débito\nNúmero de tarjeta: {self.getNoTarjeta()}\nSaldo: {Banco.formatearNumero(self.saldo)} {self.divisa.name()}"
 
     def transaccion(self, cantidad, tarjeta):
@@ -111,6 +113,7 @@ class TarjetaDebito(Tarjeta):
             return False
 
     def borrar(self):
+        from Banco import Banco
         for c in Banco.getClientes():
             c.getTarjetasDebito().remove(self)
         return f"La tarjeta de crédito #{self.noTarjeta} será borrada, ya que tiene demasiadas transacciones rechazadas"

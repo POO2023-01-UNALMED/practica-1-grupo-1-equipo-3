@@ -30,8 +30,8 @@ class Banco():
         Banco.clientes.append(cliente)
 
     @staticmethod
-    def getCanales(cls):
-        return cls.canales
+    def getCanales():
+        return Banco.canales
 
     @staticmethod
     def setCanales(canales) -> None:
@@ -71,6 +71,13 @@ class Banco():
     def generarPeticion(transaccion: Transaccion, mensaje: str) -> None:
         transaccion.setRetornable(False)
         Transaccion(transaccion, mensaje)
+
+
+    @staticmethod
+    def encontrarCliente(nomCliente):
+        for c in Banco.clientes:
+            if c.getNombre() == nomCliente:
+                return c
 
     """
     @staticmethod

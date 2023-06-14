@@ -5,6 +5,8 @@ from FieldFrame import FieldFrame
 from Banco import Banco
 from Cliente import Cliente
 from Divisa import Divisa
+from Tarjeta import Tarjeta
+from Factura import Factura
 
 def setup():
     cliente1 = Cliente("Carlos", 555)
@@ -36,9 +38,19 @@ frameP.pack()
 
 
 def procesoSolicitarTarjeta(): # Esta función se encarga de la funcionalidad "solicitar tarjeta de crédito"
-    def segundoPaso():
+    def segundoPaso(): # Función que se activa cuando el usuario oprime "Aceptar"
         if FF.getValores()[0] == "" or FF.getValores()[1] == "":
-            print("Error cogido")
+            messagebox.showinfo(title="Error", message="Por favor, ingrese los valores relevantes en todos los campos")
+            return
+        clienteActual = Banco.encontrarCliente(FF.getValores()[0])
+        divisaEscogida = Divisa.encontrarDivisa(FF.getValores()[1])
+        Historial = clienteActual.revisarHistorialDeCreditos()
+        puntajeTentativo = Banco.calcularPuntaje(Historial)
+        tarjetasBloqueadas = Tarjeta.TarjetasBloqueadas(clienteActual)
+        tarjetasActivas = Tarjeta.TarjetasNoBloqueadas(clienteActual)
+        puntajeDefinitivo = Factura.modificarPuntaje(tarjetasBloqueadas=tarjetasBloqueadas, tarjetasActivas= tarjetasActivas, cliente=clienteActual, puntaje=puntajeTentativo)
+        print(puntajeDefinitivo)
+
     clientes = Banco.getClientes()
     nomClientes = []
     for c in clientes:
@@ -50,6 +62,7 @@ def procesoSolicitarTarjeta(): # Esta función se encarga de la funcionalidad "s
     frameP.forget()
     FF.tkraise()
     FF.pack()
+    
 
 
 BsolicitarTarjeta = Button(frameP, text="Solicitar tarjeta", command=lambda: procesoSolicitarTarjeta())

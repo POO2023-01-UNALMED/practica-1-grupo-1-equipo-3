@@ -89,6 +89,17 @@ class Transaccion:
             ):
                 retorno.append(t)
         return retorno
+    
+    @staticmethod
+    def getTransacciones():
+        return Transaccion.transacciones
+    
+    def getClienteOrigen(self):
+        return self.cliente_origen
+    
+    def getTarjetaOrigen(self):
+        return self.tarjeta_origen
+
 
     def _str_(self):
         from Banco import Banco #Es necesario importar de esta manera, de lo contrario, causaría un error por import circular
@@ -139,6 +150,7 @@ class Transaccion:
                 + self.tarjeta_origen.get_no_tarjeta()
             )
         return "Transacción Realizada"
+    
 
     def _repr_(self):
         return self._str_()
