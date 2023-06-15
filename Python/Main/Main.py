@@ -6,6 +6,7 @@ from Banco import Banco
 from Cliente import Cliente
 from Divisa import Divisa
 from Tarjeta import Tarjeta
+from TarjetaCredito import TarjetaCredito
 from Factura import Factura
 
 def setup():
@@ -49,7 +50,17 @@ def procesoSolicitarTarjeta(): # Esta función se encarga de la funcionalidad "s
         tarjetasBloqueadas = Tarjeta.TarjetasBloqueadas(clienteActual)
         tarjetasActivas = Tarjeta.TarjetasNoBloqueadas(clienteActual)
         puntajeDefinitivo = Factura.modificarPuntaje(tarjetasBloqueadas=tarjetasBloqueadas, tarjetasActivas= tarjetasActivas, cliente=clienteActual, puntaje=puntajeTentativo)
-        print(puntajeDefinitivo)
+        tarjetasDisponibles = TarjetaCredito.tarjetasDisponibles(puntaje=puntajeDefinitivo, divisa=divisaEscogida)
+        frameFinal = Frame(frameProcesos)
+        Enunciado = Label(frameFinal, text="Escoga la tarjeta que quiere", padx=10, pady=10)
+        Enunciado.grid(column=1, row=0)
+        FF.forget()
+        Buttons = []
+        Labels = []
+        for i in range(len(tarjetasDisponibles)):
+            Labels.append(Label(frameFinal, text=tarjetasDisponibles[i], padx=10, pady=10).grid(column=0, row= i+3))
+            Buttons.append(Button(frameFinal, text="Escoger").grid(column=2, row = i+3, padx=10, pady=10))
+        frameFinal.pack()
 
     clientes = Banco.getClientes()
     nomClientes = []

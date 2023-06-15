@@ -4,22 +4,20 @@ from Divisa import Divisa
 from Tarjeta import Tarjeta
 from TarjetaDebito import TarjetaDebito
 from Cliente import Cliente
+import math
 
 
 class TarjetaCredito(Tarjeta):
     serialVersionUID = 1
 
-    def _init_(self, noTarjeta: int, divisa: Divisa, creditoMaximo: float, interes: float):
+    def __init__(self, noTarjeta: int, divisa: Divisa, creditoMaximo: float, interes: float):
         super()._init_(noTarjeta, divisa)
         self.CREDITOMAXIMO = creditoMaximo
         self.credito = 0
         self.INTERES = interes
 
-    def _str_(self):
-        from Banco import Banco
-        return "Tipo de tarjeta: Crédito\n Número de tarjeta: {}\n Límite: {} {}\n Crédito: {} {}\n Tasa de interés: {}\n".format(
-            self.noTarjeta, Banco.formatearNumero(self.CREDITOMAXIMO), self.divisa.name(), Banco.formatearNumero(self.credito), self.divisa.name(), self.INTERES
-        )
+    def __str__(self):
+        return "Tipo de tarjeta: Crédito\n Número de tarjeta: {}\n Límite: {} {}\n Crédito: {} {}\n Tasa de interés: {}\n".format(self.noTarjeta, math.trunc(self.CREDITOMAXIMO), self.divisa.name, self.credito, self.divisa.name, self.INTERES)
 
     def transaccion(self, cantidad: float, t: TarjetaDebito) -> bool:
         if self.CREDITOMAXIMO - self.credito >= cantidad and t.getDivisa() == self.getDivisa():
@@ -83,12 +81,7 @@ class TarjetaCredito(Tarjeta):
                 break
             else:
                 tarjetas.append(
-                    TarjetaCredito(
-                        noTarjeta,
-                        divisa,
-                        int(100 * reqCredMax[i] / divisa.getValor()) / 100,
-                        reqInteres[i],
-                    )
+                    TarjetaCredito(noTarjeta, divisa, float(100 * reqCredMax[i] / divisa.get_valor()) / 100, reqInteres[i])
                 )
         return tarjetas
 
