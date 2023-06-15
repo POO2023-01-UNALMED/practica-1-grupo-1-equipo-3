@@ -57,9 +57,15 @@ def procesoSolicitarTarjeta(): # Esta función se encarga de la funcionalidad "s
         FF.forget()
         Buttons = []
         Labels = []
+        def funcFinal(i: int):
+            tarjetaEscogida = tarjetasDisponibles[i]
+            TarjetaCredito.anadirTarjetaCredito(cliente=clienteActual, tarjeta=tarjetaEscogida)
+            frameFinal.forget()
+            frameP.tkraise()
+            frameP.pack()
         for i in range(len(tarjetasDisponibles)):
             Labels.append(Label(frameFinal, text=tarjetasDisponibles[i], padx=10, pady=10).grid(column=0, row= i+3))
-            Buttons.append(Button(frameFinal, text="Escoger").grid(column=2, row = i+3, padx=10, pady=10))
+            Buttons.append(Button(frameFinal, text="Escoger", command= lambda: funcFinal(i)).grid(column=2, row = i+3, padx=10, pady=10))
         frameFinal.pack()
 
     clientes = Banco.getClientes()

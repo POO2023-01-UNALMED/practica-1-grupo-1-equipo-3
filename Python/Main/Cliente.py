@@ -9,7 +9,6 @@ class Cliente():
         self.tarjetasDebito = []
         self.tarjetasCredito = []
         self.facturas = []
-        self.bonoActual = 0
         Banco.agregarCliente(self)
     
     def getNombre(self):

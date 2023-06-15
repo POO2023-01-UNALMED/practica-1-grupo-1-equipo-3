@@ -93,6 +93,5 @@ class TarjetaCredito(Tarjeta):
             self.credito = credito
 
     @staticmethod
-    def anadirTarjetaCredito(tarjeta: "TarjetaCredito", cliente: Cliente, bono: int) -> None:
+    def anadirTarjetaCredito(tarjeta: "TarjetaCredito", cliente: Cliente) -> None:
         cliente.getTarjetasCredito().append(tarjeta)
-        cliente.setBonoActual(bono)

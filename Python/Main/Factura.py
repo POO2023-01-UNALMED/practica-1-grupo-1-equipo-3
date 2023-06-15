@@ -62,5 +62,4 @@ class Factura:
                 puntaje += int(0.1 * (t.getSaldo() * t.getDivisa().getValor()))
         if len(tarjetasActivas) + len(tarjetasBloqueadas) != 0:
             puntaje -= 100 * len(tarjetasBloqueadas) / (len(tarjetasActivas) + len(tarjetasBloqueadas))
-        puntaje += cliente.bonoActual
         return puntaje
