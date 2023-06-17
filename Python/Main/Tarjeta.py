@@ -28,7 +28,7 @@ class Tarjeta(ABC):
         return self.estado
 
     def isActiva(self):
-        return self.getEstado().equalsIgnoreCase("ACTIVA")
+        return self.getEstado() == "ACTIVA"
 
     def tarjetaABorrar(self):
         return self.erroresActuales > BorrarTarjeta.erroresMax
@@ -122,3 +122,5 @@ class TarjetaDebito(Tarjeta):
         if self.saldo >= cantidad and isinstance(t, TarjetaDebito):
             self.saldo -= round(100 * cantidad * t.divisa.getValor() / self.divisa.getValor()) / 100
             t.setSaldo(t.getSaldo() + cantidad)
+    
+    

@@ -6,7 +6,7 @@ from Transaccion import Transaccion
 from Cliente import Cliente
 
 class Factura:
-    def _init_(self, cliente, total: float, transfeRestantes: int, tarjetaDestino):
+    def __init__(self, cliente, total: float, transfeRestantes: int, tarjetaDestino):
         self.CLIENTE = cliente
         self.DIVISA = tarjetaDestino.getDivisa()
         self.TOTAL = total
@@ -35,15 +35,15 @@ class Factura:
     def getDIVISA(self):
         return self.DIVISA
 
-    def _str_(self) -> str:
+    def __str__(self):
         if self.facturaPagada and not self.facturaVencida:
             retorno = "Factura pagada ANTES de vencer\nTarjeta objetivo: " + str(self.TARJETADESTINO.getNoTarjeta()) + "\n"
         elif self.facturaPagada:
             retorno = "Factura pagada DESPUÉS de vencer\nTarjeta objetivo: " + str(self.TARJETADESTINO.getNoTarjeta()) + "\n"
         elif self.facturaVencida:
-            retorno = "Factura vencida por pagar.1\nTarjeta objetivo: " + str(self.TARJETADESTINO.getNoTarjeta()) + " faltan " + self.TOTAL - self.valorPagado + " " + self.DIVISA.name() + " por pagar" + "\n"
+            retorno = "Factura vencida por pagar.1\nTarjeta objetivo: " + str(self.TARJETADESTINO.getNoTarjeta()) + " faltan " + str(self.TOTAL-self.valorPagado) + " " + self.DIVISA.name() + " por pagar\n"
         else:
-            retorno = "Factura no vencida por pagar.\nTarjeta objetivo: " + str(self.TARJETADESTINO.getNoTarjeta()) + " faltan " + self.TOTAL - self.valorPagado + " " + self.DIVISA.name() + " por pagar en " + str(self.transfeRestantes) + " transferencias" + "\n"
+            retorno = "Factura no vencida por pagar.\nTarjeta objetivo: {} faltan {} {} por pagar en {} transferencias\n".format(self.TARJETADESTINO.getNoTarjeta(), self.TOTAL- self.valorPagado, self.DIVISA.name, self.transfeRestantes)
         return retorno
 
     def generarTransaccion(self, monto: float, tarjetaOrigen) -> 'Transaccion':

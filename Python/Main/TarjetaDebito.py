@@ -2,18 +2,19 @@ from typing import List
 from random import randint
 from Tarjeta import Tarjeta
 from Divisa import Divisa
+import math
 
 class TarjetaDebito(Tarjeta):
     serialVersionUID = 1
 
-    def _init_(self, noTarjeta: int, divisa: Divisa, saldo: float):
+    def __init__(self, noTarjeta: int, divisa: Divisa, saldo: float):
         super()._init_(noTarjeta, divisa)
         self.saldo = saldo
 
-    def _str_(self):
+    def __str__(self):
         from Banco import Banco
         return "Tipo de tarjeta: Débito\nNúmero de tarjeta: {}\nSaldo: {} {}\n".format(
-            self.noTarjeta, Banco.formatearNumero(self.saldo), self.divisa.name()
+            self.noTarjeta, math.trunc(self.saldo), self.divisa.name
         )
 
     def transaccion(self, cantidad: float, tarjeta: "TarjetaDebito") -> bool:

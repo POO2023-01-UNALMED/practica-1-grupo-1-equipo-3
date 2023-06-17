@@ -74,7 +74,7 @@ class Banco():
 
 
     @staticmethod
-    def encontrarCliente(nomCliente):
+    def encontrarCliente(nomCliente) -> Cliente:
         for c in Banco.clientes:
             if c.getNombre() == nomCliente:
                 return c

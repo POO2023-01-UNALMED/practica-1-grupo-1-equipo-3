@@ -7,16 +7,27 @@ from Cliente import Cliente
 from Divisa import Divisa
 from Tarjeta import Tarjeta
 from TarjetaCredito import TarjetaCredito
+from TarjetaDebito import TarjetaDebito
 from Factura import Factura
 
 def setup():
     cliente1 = Cliente("Carlos", 555)
     cliente2 = Cliente("Carolina", 777)
+    TarjetaDeb1 = TarjetaDebito(1, Divisa.EURO, 100000)
+    TarjetaDeb2 = TarjetaDebito(2, Divisa.DOLAR, 100000)
+    TarjetaDeb3 = TarjetaDebito(3, Divisa.DOLAR, 100000)
+
+    TarjetaCred1 = TarjetaCredito(4, Divisa.DOLAR, 10000, 10)
+
+    tarjetaFac = TarjetaDebito(666, Divisa.DOLAR, 100)
+    factura1 = Factura(cliente1, 100, 5, tarjetaFac)
+
+    cliente1.agregarTarjetasDebito(TarjetaDeb1, TarjetaDeb2)
+    cliente1.agregarTarjetasCredito(TarjetaCred1)
 
 setup()
 
 root = tk.Tk()
-root.geometry("500x300")
 
 root.title("Banco Nacho")
 
@@ -34,7 +45,7 @@ frameProcesos.pack(fill="both", expand=True)
 frameAyuda.pack(fill="both", expand=True)
 
 
-frameP = Frame(frameProcesos, background="red",)
+frameP = Frame(frameProcesos)
 frameP.pack()
 
 
@@ -67,7 +78,6 @@ def procesoSolicitarTarjeta(): # Esta función se encarga de la funcionalidad "s
             Labels.append(Label(frameFinal, text=tarjetasDisponibles[i], padx=10, pady=10).grid(column=0, row= i+3))
             Buttons.append(Button(frameFinal, text="Escoger", command= lambda: funcFinal(i)).grid(column=2, row = i+3, padx=10, pady=10))
         frameFinal.pack()
-
     clientes = Banco.getClientes()
     nomClientes = []
     for c in clientes:
@@ -82,8 +92,42 @@ def procesoSolicitarTarjeta(): # Esta función se encarga de la funcionalidad "s
     
 
 
-BsolicitarTarjeta = Button(frameP, text="Solicitar tarjeta", command=lambda: procesoSolicitarTarjeta())
+def procesoPagarFactura():
+    def segundoPaso():
+        def ultimoPaso():
+            if FF2.getValores()[0] == "" or FF2.getValores()[1] == "" or FF2.getValores()[2] == "":
+                messagebox.showinfo(title="Error", message="Por favor, ingrese los valores relevantes en todos los campos")
+                return
+            facturaEscogida = clienteActual.encontrarFacturas(FF2.getValores()[0])
+            tarjetaEscogida = clienteActual.encontrarTarjeta(FF2.getValores()[1])
+            try:
+                monto = float(FF2.getValores()[2])
+            except:
+                messagebox.showinfo(title="Error", message="Por favor, ingrese una cantidad de dinero válida")
+                return
+            if not tarjetaEscogida in clienteActual.listarTarjetas(facturaEscogida):
+                messagebox.showinfo(title="Error", message="La tarjeta escogida no es válida para esta transacción")
+                return
+        if FF.getValores()[0] == "":
+            messagebox.showinfo(title="Error", message="Por favor, ingrese los valores relevantes en todos los campos")
+            return
+        clienteActual = Banco.encontrarCliente(FF.getValores()[0])
+        facturas = clienteActual.facturas
+        tarjetas = clienteActual.getTarjetas()
+        FF2 = FieldFrame(frameProcesos, "", ["Seleccione la factura", "Seleccione la tarjeta", "Ingrese la cantidad de dinero que desea transferir"], "", ultimoPaso, [facturas, tarjetas, None])
+        FF.forget()
+        FF2.pack()
+    clientes = Banco.getClientes()
+    FF = FieldFrame(frameProcesos, "", ["Seleccione el usuario"], "", segundoPaso, [[c.getNombre() for c in clientes]])
+    frameP.forget()
+    FF.pack()
+    
+
+BsolicitarTarjeta = Button(frameP, text="Solicitar tarjeta", command=lambda: procesoSolicitarTarjeta(), padx= 10, pady=10)
+BpagarFactura = Button(frameP, text="Pagar factura", command=lambda: procesoPagarFactura(), padx=10, pady=10)
+
 BsolicitarTarjeta.pack()
+BpagarFactura.pack()
 
 notebook.add(frameArchivo, text = "Archivo")
 notebook.add(frameProcesos, text = "Procesos y Consultas")

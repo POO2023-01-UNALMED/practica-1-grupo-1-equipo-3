@@ -29,3 +29,43 @@ class Cliente():
     
     def getFacturas(self):
         return self.facturas
+    
+    def agregarFactura(self, f):
+        self.facturas.append(f)
+
+    def getTarjetas(self):
+        return self.tarjetasCredito + self.tarjetasDebito
+    
+    def listarTarjetas(self, factura):
+        tarjetasDisponibles = []
+        for tarjeta in self.tarjetasDebito:
+            if not tarjeta.tieneSaldo():
+                continue
+            if tarjeta.getDivisa() == factura.getDIVISA():
+                tarjetasDisponibles.append(tarjeta)
+        for tarjeta in self.tarjetasCredito:
+
+            if not tarjeta.tieneSaldo():
+                continue
+            if tarjeta.getDivisa() == factura.getDIVISA():
+                tarjetasDisponibles.append(tarjeta)
+        return tarjetasDisponibles
+    
+    def agregarTarjetasDebito(self, *tarjetasDebito):
+        self.tarjetasDebito.extend(list(tarjetasDebito))
+    
+    def agregarTarjetasCredito(self, *tarjetasCredito):
+        self.tarjetasCredito.extend(list(tarjetasCredito))
+
+    def encontrarTarjeta(self, tarjeta):
+        for t in self.tarjetasCredito:
+            if t.__str__() == tarjeta.__str__():
+                return t
+        for t in self.tarjetasDebito:
+            if t.__str__() == tarjeta.__str__():
+                return t
+    
+    def encontrarFacturas(self, factura):
+        for f in self.facturas:
+            if f.__str__() == factura.__str__():
+                return f
