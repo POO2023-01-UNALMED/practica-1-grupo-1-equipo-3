@@ -2,14 +2,17 @@
 class Transaccion:
     transacciones = []
 
-    def __init__(self, cliente_origen, cliente_objetivo, tarjeta_origen, tarjeta_objetivo, cantidad, validez = None, factura = None, mensaje = None, retornable = True):
+    def __init__(self, cliente_origen, cliente_objetivo, tarjeta_origen, tarjeta_objetivo, cantidad, validez = None, factura = None, mensaje = None, retornable = True, pendiente = False):
         self.cliente_objetivo = cliente_objetivo
         self.cliente_origen = cliente_origen
         self.tarjeta_origen = tarjeta_origen
         self.tarjeta_objetivo = tarjeta_objetivo
         self.cantidad = cantidad
-        self.rechazado = not tarjeta_origen.transaccion(cantidad, tarjeta_objetivo)
-        self.pendiente = False
+        if not pendiente:
+            self.rechazado = not tarjeta_origen.transaccion(cantidad, tarjeta_objetivo)
+        else:
+            self.rechazado = False
+        self.pendiente = pendiente
         self.retornable = retornable
         self.validez = validez
         self.factura = factura
@@ -46,6 +49,9 @@ class Transaccion:
     
     def getCantidad(self):
         return self.cantidad
+
+    def setRetornable(self, ret):
+        self.retornable = ret
 
     @staticmethod
     def encontrar_transacciones(cliente_origen, divisa):
@@ -112,9 +118,17 @@ class Transaccion:
     def getClienteOrigen(self):
         return self.cliente_origen
     
+    def getClienteObjetivo(self):
+        return self.cliente_objetivo
+
     def getTarjetaOrigen(self):
         return self.tarjeta_origen
 
+    def getMensaje(self):
+        return self.mensaje
+    
+    def isPendiente(self):
+        return self.pendiente
 
     def __str__(self):
         if self.mensaje and self.pendiente:

@@ -70,7 +70,7 @@ class Banco():
     @staticmethod
     def generarPeticion(transaccion: Transaccion, mensaje: str) -> None:
         transaccion.setRetornable(False)
-        Transaccion(transaccion, mensaje)
+        Transaccion(cliente_origen=transaccion.cliente_origen, cliente_objetivo=transaccion.cliente_objetivo, tarjeta_origen=transaccion.tarjeta_origen, tarjeta_objetivo=transaccion.tarjeta_objetivo, cantidad=transaccion.cantidad, mensaje=mensaje, retornable=False, pendiente=True)
 
 
     @staticmethod

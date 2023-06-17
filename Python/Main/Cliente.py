@@ -75,3 +75,11 @@ class Cliente():
             if not f.facturaPagada:
                 retorno.append(f)
         return retorno
+    
+    def verPeticiones(self):
+        retorno = []
+        for t in Transaccion.getTransacciones():
+            if t.getClienteObjetivo() is not None:
+                if t.getClienteObjetivo() == self and t.getMensaje() is not None and t.isPendiente():
+                    retorno.append(t)
+        return retorno
