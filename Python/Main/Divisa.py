@@ -52,3 +52,6 @@ class Divisa(Enum):
         for d in Divisa:
             if d.name == nomDivisa:
                 return d
+
+    def getValor(self):
+        return self.value

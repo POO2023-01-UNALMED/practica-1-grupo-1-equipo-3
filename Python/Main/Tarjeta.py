@@ -123,4 +123,5 @@ class TarjetaDebito(Tarjeta):
             self.saldo -= round(100 * cantidad * t.divisa.getValor() / self.divisa.getValor()) / 100
             t.setSaldo(t.getSaldo() + cantidad)
     
-    
+    def getDivisa(self):
+        return self.divisa

@@ -108,13 +108,23 @@ def procesoPagarFactura():
             if not tarjetaEscogida in clienteActual.listarTarjetas(facturaEscogida):
                 messagebox.showinfo(title="Error", message="La tarjeta escogida no es válida para esta transacción")
                 return
+            transaccon = facturaEscogida.generarTransaccion(monto, tarjetaEscogida)
+            print(transaccon)
+            if transaccon.rechazado:
+                messagebox.showinfo(title="Error", message="La transacción ha sido rechazada")
+            FF2.forget()
+            frameP.pack()
         if FF.getValores()[0] == "":
             messagebox.showinfo(title="Error", message="Por favor, ingrese los valores relevantes en todos los campos")
             return
         clienteActual = Banco.encontrarCliente(FF.getValores()[0])
-        facturas = clienteActual.facturas
+        facturas = clienteActual.mostrarFacturas()
         tarjetas = clienteActual.getTarjetas()
-        FF2 = FieldFrame(frameProcesos, "", ["Seleccione la factura", "Seleccione la tarjeta", "Ingrese la cantidad de dinero que desea transferir"], "", ultimoPaso, [facturas, tarjetas, None])
+        try:
+            FF2 = FieldFrame(frameProcesos, "", ["Seleccione la factura", "Seleccione la tarjeta", "Ingrese la cantidad de dinero que desea transferir"], "", ultimoPaso, [facturas, tarjetas, None])
+        except TypeError:
+            messagebox.showinfo(title="Error", message="Usted no tiene facturas disponibles por pagar")
+            return
         FF.forget()
         FF2.pack()
     clientes = Banco.getClientes()

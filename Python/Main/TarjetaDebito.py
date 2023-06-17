@@ -58,3 +58,11 @@ class TarjetaDebito(Tarjeta):
 
     def introducirDinero(self, monto: float) -> None:
         self.saldo += monto
+    
+    def setSaldo(self, monto):
+        self.saldo = monto
+    def getSaldo(self):
+        return self.saldo
+    
+    def getDivisa(self):
+        return super().getDivisa()

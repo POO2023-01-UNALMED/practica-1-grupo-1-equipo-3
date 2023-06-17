@@ -95,3 +95,6 @@ class TarjetaCredito(Tarjeta):
     @staticmethod
     def anadirTarjetaCredito(tarjeta: "TarjetaCredito", cliente: Cliente) -> None:
         cliente.getTarjetasCredito().append(tarjeta)
+
+    def getDivisa(self):
+        return super().getDivisa()

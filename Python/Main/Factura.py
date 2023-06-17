@@ -48,7 +48,12 @@ class Factura:
 
     def generarTransaccion(self, monto: float, tarjetaOrigen) -> 'Transaccion':
         validez = tarjetaOrigen.puedeTransferir(monto) and tarjetaOrigen.getDivisa() == self.TARJETADESTINO.getDivisa()
-        return Transaccion(self.CLIENTE, tarjetaOrigen, self.TARJETADESTINO, monto, self, not validez)
+        if validez:
+            self.transfeRestantes -= 1
+            self.valorPagado += monto
+            if self.valorPagado >= self.TOTAL:
+                self.facturaPagada = True
+        return Transaccion(self.CLIENTE, None, tarjetaOrigen, self.TARJETADESTINO, monto, not validez, self)
 
     @staticmethod
     def modificarPuntaje(tarjetasBloqueadas: List[Tarjeta], tarjetasActivas: List[Tarjeta], cliente: Cliente, puntaje: int) -> int:

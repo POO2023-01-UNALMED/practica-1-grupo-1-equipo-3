@@ -19,6 +19,7 @@ class FieldFrame(Frame):
                     entrys.append(Entry(self))
                 else:
                     Vals[i] = StringVar()
+                    print(Vals[i])
                     entrys.append(OptionMenu(self, Vals[i], *opciones[i]))
             else:
                 entrys.append(Entry(self))

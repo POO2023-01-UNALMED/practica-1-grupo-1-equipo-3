@@ -2,7 +2,7 @@
 class Transaccion:
     transacciones = []
 
-    def _init_(self, cliente_objetivo, cliente_origen, tarjeta_origen, tarjeta_objetivo, cantidad):
+    def __init__(self, cliente_origen, cliente_objetivo, tarjeta_origen, tarjeta_objetivo, cantidad, validez = None, factura = None, mensaje = None):
         self.cliente_objetivo = cliente_objetivo
         self.cliente_origen = cliente_origen
         self.tarjeta_origen = tarjeta_origen
@@ -11,7 +11,10 @@ class Transaccion:
         self.rechazado = not tarjeta_origen.transaccion(cantidad, tarjeta_objetivo)
         self.pendiente = False
         self.retornable = True
-        self.divisa = tarjeta_origen.get_divisa()
+        self.validez = validez
+        self.factura = factura
+        self.mensaje = mensaje
+        self.divisa = tarjeta_origen.getDivisa()
         Transaccion.transacciones.append(self)
 
     @property
@@ -38,13 +41,11 @@ class Transaccion:
     def retornable(self, value):
         self._retornable = value
 
-    @property
-    def divisa(self):
-        return self._divisa
-
-    @divisa.setter
-    def divisa(self, value):
-        self._divisa = value
+    def getDivisa(self):
+        return self.divisa
+    
+    def getCantidad(self):
+        return self.cantidad
 
     @staticmethod
     def encontrar_transacciones(cliente_origen, divisa):
@@ -101,55 +102,23 @@ class Transaccion:
         return self.tarjeta_origen
 
 
-    def _str_(self):
-        from Banco import Banco #Es necesario importar de esta manera, de lo contrario, causaría un error por import circular
+    def __str__(self):
+        if self.mensaje and self.pendiente:
+            return f"El cliente {self.cliente_origen.getNombre()} quisiera deshacer una transacción por {(self.cantidad)} {self.tarjeta_origen.getDivisa()} recibidos por la tarjeta #{self.tarjeta_objetivo.getNoTarjeta()}\nSu mensaje es: {self.mensaje}"
         if self.rechazado:
-            if self.tarjeta_objetivo is None:
-                return (
-                    "Transacción Rechazada\n"
-                    "Total: "
-                    + Banco.formatear_numero(self.cantidad)
-                    + " "
-                    + self.tarjeta_origen.get_divisa()
-                    + "\n"
-                    "Tarjeta: #"
-                    + self.tarjeta_origen.get_no_tarjeta()
-                )
-            if self.tarjeta_origen is None:
-                return (
-                    "Transacción Rechazada\n"
-                    "Total: "
-                    + Banco.formatear_numero(self.cantidad)
-                    + " "
-                    + self.tarjeta_objetivo.get_divisa()
-                    + "\n"
-                    "Tarjeta: #"
-                    + self.tarjeta_objetivo.get_no_tarjeta()
-                )
-            return "Transacción Rechazada"
-        if self.tarjeta_origen is None:
-            return (
-                "Transacción Realizada\n"
-                "Total: "
-                + Banco.formatear_numero(self.cantidad)
-                + " "
-                + self.tarjeta_objetivo.get_divisa()
-                + "\n"
-                "Tarjeta: #"
-                + self.tarjeta_objetivo.get_no_tarjeta()
-            )
-        if self.tarjeta_objetivo is None:
-            return (
-                "Transacción Realizada\n"
-                "Total: "
-                + Banco.formatear_numero(self.cantidad)
-                + " "
-                + self.tarjeta_origen.get_divisa()
-                + "\n"
-                "Tarjeta: #"
-                + self.tarjeta_origen.get_no_tarjeta()
-            )
-        return "Transacción Realizada"
+            if not self.tarjeta_objetivo:
+                return f"Transacción Rechazada\nTotal: {(self.cantidad)} {self.tarjeta_origen.getDivisa()}\nTarjeta: #{self.tarjeta_origen.getNoTarjeta()}"
+            if not self.tarjeta_origen:
+                return f"Transacción Rechazada\nTotal: {(self.cantidad)} {self.tarjeta_objetivo.getDivisa()}\nTarjeta de destino: #{self.tarjeta_objetivo.getNoTarjeta()}"
+            if not self.cliente_origen:
+                return f"Transacción Rechazada\nTotal: {(self.cantidad)} {self.tarjeta_objetivo.getDivisa()}\nTarjeta de origen: #{self.tarjeta_origen.getNoTarjeta()}\nTarjeta de destino: #{self.tarjeta_objetivo.getNoTarjeta()}"
+            else:
+                return f"Transacción Rechazada\nTotal: {(self.cantidad)} {self.tarjeta_objetivo.getDivisa()}\nTarjeta de origen: #{self.tarjeta_origen.getNoTarjeta()}\nTarjeta de destino: #{self.tarjeta_objetivo.getNoTarjeta()}\nProveniente de: {self.cliente_origen.getNombre()}\n"
+        elif self.pendiente:
+            return f"Transacción Pendiente\nTotal: {(self.cantidad)} {self.tarjeta_origen.getDivisa()}\nTarjeta de origen: #{self.tarjeta_origen.getNoTarjeta()}\nTarjeta de destino: #{self.tarjeta_objetivo.getNoTarjeta()}"
+        else:
+            return f"Transacción Completada\nTotal: {(self.cantidad)} {self.tarjeta_origen.getDivisa()}\nTarjeta de origen: #{self.tarjeta_origen.getNoTarjeta()}\nTarjeta de destino: #{self.tarjeta_objetivo.getNoTarjeta()}"
+
     
 
     def _repr_(self):

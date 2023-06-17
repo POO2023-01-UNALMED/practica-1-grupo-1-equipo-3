@@ -18,7 +18,7 @@ class Cliente():
         from TarjetaCredito import TarjetaCredito
         retorno = []
         for t in Transaccion.getTransacciones():
-            if t.getClienteOrigen() == self and not t.rechazado() and isinstance(t.getTarjetaOrigen(), TarjetaCredito) and not t.pendiente():
+            if t.getClienteOrigen() == self and not t.rechazado and isinstance(t.getTarjetaOrigen(), TarjetaCredito) and not t.pendiente:
                 retorno.append(t)
         return retorno
     
@@ -44,7 +44,6 @@ class Cliente():
             if tarjeta.getDivisa() == factura.getDIVISA():
                 tarjetasDisponibles.append(tarjeta)
         for tarjeta in self.tarjetasCredito:
-
             if not tarjeta.tieneSaldo():
                 continue
             if tarjeta.getDivisa() == factura.getDIVISA():
@@ -69,3 +68,10 @@ class Cliente():
         for f in self.facturas:
             if f.__str__() == factura.__str__():
                 return f
+
+    def mostrarFacturas(self):
+        retorno = []
+        for f in self.facturas:
+            if not f.facturaPagada:
+                retorno.append(f)
+        return retorno
