@@ -9,10 +9,12 @@ from Tarjeta import Tarjeta
 from TarjetaCredito import TarjetaCredito
 from TarjetaDebito import TarjetaDebito
 from Factura import Factura
+from Transaccion import Transaccion
 
 def setup():
     cliente1 = Cliente("Carlos", 555)
     cliente2 = Cliente("Carolina", 777)
+    cliente3 = Cliente("José", 888)
     TarjetaDeb1 = TarjetaDebito(1, Divisa.EURO, 100000)
     TarjetaDeb2 = TarjetaDebito(2, Divisa.DOLAR, 100000)
     TarjetaDeb3 = TarjetaDebito(3, Divisa.DOLAR, 100000)
@@ -24,6 +26,7 @@ def setup():
 
     cliente1.agregarTarjetasDebito(TarjetaDeb1, TarjetaDeb2)
     cliente1.agregarTarjetasCredito(TarjetaCred1)
+    cliente3.agregarTarjetasDebito(TarjetaDeb3)
 
 setup()
 
@@ -90,9 +93,7 @@ def procesoSolicitarTarjeta(): # Esta función se encarga de la funcionalidad "s
     FF.tkraise()
     FF.pack()
     
-
-
-def procesoPagarFactura():
+def procesoPagarFactura(): # Esta función se encarga de la funcionalidad "Pagar factura"
     def segundoPaso():
         def ultimoPaso():
             if FF2.getValores()[0] == "" or FF2.getValores()[1] == "" or FF2.getValores()[2] == "":
@@ -132,12 +133,62 @@ def procesoPagarFactura():
     frameP.forget()
     FF.pack()
     
+def procesoHacerTransaccion():
+    def paso2():
+        def paso3():
+            def ultimoPaso():
+                try:
+                    tarjetaObjetivo = clienteObjetivo.encontrarTarjeta(FF3.getValores()[0])
+                    monto = float(FF3.getValores()[1])
+                except ValueError:
+                    messagebox.showinfo(title="Error", message="Por favor, ingrese una cantidad válida")
+                    return
+                trans = Transaccion(clienteActual, clienteObjetivo, tarjetaEscogida, tarjetaObjetivo, monto)
+                if trans.rechazado:
+                    if monto > tarjetaEscogida.getSaldo():
+                        messagebox.showinfo(title="Error", message="La transacción ha fallado porque no hay suficiente dinero en la cuenta")
+                        FF3.forget()
+                        frameP.pack()
+                        return
+                    elif not tarjetaEscogida.getDivisa() == tarjetaObjetivo.getDivisa():
+                        messagebox.showinfo(title="Error", message="Error: las tarjetas no tienen la misma divisa")
+                        FF3.forget()
+                        frameP.pack()
+                        return
+            clienteObjetivo = Banco.encontrarCliente(FF2.getValores()[0])
+            tarjetaEscogida = clienteActual.encontrarTarjeta(FF2.getValores()[1])
+            try:
+                FF3 = FieldFrame(frameProcesos, "", ["Tarjeta que recibe la transacción", "Monto a transferir"],"", ultimoPaso, [[t.__str__() for t in clienteObjetivo.getTarjetasDebito()], None])
+            except TypeError:
+                messagebox.showinfo(title="Error", message="El cliente escogido no dispone de tarjetas que puedan recibir esta transacción")
+                FF2.forget()
+                frameP.pack()
+                return
+            FF3.pack()
+            FF2.forget()
+        clienteActual = Banco.encontrarCliente(FF.getValores()[0])
+        try:
+            FF2 = FieldFrame(frameProcesos, "", ["Usuario que recibe la transacción", "Tarjeta de origen"], "", paso3, [[c.getNombre() for c in Banco.getClientes()], [t.__str__() for t in clienteActual.getTarjetas()]])
+        except TypeError:
+                messagebox.showinfo(title="Error", message="El cliente escogido no dispone de tarjetas que puedan recibir esta transacción")
+                FF.forget()
+                frameP.pack()
+                return
+        FF2.pack()
+        FF.forget()
+    FF = FieldFrame(frameProcesos, "", ["Usuario que hace la transacción"], "", paso2, [[c.getNombre() for c in Banco.getClientes()]])
+    FF.pack()
+    frameP.forget()
+
+
 
 BsolicitarTarjeta = Button(frameP, text="Solicitar tarjeta", command=lambda: procesoSolicitarTarjeta(), padx= 10, pady=10)
 BpagarFactura = Button(frameP, text="Pagar factura", command=lambda: procesoPagarFactura(), padx=10, pady=10)
+BhacerTransaccion = Button(frameP, text="Hacer transaccion", command=lambda: procesoHacerTransaccion(), padx=10, pady=10)
 
 BsolicitarTarjeta.pack()
 BpagarFactura.pack()
+BhacerTransaccion.pack()
 
 notebook.add(frameArchivo, text = "Archivo")
 notebook.add(frameProcesos, text = "Procesos y Consultas")

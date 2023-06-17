@@ -11,7 +11,7 @@ class TarjetaCredito(Tarjeta):
     serialVersionUID = 1
 
     def __init__(self, noTarjeta: int, divisa: Divisa, creditoMaximo: float, interes: float):
-        super()._init_(noTarjeta, divisa)
+        super().__init__(noTarjeta, divisa)
         self.CREDITOMAXIMO = creditoMaximo
         self.credito = 0
         self.INTERES = interes

@@ -5,7 +5,7 @@ import pickle
 class Tarjeta(ABC):
     tarjetas = []
 
-    def _init_(self, noTarjeta, divisa):
+    def __init__(self, noTarjeta, divisa):
         self.noTarjeta = noTarjeta
         self.divisa = divisa
         self.estado = "ACTIVA"

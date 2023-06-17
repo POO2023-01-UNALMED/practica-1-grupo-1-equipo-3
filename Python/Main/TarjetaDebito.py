@@ -8,7 +8,7 @@ class TarjetaDebito(Tarjeta):
     serialVersionUID = 1
 
     def __init__(self, noTarjeta: int, divisa: Divisa, saldo: float):
-        super()._init_(noTarjeta, divisa)
+        super().__init__(noTarjeta, divisa)
         self.saldo = saldo
 
     def __str__(self):
@@ -61,6 +61,7 @@ class TarjetaDebito(Tarjeta):
     
     def setSaldo(self, monto):
         self.saldo = monto
+    
     def getSaldo(self):
         return self.saldo
     

@@ -1,4 +1,5 @@
 from tkinter import *
+from tkinter import messagebox
 
 class FieldFrame(Frame):
 
@@ -38,7 +39,18 @@ class FieldFrame(Frame):
                 else:
                     Vals[i].set("")
         Borrar = Button(self, text="Borrar", command=borrar)
-        Aceptar = Button(self, text="Aceptar", command=lambda: funcionAceptar())
+        def funcBotonAceptar(): # Verifica que el usuario halla ingresado datos en todos los campos, y si sí, continúa
+            for i in range(len(self.entrys)):
+                if isinstance(self.entrys[i], Entry):
+                    if self.entrys[i].get() == "":
+                        messagebox.showinfo(title="Error", message="Por favor, ingrese valores válidos en todos los campos")
+                        return
+                else:
+                    if self.Vals[i].get() == "":
+                        messagebox.showinfo(title="Error", message="Por favor, ingrese valores válidos en todos los campos")
+                        return
+            funcionAceptar()
+        Aceptar = Button(self, text="Aceptar", command=lambda: funcBotonAceptar())
         Borrar.grid(column=0, row = len(criterios)+3, pady=10)
         Aceptar.grid(column=1, row=len(criterios)+3, pady=10)
         self.entrys = entrys
