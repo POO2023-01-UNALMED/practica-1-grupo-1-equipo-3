@@ -2,7 +2,7 @@
 class Transaccion:
     transacciones = []
 
-    def __init__(self, cliente_origen, cliente_objetivo, tarjeta_origen, tarjeta_objetivo, cantidad, validez = None, factura = None, mensaje = None):
+    def __init__(self, cliente_origen, cliente_objetivo, tarjeta_origen, tarjeta_objetivo, cantidad, validez = None, factura = None, mensaje = None, retornable = True):
         self.cliente_objetivo = cliente_objetivo
         self.cliente_origen = cliente_origen
         self.tarjeta_origen = tarjeta_origen
@@ -10,7 +10,7 @@ class Transaccion:
         self.cantidad = cantidad
         self.rechazado = not tarjeta_origen.transaccion(cantidad, tarjeta_objetivo)
         self.pendiente = False
-        self.retornable = True
+        self.retornable = retornable
         self.validez = validez
         self.factura = factura
         self.mensaje = mensaje
@@ -91,6 +91,20 @@ class Transaccion:
                 retorno.append(t)
         return retorno
     
+    def encontrar_transacciones(cliente_origen):
+        retorno = []
+        for t in Transaccion.transacciones:
+            print(t)
+            if (
+                t.cliente_origen == cliente_origen
+                and t.cliente_objetivo is not None
+                and t.retornable
+                and not t.pendiente
+                and not t.rechazado
+            ):
+                retorno.append(t)
+        return retorno
+    
     @staticmethod
     def getTransacciones():
         return Transaccion.transacciones
@@ -119,7 +133,10 @@ class Transaccion:
         else:
             return f"Transacción Completada\nTotal: {(self.cantidad)} {self.tarjeta_origen.getDivisa()}\nTarjeta de origen: #{self.tarjeta_origen.getNoTarjeta()}\nTarjeta de destino: #{self.tarjeta_objetivo.getNoTarjeta()}"
 
-    
-
     def _repr_(self):
         return self._str_()
+    
+    def encontrarTransaccion(transaccion):
+        for t in Transaccion.transacciones:
+            if t.retornable and t.__str__() == transaccion:
+                return t

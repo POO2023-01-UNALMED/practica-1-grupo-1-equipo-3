@@ -133,7 +133,7 @@ def procesoPagarFactura(): # Esta función se encarga de la funcionalidad "Pagar
     frameP.forget()
     FF.pack()
     
-def procesoHacerTransaccion():
+def procesoHacerTransaccion(): #Se encarga de crear una transacción entre usuarios
     def paso2():
         def paso3():
             def ultimoPaso():
@@ -155,6 +155,8 @@ def procesoHacerTransaccion():
                         FF3.forget()
                         frameP.pack()
                         return
+                FF3.forget()
+                frameP.pack()
             clienteObjetivo = Banco.encontrarCliente(FF2.getValores()[0])
             tarjetaEscogida = clienteActual.encontrarTarjeta(FF2.getValores()[1])
             try:
@@ -180,15 +182,37 @@ def procesoHacerTransaccion():
     FF.pack()
     frameP.forget()
 
-
+def procesoDeshacerTransaccion():
+    def paso2():
+        def pasoFinal():
+            transaccionADeshacer = Transaccion.encontrarTransaccion(FF2.getValores()[0])
+            mensaje = FF2.getValores()[1]
+            Banco.generarPeticion(transaccionADeshacer, mensaje)
+            FF2.forget()
+            frameP.pack()
+        clienteActual = Banco.encontrarCliente(FF.getValores()[0])
+        try:
+            FF2 = FieldFrame(frameProcesos, "", ["Escoga la tranacción que desea deshacer", "Ingrese el mensaje que desea que vea el cliente que recibió la transacción"], "", pasoFinal, [Transaccion.encontrar_transacciones(clienteActual), None])
+        except TypeError:
+            messagebox.showinfo(title="Error", message="El cliente escogido no dispone de transferencias que se puedan deshacer")
+            FF.forget()
+            frameP.pack()
+            return
+        FF.forget()
+        FF2.pack()
+    FF = FieldFrame(frameProcesos, "", ["Escoga el cliente"], "", paso2, [[c.getNombre() for c in Banco.getClientes()]])
+    frameP.forget()
+    FF.pack()
 
 BsolicitarTarjeta = Button(frameP, text="Solicitar tarjeta", command=lambda: procesoSolicitarTarjeta(), padx= 10, pady=10)
 BpagarFactura = Button(frameP, text="Pagar factura", command=lambda: procesoPagarFactura(), padx=10, pady=10)
 BhacerTransaccion = Button(frameP, text="Hacer transaccion", command=lambda: procesoHacerTransaccion(), padx=10, pady=10)
+BdeshacerTransaccion = Button(frameP, text="Deshacer transaccion", command=lambda:procesoDeshacerTransaccion(), padx=10, pady=10)
 
 BsolicitarTarjeta.pack()
 BpagarFactura.pack()
 BhacerTransaccion.pack()
+BdeshacerTransaccion.pack()
 
 notebook.add(frameArchivo, text = "Archivo")
 notebook.add(frameProcesos, text = "Procesos y Consultas")
