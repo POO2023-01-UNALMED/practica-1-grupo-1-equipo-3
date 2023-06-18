@@ -218,11 +218,29 @@ def procesoVerPeticiones():
     def paso2():
         def funcBotones(i):
             def funcVolver():
-                labelPrincipal.forget()
-                labelTransaccion.forget()
-                botonVolver.forget()
-                botonNegar.forget()
-                botonConceder.forget()
+                labelPrincipal.destroy()
+                labelTransaccion.destroy()
+                botonVolver.destroy()
+                botonNegar.destroy()
+                botonConceder.destroy()
+                frameP.pack()
+            def funcNegar():
+                transNueva = Transaccion.completarTransaccion(transaccion=transaccionActual, respuesta=False)
+                Transaccion.getTransacciones()[Transaccion.getTransacciones().index(transaccionActual)] = transNueva
+                labelPrincipal.destroy()
+                labelTransaccion.destroy()
+                botonVolver.destroy()
+                botonNegar.destroy()
+                botonConceder.destroy()
+                frameP.pack()
+            def funcAceptar():
+                transNueva = Transaccion.completarTransaccion(transaccion=transaccionActual, respuesta=True)
+                Transaccion.getTransacciones()[Transaccion.getTransacciones().index(transaccionActual)] = transNueva
+                labelPrincipal.destroy()
+                labelTransaccion.destroy()
+                botonVolver.destroy()
+                botonNegar.destroy()
+                botonConceder.destroy()
                 frameP.pack()
             enunciado.forget()
             for w in frameProcesos.winfo_children():
@@ -234,9 +252,9 @@ def procesoVerPeticiones():
             labelTransaccion.grid(column=1, row=1)
             botonVolver = Button(frameProcesos, text="Volver", command=lambda: funcVolver(), padx=10, pady=10)
             botonVolver.grid(column=0, row=3)
-            botonNegar = Button(frameProcesos, text="Negar la petición", padx=10, pady=10)
+            botonNegar = Button(frameProcesos, text="Negar la petición", padx=10, pady=10, command=lambda: funcNegar())
             botonNegar.grid(column=1, row=3)
-            botonConceder = Button(frameProcesos, text="Conceder la petición", padx=10, pady=10)
+            botonConceder = Button(frameProcesos, text="Conceder la petición", padx=10, pady=10, command=lambda: funcAceptar())
             botonConceder.grid(column=2, row=3)
             
         clienteActual = Banco.encontrarCliente(FF.getValores()[0])

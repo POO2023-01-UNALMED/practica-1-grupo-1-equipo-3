@@ -154,3 +154,14 @@ class Transaccion:
         for t in Transaccion.transacciones:
             if t.retornable and t.__str__() == transaccion:
                 return t
+    
+    @staticmethod
+    def completarTransaccion(transaccion, respuesta):
+        if not respuesta:
+            transaccion.rechazado = True
+            transaccion.pendiente = False
+        else:
+            transaccion.rechazado = False
+            transaccion.pendiente = False
+            transaccion.tarjeta_objetivo.deshacerTransaccion(transaccion.cantidad, transaccion.tarjeta_origen)
+        return transaccion
