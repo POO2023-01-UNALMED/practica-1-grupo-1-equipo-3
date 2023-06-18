@@ -48,17 +48,32 @@ frameProcesos.pack(fill="both", expand=True)
 frameAyuda.pack(fill="both", expand=True)
 
 #Configurando la pestaña de Ayuda
-frameA = Frame(frameArchivo)
-frameA.pack()
-frameA.config(width=400,height=280) 
+frameAr = Frame(frameArchivo)
+frameAr.pack()
+frameAr.config(width=400,height=280) 
 
 def mostrarAplicacion():
     messagebox.showinfo("¿Banco Nacho?", "Banco Nacho es una aplicación bancaria que permite a los clientes ver y realizar transacciones entre sus tarjetas bancarias. También pueden pagar facturas y convertir divisas. El programa ofrece 5 funcionalidades principales, incluyendo transacciones, pagos de facturas, conversión de divisas y deshacer transacciones.")
-LabelApicacion = Label(frameA, text="Conocer más acerca de la aplicación de Banco Nacho", pady=8)
+
+LabelApicacion = Label(frameAr, text="Conocer más acerca de la aplicación de Banco Nacho", pady=8)
 LabelApicacion.pack()
-buttonAplicacion = Button(frameA, text="Ver aplicación", command=lambda: mostrarAplicacion(), padx= 10, pady=8)
+buttonAplicacion = Button(frameAr, text="Ver aplicación", command=lambda: mostrarAplicacion(), padx= 10, pady=8)
 buttonAplicacion.pack()
 
+#Pestaña de Ayuda
+frameAy = Frame(frameAyuda)
+frameAy.pack()
+frameAy.config(width=400,height=280) 
+
+def mostrarAyuda():
+    messagebox.showinfo("Desarrolladores", "Este proyecto ha sido desarrollado por:\n- Jose Miguel Pulgarin Agudelo\n- Dario Alexander Penagos Von Werde\n- Carlos Guarin")
+    
+LabelApicacion = Label(frameAy, text="Conocer más acerca de los creadores de Banco Nacho", pady=8)
+LabelApicacion.pack()
+buttonAplicacion = Button(frameAy, text="Ver desarrolladores", command=lambda: mostrarAyuda(), padx= 10, pady=8)
+buttonAplicacion.pack()
+
+#Pestana de Procesos y consultas
 frameP = Frame(frameProcesos)
 frameP.pack()
 
