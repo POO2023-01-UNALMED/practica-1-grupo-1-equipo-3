@@ -182,7 +182,7 @@ def procesoHacerTransaccion(): #Se encarga de crear una transacción entre usuar
         try:
             FF2 = FieldFrame(frameProcesos, "", ["Usuario que recibe la transacción", "Tarjeta de origen"], "", paso3, [[c.getNombre() for c in Banco.getClientes()], [t.__str__() for t in clienteActual.getTarjetas()]])
         except TypeError:
-                messagebox.showinfo(title="Error", message="El cliente escogido no dispone de tarjetas que puedan recibir esta transacción")
+                messagebox.showinfo(title="Error", message="El cliente escogido no dispone de tarjetas de las que pueda salir la transacción")
                 FF.forget()
                 frameP.pack()
                 return
@@ -217,15 +217,41 @@ def procesoDeshacerTransaccion(): #Se encarga de crear una petición para la fun
 def procesoVerPeticiones():
     def paso2():
         def funcBotones(i):
+            def funcVolver():
+                labelPrincipal.forget()
+                labelTransaccion.forget()
+                botonVolver.forget()
+                botonNegar.forget()
+                botonConceder.forget()
+                frameP.pack()
+            enunciado.forget()
+            for w in frameProcesos.winfo_children():
+                w.forget()
             transaccionActual = transacciones[i]
-            messagebox.showinfo(title="holi", message=i)
+            labelPrincipal = Label(frameProcesos, text="Escoga lo que quiere hacer con la siguiente transacción", padx=10, pady=10)
+            labelPrincipal.grid(column=1, row=0)
+            labelTransaccion = Label(frameProcesos, text=transaccionActual, padx=10, pady=10)
+            labelTransaccion.grid(column=1, row=1)
+            botonVolver = Button(frameProcesos, text="Volver", command=lambda: funcVolver(), padx=10, pady=10)
+            botonVolver.grid(column=0, row=3)
+            botonNegar = Button(frameProcesos, text="Negar la petición", padx=10, pady=10)
+            botonNegar.grid(column=1, row=3)
+            botonConceder = Button(frameProcesos, text="Conceder la petición", padx=10, pady=10)
+            botonConceder.grid(column=2, row=3)
+            
         clienteActual = Banco.encontrarCliente(FF.getValores()[0])
         transacciones = clienteActual.verPeticiones()
+        if len(transacciones) == 0:
+            messagebox.showinfo(title="Error", message="El cliente escogido no tiene peticiones actualmente")
+            FF.forget()
+            frameP.pack()
+            return
         botones = []
+        FF.forget()
         enunciado = Label(frameProcesos, text="Escoga la transacción que quiere tratar, o 'volver' para salir")
         enunciado.pack()
-        for t in transacciones:
-            botones.append(Button(frameProcesos, text=t, padx=10, pady=100).pack())
+        for i in range(len(transacciones)):
+            botones.append(Button(frameProcesos, text=transacciones[i], padx=10, pady=100, command=lambda: funcBotones(i)).pack())
     FF = FieldFrame(frameProcesos, "", ["Escoga el usuario cuyas peticiones desea ver"], "", paso2, [[c.getNombre() for c in Banco.getClientes()]])
     FF.pack()
     frameP.forget()
