@@ -47,6 +47,17 @@ frameArchivo.pack(fill="both", expand=True)
 frameProcesos.pack(fill="both", expand=True)
 frameAyuda.pack(fill="both", expand=True)
 
+#Configurando la pestaña de Ayuda
+frameA = Frame(frameArchivo)
+frameA.pack()
+frameA.config(width=400,height=280) 
+
+def mostrarAplicacion():
+    messagebox.showinfo("¿Banco Nacho?", "Banco Nacho es una aplicación bancaria que permite a los clientes ver y realizar transacciones entre sus tarjetas bancarias. También pueden pagar facturas y convertir divisas. El programa ofrece 5 funcionalidades principales, incluyendo transacciones, pagos de facturas, conversión de divisas y deshacer transacciones.")
+LabelApicacion = Label(frameA, text="Conocer más acerca de la aplicación de Banco Nacho", pady=8)
+LabelApicacion.pack()
+buttonAplicacion = Button(frameA, text="Ver aplicación", command=lambda: mostrarAplicacion(), padx= 10, pady=8)
+buttonAplicacion.pack()
 
 frameP = Frame(frameProcesos)
 frameP.pack()
