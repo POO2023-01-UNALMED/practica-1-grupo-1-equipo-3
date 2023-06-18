@@ -1,7 +1,7 @@
 from Divisa import Divisa
 
 class Canal:
-    def _init_(self, tipoCanal, impuesto, *fondos):
+    def __init__(self, tipoCanal, impuesto, *fondos):
         self.tipoCanal = tipoCanal
         self.impuesto = impuesto
         self.fondosPorDivisa = {}
@@ -19,7 +19,7 @@ class Canal:
     def getImpuesto(self):
         return self.impuesto
 
-    def _str_(self):
+    def __str__(self):
         return f"Canal: {self.tipoCanal}\nTasa de impuestos: {self.impuesto}"
 
     def tieneDivisa(self, divisa):
@@ -31,10 +31,8 @@ class Canal:
     def finalizarConversion(self, transaccion, montoInicial):
         if transaccion.rechazado:
             transaccion.tarjetaOrigen.anadirTransaccionRechazada()
-
         if not transaccion.pendiente:
             return None
-
         divisaOrigen = transaccion.divisa
         fondosOrigen = self.getFondos(divisaOrigen)
 

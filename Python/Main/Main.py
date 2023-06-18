@@ -10,23 +10,148 @@ from TarjetaCredito import TarjetaCredito
 from TarjetaDebito import TarjetaDebito
 from Factura import Factura
 from Transaccion import Transaccion
+from Canal import Canal
 
 def setup():
-    cliente1 = Cliente("Carlos", 555)
-    cliente2 = Cliente("Carolina", 777)
-    cliente3 = Cliente("José", 888)
-    TarjetaDeb1 = TarjetaDebito(1, Divisa.EURO, 100000)
-    TarjetaDeb2 = TarjetaDebito(2, Divisa.DOLAR, 100000)
-    TarjetaDeb3 = TarjetaDebito(3, Divisa.DOLAR, 100000)
+    cliente1 =  Cliente("Dario Gomez", 1)
+    cliente2 =  Cliente("Esteban Betancur", 2)
+    cliente3 =  Cliente("Marta Martínez", 3)
+    cliente4 = Cliente("Sandra Lopez", 4)
+    cliente5 = Cliente("Yasuri Yamile", 5)
+		
+    tarjetaDebito1 = TarjetaDebito(123456, Divisa.DOLAR, 3000)
+    tarjetaDebito2 = TarjetaDebito(234567, Divisa.EURO, 500)
+    tarjetaDebito3 = TarjetaDebito(345678, Divisa.RUBLO_RUSO, 10000)
+    tarjetaDebito4 = TarjetaDebito(456789, Divisa.YEN_JAPONES, 100000)
+    tarjetaDebito5 = TarjetaDebito(567890, Divisa.PESO_COLOMBIANO, 5000000)
+    tarjetaDebito6 = TarjetaDebito(678901, Divisa.DOLAR, 200)
+    tarjetaDebito7 = TarjetaDebito(789012, Divisa.EURO, 1500)
+    tarjetaDebito8 = TarjetaDebito(890123, Divisa.RUBLO_RUSO, 5000)
+    tarjetaDebito9 = TarjetaDebito(901234, Divisa.YEN_JAPONES, 50000)
+    tarjetaDebito10 = TarjetaDebito(101112, Divisa.PESO_COLOMBIANO, 10000000)
+    tarjetaDebito11 = TarjetaDebito(111213, Divisa.LIBRA_ESTERLINA, 100)
+    tarjetaDebito12 = TarjetaDebito(121314, Divisa.DOLAR, 1000)
+    tarjetaDebito13 = TarjetaDebito(131415, Divisa.EURO, 2000)
+    tarjetaDebito14 = TarjetaDebito(141516, Divisa.RUBLO_RUSO, 7000)
+    tarjetaDebito15 = TarjetaDebito(151617, Divisa.YEN_JAPONES, 80000)
+    tarjetaDebito16 = TarjetaDebito(161718, Divisa.PESO_COLOMBIANO, 2000000)
+    tarjetaDebito17 = TarjetaDebito(171819, Divisa.LIBRA_ESTERLINA, 50)
+    tarjetaDebito18 = TarjetaDebito(181920, Divisa.DOLAR, 400)
+    tarjetaDebito19 = TarjetaDebito(192021, Divisa.EURO, 2500)
+    tarjetaDebito20 = TarjetaDebito(202122, Divisa.RUBLO_RUSO, 8000)
+    tarjetaDebito21 = TarjetaDebito(212223, Divisa.YEN_JAPONES, 90000)
+    tarjetaDebito22 = TarjetaDebito(222324, Divisa.PESO_COLOMBIANO, 3000000)
+    tarjetaDebito23 = TarjetaDebito(232425, Divisa.LIBRA_ESTERLINA, 70)
+    tarjetaDebito24 = TarjetaDebito(242526, Divisa.DOLAR, 800)
+    tarjetaDebito25 = TarjetaDebito(252627, Divisa.EURO, 3000)
+    tarjetaDebito26 = TarjetaDebito(262728, Divisa.RUBLO_RUSO, 6000)
+    tarjetaDebito27 = TarjetaDebito(272829, Divisa.YEN_JAPONES, 70000)
+    tarjetaDebito28 = TarjetaDebito(283930, Divisa.PESO_COLOMBIANO, 4000000)
+    tarjetaDebito29 = TarjetaDebito(293031, Divisa.LIBRA_ESTERLINA, 90)
+    tarjetaDebito30 = TarjetaDebito(303132, Divisa.DOLAR, 600)
+    tarjetaDebito31 = TarjetaDebito(987654, Divisa.DOLAR, 5000)
+    tarjetaDebito32 = TarjetaDebito(8765432, Divisa.EURO, 1000)
+    tarjetaDebito33 = TarjetaDebito(7654321, Divisa.RUBLO_RUSO, 25000)
+    tarjetaDebito34 = TarjetaDebito(6543210, Divisa.YEN_JAPONES, 100000)
+    tarjetaDebito35 = TarjetaDebito(5432109, Divisa.PESO_COLOMBIANO, 5000000)
+    tarjetaDebito36 = TarjetaDebito(4321098, Divisa.DOLAR, 300)
+    tarjetaDebito37 = TarjetaDebito(3210987, Divisa.EURO, 1500000)
+    tarjetaDebito38 = TarjetaDebito(2109876, Divisa.RUBLO_RUSO, 20000)
+    tarjetaDebito39 = TarjetaDebito(1098765, Divisa.YEN_JAPONES, 75000)
+    tarjetaDebito40 = TarjetaDebito(98765432, Divisa.PESO_COLOMBIANO, 3500000)
+    tarjetaDebito41 = TarjetaDebito(246813, Divisa.DOLAR, 8000)
+    tarjetaDebito42 = TarjetaDebito(1357924, Divisa.EURO, 500)
+    tarjetaDebito43 = TarjetaDebito(9876543, Divisa.RUBLO_RUSO, 30000)
+    tarjetaDebito44 = TarjetaDebito(8765432, Divisa.YEN_JAPONES, 50000)
+    tarjetaDebito45 = TarjetaDebito(7654321, Divisa.PESO_COLOMBIANO, 10000000)
+    tarjetaDebito46 = TarjetaDebito(6543210, Divisa.DOLAR, 200)
+    tarjetaDebito47 = TarjetaDebito(5432109, Divisa.EURO, 100000)
+    tarjetaDebito48 = TarjetaDebito(123456789, Divisa.LIBRA_ESTERLINA, 5000)
+    tarjetaDebito49 = TarjetaDebito(345678901, Divisa.LIBRA_ESTERLINA, 10000)
+    tarjetaDebito50 = TarjetaDebito(456789012, Divisa.LIBRA_ESTERLINA, 20000)
 
-    TarjetaCred1 = TarjetaCredito(4, Divisa.DOLAR, 10000, 10)
 
-    tarjetaFac = TarjetaDebito(666, Divisa.DOLAR, 100)
-    factura1 = Factura(cliente1, 100, 5, tarjetaFac)
+    tarjetaCredito1 = TarjetaCredito(987456, Divisa.DOLAR, 3000, 1.5)
+    tarjetaCredito2 = TarjetaCredito(876543, Divisa.EURO, 2000, 2.0)
+    tarjetaCredito3 = TarjetaCredito(765432, Divisa.RUBLO_RUSO, 105000, 0.8)
+    tarjetaCredito4 = TarjetaCredito(654321, Divisa.YEN_JAPONES, 108050, 0.2)
+    tarjetaCredito5 = TarjetaCredito(543210, Divisa.PESO_COLOMBIANO, 6000000, 1.25)
+    tarjetaCredito6 = TarjetaCredito(432109, Divisa.DOLAR, 5000, 0.75)
+    tarjetaCredito7 = TarjetaCredito(321098, Divisa.EURO, 1750, 0.1)
+    tarjetaCredito8 = TarjetaCredito(210987, Divisa.RUBLO_RUSO, 70000, 0.3)
+    tarjetaCredito9 = TarjetaCredito(109876, Divisa.YEN_JAPONES, 40000, 0.99)
+    tarjetaCredito10 = TarjetaCredito(987654321, Divisa.PESO_COLOMBIANO, 1000000, 5.0)
+    tarjetaCredito11 = TarjetaCredito(41341395, Divisa.LIBRA_ESTERLINA, 5000, 1.0)
+    tarjetaCredito12 = TarjetaCredito(15641687, Divisa.LIBRA_ESTERLINA, 2000, 0.075)
+    tarjetaCredito13 = TarjetaCredito(74857485, Divisa.DOLAR, 6000, 1.2)
+    tarjetaCredito14 = TarjetaCredito(38475895, Divisa.EURO, 2500, 0.5)
+    tarjetaCredito15 = TarjetaCredito(98347598, Divisa.RUBLO_RUSO, 80000, 0.6)
+    tarjetaCredito16 = TarjetaCredito(57649827, Divisa.YEN_JAPONES, 70000, 0.3)
+    tarjetaCredito17 = TarjetaCredito(123456789, Divisa.PESO_COLOMBIANO, 1500000, 2.5)
+    tarjetaCredito18 = TarjetaCredito(43789563, Divisa.LIBRA_ESTERLINA, 3000, 0.8)
+    tarjetaCredito19 = TarjetaCredito(79253485, Divisa.DOLAR, 4000, 1.0)
+    tarjetaCredito20 = TarjetaCredito(21394785, Divisa.EURO, 1500, 0.3)
+    tarjetaCredito21 = TarjetaCredito(19384756, Divisa.RUBLO_RUSO, 60000, 0.7)
+    tarjetaCredito22 = TarjetaCredito(54879324, Divisa.YEN_JAPONES, 50000, 0.5)
+    tarjetaCredito23 = TarjetaCredito(28573649, Divisa.PESO_COLOMBIANO, 2000000, 3.0)
+    tarjetaCredito24 = TarjetaCredito(64329875, Divisa.LIBRA_ESTERLINA, 4000, 1.2)
+    tarjetaCredito25 = TarjetaCredito(78345364, Divisa.DOLAR, 4500, 0.9)
+    tarjetaCredito26 = TarjetaCredito(37825375, Divisa.EURO, 1800, 0.4)
+    tarjetaCredito27 = TarjetaCredito(23758634, Divisa.RUBLO_RUSO, 50000, 0.6)
+    tarjetaCredito28 = TarjetaCredito(23849570, Divisa.YEN_JAPONES, 60000, 0.4)
+    tarjetaCredito29 = TarjetaCredito(95834575, Divisa.PESO_COLOMBIANO, 3000000, 4.0)
+    tarjetaCredito30 = TarjetaCredito(58743634, Divisa.LIBRA_ESTERLINA, 5000, 1.5)
+		
+    cliente1.agregarTarjetasDebito(tarjetaDebito1, tarjetaDebito2, tarjetaDebito3, tarjetaDebito5, tarjetaDebito11, tarjetaDebito30, tarjetaDebito33, tarjetaDebito39)
+    cliente1.agregarTarjetasCredito(tarjetaCredito1, tarjetaCredito2, tarjetaCredito7, tarjetaCredito9, tarjetaCredito11, tarjetaCredito17, tarjetaCredito22)
 
-    cliente1.agregarTarjetasDebito(TarjetaDeb1, TarjetaDeb2)
-    cliente1.agregarTarjetasCredito(TarjetaCred1)
-    cliente3.agregarTarjetasDebito(TarjetaDeb3)
+    cliente2.agregarTarjetasDebito(tarjetaDebito6, tarjetaDebito31, tarjetaDebito32, tarjetaDebito36, tarjetaDebito38, tarjetaDebito45, tarjetaDebito49)
+    cliente2.agregarTarjetasCredito(tarjetaCredito3, tarjetaCredito5, tarjetaCredito10, tarjetaCredito20, tarjetaCredito28, tarjetaCredito26)
+
+    cliente3.agregarTarjetasDebito(tarjetaDebito4, tarjetaDebito7, tarjetaDebito9, tarjetaDebito34, tarjetaDebito37, tarjetaDebito42, tarjetaDebito43)
+    cliente3.agregarTarjetasCredito(tarjetaCredito6, tarjetaCredito8, tarjetaCredito12, tarjetaCredito18, tarjetaCredito21)
+
+    cliente4.agregarTarjetasDebito(tarjetaDebito8, tarjetaDebito10, tarjetaDebito40, tarjetaDebito35, tarjetaDebito41, tarjetaDebito47)
+    cliente4.agregarTarjetasCredito(tarjetaCredito4, tarjetaCredito13, tarjetaCredito15, tarjetaCredito23,	tarjetaCredito27)
+
+    cliente5.agregarTarjetasDebito(tarjetaDebito12, tarjetaDebito44, tarjetaDebito46, tarjetaDebito48, tarjetaDebito50)
+    cliente5.agregarTarjetasCredito(tarjetaCredito14, tarjetaCredito16, tarjetaCredito24, tarjetaCredito30, tarjetaCredito29)
+
+    factura1 = Factura(cliente1, 1000000.0, 12, tarjetaDebito16)
+    factura2 = Factura(cliente2, 9000000.0, 36, tarjetaDebito28)
+    factura3 = Factura(cliente3, 56.0, 4, tarjetaDebito29)
+    factura4 = Factura(cliente4, 16000, 8, tarjetaDebito20)
+    factura5 = Factura(cliente5, 800000.0, 8, tarjetaDebito22)
+    factura6 = Factura(cliente1, 24440, 6, tarjetaDebito27)
+    factura7 = Factura(cliente2, 150.0, 2, tarjetaDebito24)
+    factura10 = Factura(cliente5, 20000.0, 14, tarjetaDebito26)
+    factura11 = Factura(cliente1, 200.0, 7, tarjetaDebito25)
+    factura12 = Factura(cliente2, 150.0, 8, tarjetaDebito23)
+    factura13 = Factura(cliente3, 180.0, 4, tarjetaDebito17)
+    factura14 = Factura(cliente4, 120.0, 3, tarjetaDebito18)
+    factura15 = Factura(cliente5, 90.0, 2, tarjetaDebito19)
+
+    sucursalFisica1 = Canal("Sucursal Fisica", 2.0, 22500, 12370, 8000, 70000, 200000, 30000000)
+
+    cajero1 = Canal("Cajero", 0.5)
+    cajero1.setFondos(Divisa.PESO_COLOMBIANO, 12000000)
+		
+    corresponsal1 = Canal("Corresponsal Bancario", 1.0)
+    corresponsal1.setFondos(Divisa.DOLAR, 20000)
+    corresponsal1.setFondos(Divisa.EURO, 10000)
+    corresponsal1.setFondos(Divisa.PESO_COLOMBIANO, 40000000)
+		
+    cajero2 = Canal("Cajero", 1.0)
+    cajero2.setFondos(Divisa.DOLAR, 8000)
+
+    sucursalFisica2 = Canal("Sucursal Física", 1.5, 4000.0, 6000.0, 2000.0, 150000.0, 8000000.0, 6700000.0)
+
+    sucursalVirtual1 = Canal("Sucursal en Línea", 2.5, 5100.0, 8900.0, 0.0, 120000.0, 370000.0, 80545000.0)
+
+    corresponsal2 = Canal("Corresponsal Bancario", 0.8)
+    corresponsal2.setFondos(Divisa.DOLAR, 15000.0)
+    corresponsal2.setFondos(Divisa.EURO, 8000.0)
+    corresponsal2.setFondos(Divisa.RUBLO_RUSO, 350000.0)
 
 setup()
 
@@ -229,7 +354,7 @@ def procesoDeshacerTransaccion(): #Se encarga de crear una petición para la fun
     frameP.forget()
     FF.pack()
 
-def procesoVerPeticiones():
+def procesoVerPeticiones(): #Se encarga de que el cliente pueda ver las peticiones que hay a su nombre (y conceder o negarlas, si quiere)
     def paso2():
         def funcBotones(i):
             def funcVolver():
@@ -289,18 +414,47 @@ def procesoVerPeticiones():
     FF.pack()
     frameP.forget()
 
+def procesoCambiarDivisa():
+    def paso2():
+        def pasoFinal():
+            tarjetaOrigen = clienteActual.encontrarTarjeta(FF.getValores()[0])
+            tarjetaObjetivo = clienteActual.encontrarTarjeta(FF.getValores()[1])
+            try:
+                cantidad = float(FF.getValores()[2])
+            except ValueError:
+                messagebox.showinfo(title="Error", message="Por favor, ingrese un número válido")
+            
+        clienteActual = Banco.encontrarCliente(FF.getValores()[0])
+        divisaOrigen = Divisa.encontrarDivisa(FF.getValores()[1])
+        divisaObjetivo = Divisa.encontrarDivisa(FF.getValores()[2])
+        if divisaOrigen == divisaObjetivo:
+            messagebox.showinfo(title="Error", message="Debe escoger dos divisas diferentes para hacer la conversión")
+            return
+        tarjetasOrigen = clienteActual.tarjetasConDivisa(divisaOrigen, True)
+        tajretasObjetivo = clienteActual.tarjetasConDivisa(divisaObjetivo, False)
+        if len(tarjetasOrigen) == 0 or len(tajretasObjetivo) == 0:
+            messagebox.showinfo(title="Error", message="El cliente escogido no dispone de tarjetas que pueda utilizar en esta operación")
+            return
+        FF2 =FieldFrame(frameProcesos, "", ["Tarjeta de la que saldrá el dinero", "Tarjeta que recibe el dinero", "Monto total a transferir (en las unidades de la divisa original)"], "", None, [tarjetasOrigen, tajretasObjetivo, None])
+        FF2.pack()
+        FF.forget()
+    FF = FieldFrame(frameProcesos, "", ["Cliente que hace la conversión", "Divisa que desea convertir", "Divisa que desea recibir"], "", paso2, [[c.nombre for c in Banco.getClientes()], [d.name for d in Divisa], [d.name for d in Divisa]])
+    frameP.forget()
+    FF.pack()
 
 BsolicitarTarjeta = Button(frameP, text="Solicitar tarjeta", command=lambda: procesoSolicitarTarjeta(), padx= 10, pady=10)
 BpagarFactura = Button(frameP, text="Pagar factura", command=lambda: procesoPagarFactura(), padx=10, pady=10)
 BhacerTransaccion = Button(frameP, text="Hacer transaccion", command=lambda: procesoHacerTransaccion(), padx=10, pady=10)
 BdeshacerTransaccion = Button(frameP, text="Deshacer transaccion", command=lambda:procesoDeshacerTransaccion(), padx=10, pady=10)
 BverPeticiones = Button(frameP, text="Ver peticiones", command=lambda:procesoVerPeticiones(), padx=10, pady=10)
+BCambiarDivisa = Button(frameP, text="CambiarDivisa", command=lambda:procesoCambiarDivisa(), padx=10, pady=10)
 
 BsolicitarTarjeta.pack()
 BpagarFactura.pack()
 BhacerTransaccion.pack()
 BdeshacerTransaccion.pack()
 BverPeticiones.pack()
+BCambiarDivisa.pack()
 
 notebook.add(frameArchivo, text = "Archivo")
 notebook.add(frameProcesos, text = "Procesos y Consultas")

@@ -56,7 +56,7 @@ class Cliente():
     def agregarTarjetasCredito(self, *tarjetasCredito):
         self.tarjetasCredito.extend(list(tarjetasCredito))
 
-    def encontrarTarjeta(self, tarjeta):
+    def encontrarTarjeta(self, tarjeta): #Sirve para encontrar una tarjeta basándose en el toString de esa tarjeta
         for t in self.tarjetasCredito:
             if t.__str__() == tarjeta.__str__():
                 return t
@@ -83,3 +83,37 @@ class Cliente():
                 if t.getClienteObjetivo() == self and t.getMensaje() is not None and t.isPendiente():
                     retorno.append(t)
         return retorno
+    
+    def tarjetasConDivisa(self, divisa, origen: bool): #Devuelve una lista con las tarjetas del cliente que tengan una cierta divisa
+        retorno = []
+        for t in self.tarjetasDebito:
+            if not t.isActiva():
+                continue
+            if not t.tieneSaldo():
+                continue
+            if t.getDivisa() == divisa:
+                retorno.append(t)
+        if origen:
+            for t in self.tarjetasCredito:
+                if not t.isActiva():
+                    continue
+                if not t.tieneSaldo():
+                    continue
+                if t.getDivisa() == divisa:
+                    retorno.append(t)
+        return retorno
+    
+    def listarCanales(divisas):
+        from Banco import Banco
+        divisaOrigen = divisas[0]
+        divisaDestino = divisas[1]
+        canales = []
+        for canal in Banco.getCanales():
+            if divisaOrigen in canal:
+                continue
+            if divisaDestino in canal:
+                continue
+            if canal.tieneFondosDeDivisa(divisaDestino):
+                continue
+            canales.append(canal)
+        return Banco.ordenarCanalesPorImpuestos(canales)
