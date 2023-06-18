@@ -2,6 +2,9 @@ import tkinter as tk
 from tkinter.ttk import Notebook
 from tkinter import ttk, messagebox, Frame, Button, Label
 from FieldFrame import FieldFrame
+from tkinter import Menu 
+
+#Modulos propios de la apllicación
 from Banco import Banco
 from Cliente import Cliente
 from Divisa import Divisa
@@ -33,11 +36,32 @@ setup()
 root = tk.Tk()
 
 root.title("Banco Nacho")
+root.iconbitmap("Python\Main\logo-unal.ico")#Favicon de la apliación
 
+
+#Creación de la ventana de inicio
+
+#Menu de incio
+def menuDescripcion():
+    pass
+
+navbar = Menu(root)
+root.config(menu = navbar)
+
+menu = Menu(navbar, tearoff=0)
+navbar.add_cascade(label = "Inicio", menu = menu)
+
+menu.add_command(label = "Salir", command=root.quit)
+menu.add_command(label = "Descripción", command=menuDescripcion)
+
+
+ventaPrincipal = Frame(root, width=400, height=280, bg="blue")
+ventaPrincipal.pack()
+
+
+#Creación de la ventana de usuario
 notebook = Notebook(root)
 notebook.pack(pady = 10, expand=True)
-
-
 
 frameArchivo = Frame(notebook, width=400, height=280)
 frameProcesos = Frame(notebook, width=400, height=280)
