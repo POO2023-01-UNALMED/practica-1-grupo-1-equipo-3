@@ -103,15 +103,15 @@ class Cliente():
                     retorno.append(t)
         return retorno
     
-    def listarCanales(divisas):
+    def listarCanales(self, divisao, divisad):
         from Banco import Banco
-        divisaOrigen = divisas[0]
-        divisaDestino = divisas[1]
+        divisaOrigen = divisao
+        divisaDestino = divisad
         canales = []
         for canal in Banco.getCanales():
-            if divisaOrigen in canal:
+            if canal.fondosPorDivisa.get(divisaOrigen) is not None:
                 continue
-            if divisaDestino in canal:
+            if canal.fondosPorDivisa.get(divisaDestino) is not None:
                 continue
             if canal.tieneFondosDeDivisa(divisaDestino):
                 continue

@@ -1,14 +1,16 @@
 from Divisa import Divisa
 
+
 class Canal:
     def __init__(self, tipoCanal, impuesto, *fondos):
+        from Banco import Banco
         self.tipoCanal = tipoCanal
         self.impuesto = impuesto
         self.fondosPorDivisa = {}
-
         for i, divisa in enumerate(Divisa):
             if i < len(fondos):
                 self.fondosPorDivisa[divisa] = fondos[i]
+        Banco.agregarCanal(self)
 
     def setFondos(self, divisa, monto):
         self.fondosPorDivisa[divisa] = monto

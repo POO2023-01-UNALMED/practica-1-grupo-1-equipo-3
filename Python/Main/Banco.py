@@ -78,6 +78,12 @@ class Banco():
         for c in Banco.clientes:
             if c.getNombre() == nomCliente:
                 return c
+    
+    @staticmethod
+    def encontrarCanal(canal) -> Canal:
+        for c in Banco.canales:
+            if c.__str__() == canal:
+                return c
 
     """
     @staticmethod
