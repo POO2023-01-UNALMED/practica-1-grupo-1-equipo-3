@@ -283,6 +283,19 @@ class Transaccion:
         tarjetaOrigen = tarjetas[0]
         tarjetaDestino = tarjetas[1]
         rechazado = montoFinal > canal.getFondos(divisaDestino) or not tarjetaOrigen.puedeTransferir(montoInicial)
-        transaccion = Transaccion(cliente, tarjetaOrigen, tarjetaDestino, montoFinal, impuestoRetorno, canal, rechazado)
+        transaccion = Transaccion(cliente_origen=cliente, cliente_objetivo=None, tarjeta_origen=tarjetaOrigen, tarjeta_objetivo= tarjetaDestino, cantidad= montoFinal, validez=None, factura=None, mensaje=None, retornable=False, pendiente=True, impuestoRetorno=impuestoRetorno, canal=canal, rechazado=rechazado)
+        transaccion.pendiente = not rechazado
+        return transaccion
+    
+    @staticmethod
+    def crearTrans(cliente, tarjeta, monto, canal, retirar):
+        impuesto = monto * (canal.getImpuesto() / 100)
+        monto -= impuesto
+        rechazado = False
+        if retirar:
+            rechazado = monto > canal.getFondos(tarjeta.getDivisa()) or not tarjeta.puedeTransferir(monto)
+        else:
+            rechazado = not tarjeta.puedeTransferir(monto)
+        transaccion = Transaccion(cliente, None, tarjeta, None, monto, validez=None, factura=None,mensaje=None, retornable=False, pendiente=True, impuestoRetorno=impuesto, canal=canal, retirar=retirar, rechazado=rechazado)
         transaccion.pendiente = not rechazado
         return transaccion
