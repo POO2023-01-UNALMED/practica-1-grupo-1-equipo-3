@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import Menu
 from tkinter import PhotoImage
+import math
 from tkinter import Toplevel
 from tkinter import messagebox, Frame, Button, Label
 from tkinter.ttk import Notebook
@@ -107,29 +108,20 @@ def setup():
     tarjetaCredito29 = TarjetaCredito(95834575, Divisa.PESO_COLOMBIANO, 3000000, 4.0)
     tarjetaCredito30 = TarjetaCredito(58743634, Divisa.LIBRA_ESTERLINA, 5000, 1.5)
 
-    cliente1.agregarTarjetasDebito(tarjetaDebito1, tarjetaDebito2, tarjetaDebito3, tarjetaDebito5, tarjetaDebito11,
-                                   tarjetaDebito30, tarjetaDebito33, tarjetaDebito39)
-    cliente1.agregarTarjetasCredito(tarjetaCredito1, tarjetaCredito2, tarjetaCredito7, tarjetaCredito9,
-                                    tarjetaCredito11, tarjetaCredito17, tarjetaCredito22)
+    cliente1.agregarTarjetasDebito(tarjetaDebito1, tarjetaDebito2, tarjetaDebito3, tarjetaDebito5, tarjetaDebito11, tarjetaDebito30, tarjetaDebito33, tarjetaDebito39)
+    cliente1.agregarTarjetasCredito(tarjetaCredito1, tarjetaCredito2, tarjetaCredito7, tarjetaCredito9,tarjetaCredito11, tarjetaCredito17, tarjetaCredito22)
 
-    cliente2.agregarTarjetasDebito(tarjetaDebito6, tarjetaDebito31, tarjetaDebito32, tarjetaDebito36, tarjetaDebito38,
-                                   tarjetaDebito45, tarjetaDebito49)
-    cliente2.agregarTarjetasCredito(tarjetaCredito3, tarjetaCredito5, tarjetaCredito10, tarjetaCredito20,
-                                    tarjetaCredito28, tarjetaCredito26)
+    cliente2.agregarTarjetasDebito(tarjetaDebito6, tarjetaDebito31, tarjetaDebito32, tarjetaDebito36, tarjetaDebito38, tarjetaDebito45, tarjetaDebito49)
+    cliente2.agregarTarjetasCredito(tarjetaCredito3, tarjetaCredito5, tarjetaCredito10, tarjetaCredito20, tarjetaCredito28, tarjetaCredito26)
 
-    cliente3.agregarTarjetasDebito(tarjetaDebito4, tarjetaDebito7, tarjetaDebito9, tarjetaDebito34, tarjetaDebito37,
-                                   tarjetaDebito42, tarjetaDebito43)
-    cliente3.agregarTarjetasCredito(tarjetaCredito6, tarjetaCredito8, tarjetaCredito12, tarjetaCredito18,
-                                    tarjetaCredito21)
+    cliente3.agregarTarjetasDebito(tarjetaDebito4, tarjetaDebito7, tarjetaDebito9, tarjetaDebito34, tarjetaDebito37, tarjetaDebito42, tarjetaDebito43)
+    cliente3.agregarTarjetasCredito(tarjetaCredito6, tarjetaCredito8, tarjetaCredito12, tarjetaCredito18,  tarjetaCredito21)
 
-    cliente4.agregarTarjetasDebito(tarjetaDebito8, tarjetaDebito10, tarjetaDebito40, tarjetaDebito35, tarjetaDebito41,
-                                   tarjetaDebito47)
-    cliente4.agregarTarjetasCredito(tarjetaCredito4, tarjetaCredito13, tarjetaCredito15, tarjetaCredito23,
-                                    tarjetaCredito27)
+    cliente4.agregarTarjetasDebito(tarjetaDebito8, tarjetaDebito10, tarjetaDebito40, tarjetaDebito35, tarjetaDebito41, tarjetaDebito47)
+    cliente4.agregarTarjetasCredito(tarjetaCredito4, tarjetaCredito13, tarjetaCredito15, tarjetaCredito23, tarjetaCredito27)
 
     cliente5.agregarTarjetasDebito(tarjetaDebito12, tarjetaDebito44, tarjetaDebito46, tarjetaDebito48, tarjetaDebito50)
-    cliente5.agregarTarjetasCredito(tarjetaCredito14, tarjetaCredito16, tarjetaCredito24, tarjetaCredito30,
-                                    tarjetaCredito29)
+    cliente5.agregarTarjetasCredito(tarjetaCredito14, tarjetaCredito16, tarjetaCredito24, tarjetaCredito30, tarjetaCredito29)
 
     factura1 = Factura(cliente1, 1000000.0, 12, tarjetaDebito16)
     factura2 = Factura(cliente2, 9000000.0, 36, tarjetaDebito28)
@@ -676,8 +668,7 @@ def procesoVerPeticiones():  # Se encarga de que el cliente pueda ver las petici
             for w in frameProcesos.winfo_children():
                 w.forget()
             transaccionActual = transacciones[i]
-            labelPrincipal = Label(frameProcesos, text="Escoga lo que quiere hacer con la siguiente transacción",
-                                   padx=10, pady=10)
+            labelPrincipal = Label(frameProcesos, text="Escoga lo que quiere hacer con la siguiente transacción", padx=10, pady=10)
             labelPrincipal.grid(column=1, row=0)
             labelTransaccion = Label(frameProcesos, text=transaccionActual, padx=10, pady=10)
             labelTransaccion.grid(column=1, row=1)
@@ -685,8 +676,7 @@ def procesoVerPeticiones():  # Se encarga de que el cliente pueda ver las petici
             botonVolver.grid(column=0, row=3)
             botonNegar = Button(frameProcesos, text="Negar la petición", padx=10, pady=10, command=lambda: funcNegar())
             botonNegar.grid(column=1, row=3)
-            botonConceder = Button(frameProcesos, text="Conceder la petición", padx=10, pady=10,
-                                   command=lambda: funcAceptar())
+            botonConceder = Button(frameProcesos, text="Conceder la petición", padx=10, pady=10, command=lambda: funcAceptar())
             botonConceder.grid(column=2, row=3)
 
         clienteActual = Banco.encontrarCliente(FF.getValores()[0])
@@ -703,9 +693,7 @@ def procesoVerPeticiones():  # Se encarga de que el cliente pueda ver las petici
         for i in range(len(transacciones)):
             botones.append(
                 Button(frameProcesos, text=transacciones[i], padx=10, pady=100, command=lambda: funcBotones(i)).pack())
-
-    FF = FieldFrame(frameProcesos, "", ["Escoga el usuario cuyas peticiones desea ver"], "", paso2,
-                    [[c.getNombre() for c in Banco.getClientes()]])
+    FF = FieldFrame(frameProcesos, "", ["Escoga el usuario cuyas peticiones desea ver"], "", paso2, [[c.getNombre() for c in Banco.getClientes()]])
     FF.pack()
     frameP.forget()
 
@@ -737,24 +725,15 @@ def procesoCambiarDivisa():  # Se encarga del proceso de cambiar divisas
         tarjetasOrigen = clienteActual.tarjetasConDivisa(divisaOrigen, True)
         tajretasObjetivo = clienteActual.tarjetasConDivisa(divisaObjetivo, False)
         if len(tarjetasOrigen) == 0 or len(tajretasObjetivo) == 0:
-            messagebox.showinfo(title="Error",
-                                message="El cliente escogido no dispone de tarjetas que pueda utilizar en esta operación")
+            messagebox.showinfo(title="Error", message="El cliente escogido no dispone de tarjetas que pueda utilizar en esta operación")
             return
         if len(clienteActual.listarCanales(divisaOrigen, divisaObjetivo)) == 0:
             messagebox.showinfo(title="Error", message="No hay canales disponibles para esta operación")
             return
-        FF2 = FieldFrame(frameProcesos, "", ["Tarjeta de la que saldrá el dinero", "Tarjeta que recibe el dinero",
-                                             "Monto total a transferir (en las unidades de la divisa original)",
-                                             "Canal mediante el cual desea hacer la transacción"], "", pasoFinal,
-                         [tarjetasOrigen, tajretasObjetivo, None,
-                          clienteActual.listarCanales(divisaOrigen, divisaObjetivo)])
+        FF2 = FieldFrame(frameProcesos, "", ["Tarjeta de la que saldrá el dinero", "Tarjeta que recibe el dinero", "Monto total a transferir (en las unidades de la divisa original)","Canal mediante el cual desea hacer la transacción"], "", pasoFinal,[tarjetasOrigen, tajretasObjetivo, None,clienteActual.listarCanales(divisaOrigen, divisaObjetivo)])
         FF2.pack()
         FF.forget()
-
-    FF = FieldFrame(frameProcesos, "",
-                    ["Cliente que hace la conversión", "Divisa que desea convertir", "Divisa que desea recibir"], "",
-                    paso2,
-                    [[c.nombre for c in Banco.getClientes()], [d.name for d in Divisa], [d.name for d in Divisa]])
+    FF = FieldFrame(frameProcesos, "", ["Cliente que hace la conversión", "Divisa que desea convertir", "Divisa que desea recibir"], "", paso2, [[c.nombre for c in Banco.getClientes()], [d.name for d in Divisa], [d.name for d in Divisa]])
     frameP.forget()
     FF.pack()
 
@@ -788,43 +767,31 @@ def procesoRetirarODepositarDinero():
             retirar = True
         divisaEscogida = Divisa.encontrarDivisa(FF.getValores()[2])
         if divisaEscogida not in Banco.seleccionarDivisa(clienteActual):
-            messagebox.showinfo(title="Error",
-                                message="El cliente seleccionado no puede realizar esta operación con la divisa escogida")
+            messagebox.showinfo(title="Error",  message="El cliente seleccionado no puede realizar esta operación con la divisa escogida")
             return
         tarjetas = clienteActual.seleccionarTarjeta(divisaEscogida, retirar)
         canales = Canal.seleccionarCanal(divisaEscogida, retirar)
         if len(tarjetas) == 0:
-            messagebox.showinfo(title="Error",
-                                message="El cliente seleccionado no tiene tarjetas que puedan realizar esta operación")
+            messagebox.showinfo(title="Error", message="El cliente seleccionado no tiene tarjetas que puedan realizar esta operación")
             return
         if len(canales) == 0:
             messagebox.showinfo(title="Error", message="No hay canales disponibles para realizar esta transacción")
             return
-        FF2 = FieldFrame(frameProcesos, "", ["Escoga la tarjeta mediante la cual desea hacer la operación",
-                                             "Escoga el canal que desea utilizar", "Escoga el monto total"], "",
-                         pasoFinal, [[t for t in tarjetas if retirar or isinstance(t, TarjetaDebito)], canales, None])
+        FF2 = FieldFrame(frameProcesos, "", ["Escoga la tarjeta mediante la cual desea hacer la operación", "Escoga el canal que desea utilizar", "Escoga el monto total"], "",pasoFinal, [[t for t in tarjetas if retirar or isinstance(t, TarjetaDebito)], canales, None])
         FF2.pack()
         FF.forget()
-
-    FF = FieldFrame(frameProcesos, "", ["Elija el usuario", "¿Quiere depositar o retirar?",
-                                        "Seleccione la divisa con la cual quiere realizar la operación"], "",
-                    segundoPaso,
-                    [[c.nombre for c in Banco.getClientes()], ["Retirar", "Depositar"], [d.name for d in Divisa]])
+    FF = FieldFrame(frameProcesos, "", ["Elija el usuario", "¿Quiere depositar o retirar?", "Seleccione la divisa con la cual quiere realizar la operación"], "", segundoPaso, [[c.nombre for c in Banco.getClientes()], ["Retirar", "Depositar"], [d.name for d in Divisa]])
     FF.pack()
     frameP.forget()
 
 
-BsolicitarTarjeta = Button(frameP, text="Solicitar tarjeta", command=lambda: procesoSolicitarTarjeta(), padx=10,
-                           pady=10)
+BsolicitarTarjeta = Button(frameP, text="Solicitar tarjeta", command=lambda: procesoSolicitarTarjeta(), padx=10, pady=10)
 BpagarFactura = Button(frameP, text="Pagar factura", command=lambda: procesoPagarFactura(), padx=10, pady=10)
-BhacerTransaccion = Button(frameP, text="Hacer transaccion", command=lambda: procesoHacerTransaccion(), padx=10,
-                           pady=10)
-BdeshacerTransaccion = Button(frameP, text="Deshacer transaccion", command=lambda: procesoDeshacerTransaccion(),
-                              padx=10, pady=10)
+BhacerTransaccion = Button(frameP, text="Hacer transaccion", command=lambda: procesoHacerTransaccion(), padx=10, pady=10)
+BdeshacerTransaccion = Button(frameP, text="Deshacer transaccion", command=lambda: procesoDeshacerTransaccion(), padx=10, pady=10)
 BverPeticiones = Button(frameP, text="Ver peticiones", command=lambda: procesoVerPeticiones(), padx=10, pady=10)
 BCambiarDivisa = Button(frameP, text="Cambiar Divisas", command=lambda: procesoCambiarDivisa(), padx=10, pady=10)
-BRetirarODepositar = Button(frameP, text="Retirar o depositar dinero", command=lambda: procesoRetirarODepositarDinero(),
-                            padx=10, pady=10)
+BRetirarODepositar = Button(frameP, text="Retirar o depositar dinero", command=lambda: procesoRetirarODepositarDinero(), padx=10, pady=10)
 
 BsolicitarTarjeta.pack()
 BpagarFactura.pack()
@@ -833,6 +800,8 @@ BdeshacerTransaccion.pack()
 BverPeticiones.pack()
 BCambiarDivisa.pack()
 BRetirarODepositar.pack()
+BVerTarjetas.pack()
+BVerFacturas.pack()
 
 notebook.add(frameArchivo, text="Archivo")
 notebook.add(frameProcesos, text="Procesos y Consultas")
