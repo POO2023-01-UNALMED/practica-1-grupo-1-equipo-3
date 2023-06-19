@@ -5,6 +5,7 @@ from FieldFrame import FieldFrame
 from tkinter import Menu 
 from tkinter import Toplevel 
 from tkinter import PhotoImage
+import math
 
 
 
@@ -680,7 +681,7 @@ def procesoCambiarDivisa(): #Se encarga del proceso de cambiar divisas
     frameP.forget()
     FF.pack()
 
-def procesoRetirarODepositarDinero():
+def procesoRetirarODepositarDinero(): #Se encarga del proceso de retirar o depositar dinero
     def segundoPaso():
         def pasoFinal():
             tarjetaEscogida = clienteActual.encontrarTarjeta(FF2.getValores()[0])
@@ -726,6 +727,50 @@ def procesoRetirarODepositarDinero():
     FF.pack()
     frameP.forget()
 
+def procesoVerTarjetas():
+    def pasoFinal():
+        def volver():
+            frameInfo.forget()
+            frameP.pack()
+        clienteActual = Banco.encontrarCliente(FF.getValores()[0])
+        tarjetas = clienteActual.getTarjetas()
+        frameInfo = Frame(frameProcesos)
+        frameInfo.pack()
+        labelPrincipal = Label(frameInfo, text="Las tarjetas del usuario escogido", padx=10, pady=10)
+        labelPrincipal.grid(column=1, row=0)
+        labels = []
+        for i in range(len(tarjetas)):
+            labels.append(Label(frameInfo, text=tarjetas[i].__str__(), padx=10, pady=10))
+            labels[i].grid(column=i%3, row=math.floor(i/3)+2)
+        botonVolver=Button(frameInfo, text="Volver", command=lambda: volver())
+        botonVolver.grid(column=1, row=math.floor(len(tarjetas)/3) + 3)
+        FF.forget()
+    FF = FieldFrame(frameProcesos, "", ["Escoga el cliente cuyas tarjetas desea ver"], "", pasoFinal, [[c.nombre for c in Banco.getClientes()]])
+    frameP.forget()
+    FF.pack()
+
+def procesoVerFacturas():
+    def pasoFinal():
+        def volver():
+            frameInfo.forget()
+            frameP.pack()
+        clienteActual = Banco.encontrarCliente(FF.getValores()[0])
+        facturas = clienteActual.getFacturas()
+        frameInfo = Frame(frameProcesos)
+        frameInfo.pack()
+        labelPrincipal = Label(frameInfo, text="Las facturas del usuario escogido", padx=10, pady=10)
+        labelPrincipal.grid(column=1, row=0)
+        labels = []
+        for i in range(len(facturas)):
+            labels.append(Label(frameInfo, text=facturas[i].__str__(), padx=10, pady=10))
+            labels[i].grid(column=i%3, row=math.floor(i/3)+2)
+        botonVolver=Button(frameInfo, text="Volver", command=lambda: volver())
+        botonVolver.grid(column=1, row=math.floor(len(facturas)/3) + 3)
+        FF.forget()
+    FF = FieldFrame(frameProcesos, "", ["Escoga el cliente cuyas facturas desea ver"], "", pasoFinal, [[c.nombre for c in Banco.getClientes()]])
+    frameP.forget()
+    FF.pack()
+
 BsolicitarTarjeta = Button(frameP, text="Solicitar tarjeta", command=lambda: procesoSolicitarTarjeta(), padx= 10, pady=10)
 BpagarFactura = Button(frameP, text="Pagar factura", command=lambda: procesoPagarFactura(), padx=10, pady=10)
 BhacerTransaccion = Button(frameP, text="Hacer transaccion", command=lambda: procesoHacerTransaccion(), padx=10, pady=10)
@@ -733,6 +778,8 @@ BdeshacerTransaccion = Button(frameP, text="Deshacer transaccion", command=lambd
 BverPeticiones = Button(frameP, text="Ver peticiones", command=lambda:procesoVerPeticiones(), padx=10, pady=10)
 BCambiarDivisa = Button(frameP, text="Cambiar Divisas", command=lambda:procesoCambiarDivisa(), padx=10, pady=10)
 BRetirarODepositar = Button(frameP, text="Retirar o depositar dinero", command=lambda:procesoRetirarODepositarDinero(), padx=10, pady=10)
+BVerTarjetas = Button(frameP, text="Ver las tarjetas de un usuario", command=lambda:procesoVerTarjetas(), padx=10, pady=10)
+BVerFacturas = Button(frameP, text="Ver las facturas de un usuario", command=lambda: procesoVerFacturas(), padx=10, pady=10)
 
 BsolicitarTarjeta.pack()
 BpagarFactura.pack()
@@ -741,6 +788,8 @@ BdeshacerTransaccion.pack()
 BverPeticiones.pack()
 BCambiarDivisa.pack()
 BRetirarODepositar.pack()
+BVerTarjetas.pack()
+BVerFacturas.pack()
 
 notebook.add(frameArchivo, text = "Archivo")
 notebook.add(frameProcesos, text = "Procesos y Consultas")
