@@ -21,22 +21,16 @@ from TarjetaDebito import TarjetaDebito
 from Transaccion import Transaccion
 
 
-def setup():
-    global cliente1
-    global cliente2
-    global cliente3
-    global cliente4
-    global cliente5
-    global clientes
-    global clientesPickle
-    cliente1 = Cliente("Dario Gomez", 1)
-    cliente2 = Cliente("Esteban Betancur", 2)
-    cliente3 = Cliente("Marta Martínez", 3)
-    cliente4 = Cliente("Sandra Lopez", 4)
-    cliente5 = Cliente("Yasuri Yamile", 5)
-    clientes = [cliente1, cliente2, cliente3, cliente4, cliente5]
-    clientesPickle = open("Python/Main/Clientes.pkl", "wb")
+cliente1 = Cliente("Dario Gomez", 1)
+cliente2 = Cliente("Esteban Betancur", 2)
+cliente3 = Cliente("Marta Martínez", 3)
+cliente4 = Cliente("Sandra Lopez", 4)
+cliente5 = Cliente("Yasuri Yamile", 5)
+clientes = [cliente1, cliente2, cliente3, cliente4, cliente5]
+clientesPickle = open("Python/Main/Clientes.pkl", "wb")
+pickle.dump(clientes, clientesPickle)
 
+def setup():
     tarjetaDebito1 = TarjetaDebito(123456, Divisa.DOLAR, 3000)
     tarjetaDebito2 = TarjetaDebito(234567, Divisa.EURO, 500)
     tarjetaDebito3 = TarjetaDebito(345678, Divisa.RUBLO_RUSO, 10000)
@@ -170,6 +164,12 @@ def setup():
     corresponsal2.setFondos(Divisa.EURO, 8000.0)
     corresponsal2.setFondos(Divisa.RUBLO_RUSO, 350000.0)
 
+
+def deserializacion():
+    picklefileread = open("Python/Main/Clientes.pkl", "rb")
+    clientesdeserializados = pickle.load(picklefileread)
+    picklefileread.close()
+    cliente1 = clientesdeserializados[0]
 
 setup()
 
