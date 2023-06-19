@@ -40,7 +40,7 @@ class Divisa(Enum):
         return False
 
     @staticmethod
-    def convertir_divisas(divisas: List['Divisa'], canal, monto: float) -> tuple[float | Any, ...]:
+    def convertir_divisas(divisas: List['Divisa'], canal, monto: float):
         """
         Convierte un monto de una divisa a otra utilizando un canal de conversión.
 

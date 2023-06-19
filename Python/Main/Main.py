@@ -5,6 +5,7 @@ import math
 from tkinter import Toplevel
 from tkinter import messagebox, Frame, Button, Label
 from tkinter.ttk import Notebook
+import math
 
 # Modulos propios de la apllicación
 from Banco import Banco
@@ -404,8 +405,7 @@ frameAyuda.pack(fill="both", expand=True)
 
 # Pestaña de Ayuda
 def mostrarAplicacion():
-    messagebox.showinfo("¿Banco Nacho?",
-                        "Banco Nacho es una aplicación bancaria que permite a los clientes ver y realizar transacciones entre sus tarjetas bancarias. También pueden pagar facturas y convertir divisas. El programa ofrece 5 funcionalidades principales, incluyendo transacciones, pagos de facturas, conversión de divisas y deshacer transacciones.")
+    messagebox.showinfo("¿Banco Nacho?", "Banco Nacho es una aplicación bancaria que permite a los clientes ver y realizar transacciones entre sus tarjetas bancarias. También pueden pagar facturas y convertir divisas. El programa ofrece 5 funcionalidades principales, incluyendo transacciones, pagos de facturas, conversión de divisas y deshacer transacciones.")
 
 
 def SalirAInicio():
@@ -436,18 +436,13 @@ frameAy.config(width=400, height=280)
 
 
 def mostrarAyuda():
-    messagebox.showinfo("Desarrolladores",
-                        "Este proyecto ha sido desarrollado por:\n- Jose Miguel Pulgarin Agudelo\n- Dario Alexander Penagos Von Werde\n- Carlos Guarin")
+    messagebox.showinfo("Desarrolladores", "Este proyecto ha sido desarrollado por:\n- Jose Miguel Pulgarin Agudelo\n- Dario Alexander Penagos Von Werde\n- Carlos Guarin")
 
 
 LabelApicacion = Label(frameAy, text="Conocer más acerca de los creadores de Banco Nacho", pady=8)
 LabelApicacion.pack()
 buttonAplicacion = Button(frameAy, text="Ver desarrolladores", command=lambda: mostrarAyuda(), padx=10, pady=8)
 buttonAplicacion.pack()
-
-# Pestana de Procesos y consultas
-frameP = Frame(frameProcesos)
-frameP.pack()
 
 
 def procesoSolicitarTarjeta():  # Esta función se encarga de la funcionalidad "solicitar tarjeta de crédito"
@@ -785,6 +780,32 @@ def procesoRetirarODepositarDinero():
     frameP.forget()
 
 
+def procesoVerTarjetas():
+    def pasoDos():
+        def funcVolver():
+            frameInfo.forget()
+            frameP.pack()
+        clienteActual = Banco.encontrarCliente(FF.getValores()[0])
+        tarjetas = clienteActual.getTarjetas()
+        FF.forget()
+        labelPrincipal = Label(frameInfo, text="Tarjetas del usuario escogido")
+        labelPrincipal.grid(row = 0, column=1, pady=10)
+        labels=[]
+        for i in range(len(tarjetas)):
+            labels.append(Label(frameInfo, text=tarjetas[i].__str__()))
+            labels[i].grid(column=i%3, row=math.floor(i/3)+1)
+        botonVolver = Button(frameInfo, text="Volver", command=lambda: funcVolver())
+        botonVolver.grid(column=1, row=math.floor(len(tarjetas)/3)+3)
+    frameInfo = Frame(frameProcesos)
+    frameInfo.pack()
+    frameP.forget()
+    FF = FieldFrame(frameInfo, "", ["Escoga el cliente cuyas tarjetas desea ver"], "", pasoDos, [[c.nombre for c in Banco.getClientes()]])
+    FF.pack()
+
+
+# Pestana de Procesos y consultas
+frameP = Frame(frameProcesos)
+
 BsolicitarTarjeta = Button(frameP, text="Solicitar tarjeta", command=lambda: procesoSolicitarTarjeta(), padx=10, pady=10)
 BpagarFactura = Button(frameP, text="Pagar factura", command=lambda: procesoPagarFactura(), padx=10, pady=10)
 BhacerTransaccion = Button(frameP, text="Hacer transaccion", command=lambda: procesoHacerTransaccion(), padx=10, pady=10)
@@ -792,6 +813,9 @@ BdeshacerTransaccion = Button(frameP, text="Deshacer transaccion", command=lambd
 BverPeticiones = Button(frameP, text="Ver peticiones", command=lambda: procesoVerPeticiones(), padx=10, pady=10)
 BCambiarDivisa = Button(frameP, text="Cambiar Divisas", command=lambda: procesoCambiarDivisa(), padx=10, pady=10)
 BRetirarODepositar = Button(frameP, text="Retirar o depositar dinero", command=lambda: procesoRetirarODepositarDinero(), padx=10, pady=10)
+BVerTarjetas = Button(frameP, text="Ver tarjetas de un cliente", command=lambda: procesoVerTarjetas())
+
+
 
 BsolicitarTarjeta.pack()
 BpagarFactura.pack()
@@ -801,7 +825,9 @@ BverPeticiones.pack()
 BCambiarDivisa.pack()
 BRetirarODepositar.pack()
 BVerTarjetas.pack()
-BVerFacturas.pack()
+#BVerFacturas.pack()
+
+frameP.pack()
 
 notebook.add(frameArchivo, text="Archivo")
 notebook.add(frameProcesos, text="Procesos y Consultas")
