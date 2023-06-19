@@ -31,7 +31,7 @@ class Divisa(Enum):
         montos = []
         monto_final = monto
 
-        impuesto = monto * (canal.get_impuesto() / 100)
+        impuesto = monto * (canal.getImpuesto() / 100)
         monto_final -= impuesto
 
         monto_final = monto_final * divisa_origen.get_valor()

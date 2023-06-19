@@ -414,18 +414,24 @@ def procesoVerPeticiones(): #Se encarga de que el cliente pueda ver las peticion
     FF.pack()
     frameP.forget()
 
-def procesoCambiarDivisa():
+def procesoCambiarDivisa(): #Se encarga del proceso de cambiar divisas
     def paso2():
         def pasoFinal():
             tarjetaOrigen = clienteActual.encontrarTarjeta(FF2.getValores()[0])
             tarjetaObjetivo = clienteActual.encontrarTarjeta(FF2.getValores()[1])
             canalEscogido = Banco.encontrarCanal(FF2.getValores()[3])
             try:
-                cantidad = float(FF.getValores()[2])
+                cantidad = float(FF2.getValores()[2])
             except ValueError:
                 messagebox.showinfo(title="Error", message="Por favor, ingrese un número válido")
+                return
             conversion = Divisa.convertir_divisas([divisaOrigen, divisaObjetivo], canalEscogido, cantidad)
-            transaccion = Transaccion.crearTransaccion([divisaOrigen, divisaObjetivo], cantidad, conversion, canalEscogido, [tarjetaOrigen, tarjetaObjetivo], clienteEscogido);
+            transaccion = Transaccion.crearTransaccion([divisaOrigen, divisaObjetivo], cantidad, conversion, canalEscogido, [tarjetaOrigen, tarjetaObjetivo], clienteActual)
+            transaccion = canalEscogido.finalizarConversion(transaccion, cantidad)
+            print(clienteActual.getTarjetas())
+            print(canalEscogido.fondosPorDivisa)
+            FF2.forget()
+            frameP.pack()
 
         clienteActual = Banco.encontrarCliente(FF.getValores()[0])
         divisaOrigen = Divisa.encontrarDivisa(FF.getValores()[1])
@@ -441,6 +447,7 @@ def procesoCambiarDivisa():
         if len(clienteActual.listarCanales(divisaOrigen, divisaObjetivo)) == 0:
             messagebox.showinfo(title="Error", message="No hay canales disponibles para esta operación")
             return
+        print(clienteActual.listarCanales(divisaOrigen, divisaObjetivo))
         FF2 =FieldFrame(frameProcesos, "", ["Tarjeta de la que saldrá el dinero", "Tarjeta que recibe el dinero", "Monto total a transferir (en las unidades de la divisa original)", "Canal mediante el cual desea hacer la transacción"], "", pasoFinal, [tarjetasOrigen, tajretasObjetivo, None, clienteActual.listarCanales(divisaOrigen, divisaObjetivo)])
         FF2.pack()
         FF.forget()

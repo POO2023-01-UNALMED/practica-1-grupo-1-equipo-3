@@ -14,7 +14,7 @@ class Banco():
 
     @staticmethod
     def ordenarCanalesPorImpuestos(canales: List[Canal]):
-        canales.sort()
+        canales.sort(key=lambda x: x.getImpuesto())
         return canales
 
     @staticmethod
