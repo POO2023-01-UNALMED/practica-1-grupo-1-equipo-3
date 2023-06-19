@@ -425,6 +425,7 @@ def procesoCambiarDivisa():
             except ValueError:
                 messagebox.showinfo(title="Error", message="Por favor, ingrese un número válido")
             conversion = Divisa.convertir_divisas([divisaOrigen, divisaObjetivo], canalEscogido, cantidad)
+            transaccion = Transaccion.crearTransaccion([divisaOrigen, divisaObjetivo], cantidad, conversion, canalEscogido, [tarjetaOrigen, tarjetaObjetivo], clienteEscogido);
 
         clienteActual = Banco.encontrarCliente(FF.getValores()[0])
         divisaOrigen = Divisa.encontrarDivisa(FF.getValores()[1])
