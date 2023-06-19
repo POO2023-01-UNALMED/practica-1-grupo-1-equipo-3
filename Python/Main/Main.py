@@ -3,6 +3,10 @@ from tkinter.ttk import Notebook
 from tkinter import ttk, messagebox, Frame, Button, Label
 from FieldFrame import FieldFrame
 from tkinter import Menu 
+from tkinter import Toplevel 
+from tkinter import PhotoImage
+
+
 
 #Modulos propios de la apllicación
 from Banco import Banco
@@ -161,7 +165,7 @@ setup()
 root = tk.Tk()
 
 root.title("Banco Nacho")
-root.iconbitmap("Python\Main\logo-unal.ico")#Favicon de la apliación
+root.iconbitmap("Python/assets/logo-unal.ico")#Favicon de la apliación
 
 
 #Creación de la ventana de inicio
@@ -179,13 +183,194 @@ navbar.add_cascade(label = "Inicio", menu = menu)
 menu.add_command(label = "Salir", command=root.quit)
 menu.add_command(label = "Descripción", command=menuDescripcion)
 
-
-ventaPrincipal = Frame(root, width=400, height=280, bg="blue")
+#Ventana de la vista principal de inicio
+ventaPrincipal = Frame(root)
 ventaPrincipal.pack()
+
+def abrirAplicacion():
+    ventanaAplicacion.deiconify()
+    root.withdraw()
+
+p1 = Frame(ventaPrincipal, bg="green")
+p1.pack(side="left", fill='y')
+
+#Saludo de bienvenida
+p3 = Frame(p1)
+p3.pack(expand=True, fill='both')
+labelP3 = Label(p3, text="Bienvenido a Banco Nacho\nTu banco de confianza\na unos simples clics de distancia", pady=8)
+labelP3.pack(expand=True, fill='both')
+labelP3.config(bg="#F5EFE7", fg="#73001B", font=("Arial", 12))
+
+
+#Abrir la aplicacion del usuario
+p4 = Frame(p1)
+p4.pack(expand=True, fill='both')
+
+#Fotos de p4
+#Fotos del sistema
+fotoSystem1 = PhotoImage(file="Python/assets/system1.png")
+fotoSystem2 = PhotoImage(file="Python/assets/system2.png")
+fotoSystem3 = PhotoImage(file="Python/assets/system3.png")
+
+#Inicializamos el valor de image con la primera foto
+labelFotoSystem = Label(p4, image=fotoSystem1)
+labelFotoSystem.pack()
+
+counterSystem = 1 #Nos ayudará a indexar las hojas de vida
+def cambiarFotoSistema(event):
+    global counterSystem
+    if counterSystem == 3:
+        #Foto del sistema 1
+        labelFotoSystem.config(image=fotoSystem1)
+        counterSystem = 1
+
+    elif counterSystem == 1:
+        #Foto del sistema 2
+        labelFotoSystem.config(image=fotoSystem2)
+        counterSystem = 2
+
+    elif counterSystem == 2:
+        #Foto del sistema 1
+        labelFotoSystem.config(image=fotoSystem3)
+        counterSystem = 3
+
+labelFotoSystem.bind("<Enter>", cambiarFotoSistema)
+
+#Boton de ingresar a la aplicacion
+buttonP4 = Button(p4, text="Ingresar a la aplicación", command=lambda : abrirAplicacion())
+buttonP4.pack(side="bottom", expand=True, fill='both')
+buttonP4.config(bg='#193842', fg='white', font=('Arial', 13, 'bold'))
+
+
+
+
+p2 = Frame(ventaPrincipal, bg="green")
+p2.pack(side="right")
+
+#Desarrolladores
+p5 = Frame(p2)
+p5.pack(expand=True, fill='both')
+
+
+#Inicializacion de las hojas de vida / Jose Miguel
+labelJose = Label(p2, text="Jose Miguel Pulgarin Agudelo\n18 años\njpulgarina@unal.edu.co\nCarrera: Ingeniería de Sistemas e informática\nLema: 'Programar es muy bonito, \npero cuando las cosas funcionan :D'", pady=4)
+labelJose.pack(expand=True, fill='both')
+labelJose.config(bg="#EBFDFF", fg="#213555", font=("Arial", 12))
+
+#Dario Alexander
+labelDario = Label(p2, text="Dario Alexander Penagos Von Werde\n18 años\njpulgarina@unal.edu.co\nCarrera: Ingeniería de Sistemas e informática\nLema: 'Programar es muy bonito, \npero cuando las cosas funcionan :D'", pady=4)
+labelDario.config(bg="#EBFDFF", fg="#213555", font=("Arial", 12))
+
+#Carlos
+labelCarlos = Label(p2, text="Carlos Guarin\n18 años\njpulgarina@unal.edu.co\nCarrera: Ingeniería de Sistemas e informática\nLema: 'Programar es muy bonito, \npero cuando las cosas funcionan :D'", pady=4)
+labelCarlos.config(bg="#EBFDFF", fg="#213555", font=("Arial", 12))
+
+#Fotos de los desarrolladores
+p6 = Frame(p2)
+p6.pack(side="bottom", expand=True, fill='both')
+
+#fotos de Jose Miguel / Estas son inicializadas como las primeras en mostrarse
+fotoJose1 = PhotoImage(file="Python/assets/jose.png").subsample(2, 2)
+fotoJose2 = PhotoImage(file="Python/assets/jose.png").subsample(2, 2)
+fotoJose3 = PhotoImage(file="Python/assets/jose.png").subsample(2, 2)
+fotoJose4 = PhotoImage(file="Python/assets/jose.png").subsample(2, 2)
+labelFotoJose1 = Label(p6, image=fotoJose1)
+labelFotoJose2 = Label(p6, image=fotoJose2)
+labelFotoJose3 = Label(p6, image=fotoJose3)
+labelFotoJose4 = Label(p6, image=fotoJose4)
+labelFotoJose1.grid(row=0, column=0)
+labelFotoJose2.grid(row=0, column=1)
+labelFotoJose3.grid(row=1, column=0)
+labelFotoJose4.grid(row=1, column=1)
+
+#fotos de Dario Alexander
+fotoDario1 = PhotoImage(file="Python/assets/incognito.png").subsample(2, 2)
+fotoDario2 = PhotoImage(file="Python/assets/incognito.png").subsample(2, 2)
+fotoDario3 = PhotoImage(file="Python/assets/incognito.png").subsample(2, 2)
+fotoDario4 = PhotoImage(file="Python/assets/incognito.png").subsample(2, 2)
+labelFotoDario1 = Label(p6, image=fotoDario1)
+labelFotoDario2 = Label(p6, image=fotoDario2)
+labelFotoDario3 = Label(p6, image=fotoDario3)
+labelFotoDario4 = Label(p6, image=fotoDario4)
+
+#fotos de Carlos
+fotoCarlos1 = PhotoImage(file="Python/assets/incognito.png").subsample(2, 2)
+fotoCarlos2 = PhotoImage(file="Python/assets/incognito.png").subsample(2, 2)
+fotoCarlos3 = PhotoImage(file="Python/assets/incognito.png").subsample(2, 2)
+fotoCarlos4 = PhotoImage(file="Python/assets/incognito.png").subsample(2, 2)
+labelFotoCarlos1 = Label(p6, image=fotoCarlos1)
+labelFotoCarlos2 = Label(p6, image=fotoCarlos2)
+labelFotoCarlos3 = Label(p6, image=fotoCarlos3)
+labelFotoCarlos4 = Label(p6, image=fotoCarlos4)
+
+counterDev = 1 #Nos ayudará a indexar las hojas de vida
+def cambiarHojaVida(event):
+    global counterDev
+    if counterDev == 3:
+        #Habilitar a Jose Miguel
+        #Label
+        labelJose.pack(side='top', expand=True, fill='both')
+        labelCarlos.pack_forget()#Oculta el label de Carlos
+
+        #Fotos
+        labelFotoJose1.grid(row=0, column=0)
+        labelFotoJose2.grid(row=0, column=1)
+        labelFotoJose3.grid(row=1, column=0)
+        labelFotoJose4.grid(row=1, column=1)
+        #Ocultar fotos de Carlos
+        labelFotoCarlos1.grid_forget()
+        labelFotoCarlos2.grid_forget()
+        labelFotoCarlos3.grid_forget()
+        labelFotoCarlos4.grid_forget()
+
+        counterDev = 1
+    elif counterDev == 1:
+        #Habilitar a Dario
+        labelDario.pack(side="top", expand=True, fill='both')
+        labelJose.pack_forget()#Oculta el label de Jose
+
+        #Fotos
+        labelFotoDario1.grid(row=0, column=0)
+        labelFotoDario2.grid(row=0, column=1)
+        labelFotoDario3.grid(row=1, column=0)
+        labelFotoDario4.grid(row=1, column=1)
+        #Ocultar fotos de Jose
+        labelFotoJose1.grid_forget()
+        labelFotoJose2.grid_forget()
+        labelFotoJose3.grid_forget()
+        labelFotoJose4.grid_forget()
+
+        counterDev = 2
+    elif counterDev == 2:
+        #Habilitar a Carlos
+        labelCarlos.pack(side="top", expand=True, fill='both')
+        labelDario.pack_forget()#Oculta el label de Dario
+
+        #Fotos
+        labelFotoCarlos1.grid(row=0, column=0)
+        labelFotoCarlos2.grid(row=0, column=1)
+        labelFotoCarlos3.grid(row=1, column=0)
+        labelFotoCarlos4.grid(row=1, column=1)
+        #Ocultar fotos de Dario
+        labelFotoDario1.grid_forget()
+        labelFotoDario2.grid_forget()
+        labelFotoDario3.grid_forget()
+        labelFotoDario4.grid_forget()
+
+        counterDev = 3
+
+labelJose.bind("<Button-1>", cambiarHojaVida)
+labelDario.bind("<Button-1>", cambiarHojaVida)
+labelCarlos.bind("<Button-1>", cambiarHojaVida)
 
 
 #Creación de la ventana de usuario
-notebook = Notebook(root)
+ventanaAplicacion = Toplevel(root)
+ventanaAplicacion.title("Banco Nacho App")
+ventanaAplicacion.iconbitmap("Python/assets/logo-unal.ico")#Favicon de la apliación
+ventanaAplicacion.withdraw()#Ocultando la ventana hasta que sea llamada
+
+notebook = Notebook(ventanaAplicacion)
 notebook.pack(pady = 10, expand=True)
 
 frameArchivo = Frame(notebook, width=400, height=280)
@@ -196,18 +381,29 @@ frameArchivo.pack(fill="both", expand=True)
 frameProcesos.pack(fill="both", expand=True)
 frameAyuda.pack(fill="both", expand=True)
 
-#Configurando la pestaña de Ayuda
+#Pestaña de Ayuda
+def mostrarAplicacion():
+    messagebox.showinfo("¿Banco Nacho?", "Banco Nacho es una aplicación bancaria que permite a los clientes ver y realizar transacciones entre sus tarjetas bancarias. También pueden pagar facturas y convertir divisas. El programa ofrece 5 funcionalidades principales, incluyendo transacciones, pagos de facturas, conversión de divisas y deshacer transacciones.")
+
+def SalirAInicio():
+    root.deiconify()
+    ventanaAplicacion.withdraw()
+    
 frameAr = Frame(frameArchivo)
 frameAr.pack()
 frameAr.config(width=400,height=280) 
 
-def mostrarAplicacion():
-    messagebox.showinfo("¿Banco Nacho?", "Banco Nacho es una aplicación bancaria que permite a los clientes ver y realizar transacciones entre sus tarjetas bancarias. También pueden pagar facturas y convertir divisas. El programa ofrece 5 funcionalidades principales, incluyendo transacciones, pagos de facturas, conversión de divisas y deshacer transacciones.")
-
-LabelApicacion = Label(frameAr, text="Conocer más acerca de la aplicación de Banco Nacho", pady=8)
-LabelApicacion.pack()
+#Desplegar descripción de la aplicacion
+LabelAplicacion = Label(frameAr, text="Conocer más acerca de la aplicación de Banco Nacho", pady=8)
+LabelAplicacion.pack()
 buttonAplicacion = Button(frameAr, text="Ver aplicación", command=lambda: mostrarAplicacion(), padx= 10, pady=8)
 buttonAplicacion.pack()
+
+#Volver a la pantalla de inicio
+LabelSalir = Label(frameAr, text="Volver a la pantalla principal", pady=8)
+LabelSalir.pack()
+buttonSalir = Button(frameAr, text="Salir", command=lambda: SalirAInicio(), padx= 10, pady=8)
+buttonSalir.pack()
 
 #Pestaña de Ayuda
 frameAy = Frame(frameAyuda)
