@@ -802,6 +802,29 @@ def procesoVerTarjetas():
     FF = FieldFrame(frameInfo, "", ["Escoga el cliente cuyas tarjetas desea ver"], "", pasoDos, [[c.nombre for c in Banco.getClientes()]])
     FF.pack()
 
+def procesoVerFacturas():
+    def pasoDos():
+        def funcVolver():
+            frameInfo.forget()
+            frameP.pack()
+        clienteActual = Banco.encontrarCliente(FF.getValores()[0])
+        facturas = clienteActual.getFacturas()
+        FF.forget()
+        labelPrincipal = Label(frameInfo, text="Facturas del usuario escogido")
+        labelPrincipal.grid(row = 0, column=1, pady=10)
+        labels=[]
+        for i in range(len(facturas)):
+            labels.append(Label(frameInfo, text=facturas[i].__str__()))
+            labels[i].grid(column=i%3, row=math.floor(i/3)+1)
+        botonVolver = Button(frameInfo, text="Volver", command=lambda: funcVolver())
+        botonVolver.grid(column=1, row=math.floor(len(facturas)/3)+3)
+    frameInfo = Frame(frameProcesos)
+    frameInfo.pack()
+    frameP.forget()
+    FF = FieldFrame(frameInfo, "", ["Escoga el cliente cuyas facturas desea ver"], "", pasoDos, [[c.nombre for c in Banco.getClientes()]])
+    FF.pack()
+
+
 
 # Pestana de Procesos y consultas
 frameP = Frame(frameProcesos)
@@ -814,7 +837,7 @@ BverPeticiones = Button(frameP, text="Ver peticiones", command=lambda: procesoVe
 BCambiarDivisa = Button(frameP, text="Cambiar Divisas", command=lambda: procesoCambiarDivisa(), padx=10, pady=10)
 BRetirarODepositar = Button(frameP, text="Retirar o depositar dinero", command=lambda: procesoRetirarODepositarDinero(), padx=10, pady=10)
 BVerTarjetas = Button(frameP, text="Ver tarjetas de un cliente", command=lambda: procesoVerTarjetas())
-
+BVerFacturas = Button(frameP, text="Ver facturas de un cliente", command=lambda: procesoVerFacturas())
 
 
 BsolicitarTarjeta.pack()
@@ -825,7 +848,7 @@ BverPeticiones.pack()
 BCambiarDivisa.pack()
 BRetirarODepositar.pack()
 BVerTarjetas.pack()
-#BVerFacturas.pack()
+BVerFacturas.pack()
 
 frameP.pack()
 
