@@ -1,5 +1,6 @@
 from Transaccion import Transaccion
 from TarjetaDebito import TarjetaDebito
+from Divisa import Divisa
 
 class Cliente():
     def __init__(self, nombre, noDeIdentificacion):
@@ -103,17 +104,16 @@ class Cliente():
                     retorno.append(t)
         return retorno
     
-    def listarCanales(divisas):
+    def listarCanales(self, divisao, divisad):
         from Banco import Banco
-        divisaOrigen = divisas[0]
-        divisaDestino = divisas[1]
+        divisaOrigen = divisao
+        divisaDestino = divisad
         canales = []
         for canal in Banco.getCanales():
-            if divisaOrigen in canal:
+            if canal.tieneDivisa(divisaOrigen):
                 continue
-            if divisaDestino in canal:
-                continue
-            if canal.tieneFondosDeDivisa(divisaDestino):
+            if canal.tieneDivisa(divisaDestino):
                 continue
             canales.append(canal)
         return Banco.ordenarCanalesPorImpuestos(canales)
+    

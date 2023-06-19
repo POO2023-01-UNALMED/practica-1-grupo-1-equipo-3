@@ -2,13 +2,14 @@ from Divisa import Divisa
 
 class Canal:
     def __init__(self, tipoCanal, impuesto, *fondos):
+        from Banco import Banco
         self.tipoCanal = tipoCanal
         self.impuesto = impuesto
         self.fondosPorDivisa = {}
-
         for i, divisa in enumerate(Divisa):
             if i < len(fondos):
                 self.fondosPorDivisa[divisa] = fondos[i]
+        Banco.agregarCanal(self)
 
     def setFondos(self, divisa, monto):
         self.fondosPorDivisa[divisa] = monto
@@ -20,29 +21,31 @@ class Canal:
         return self.impuesto
 
     def __str__(self):
-        return f"Canal: {self.tipoCanal}\nTasa de impuestos: {self.impuesto}"
+        from Banco import Banco
+        print(len(Banco.getCanales()))
+        return f"Canal: {self.tipoCanal} #{Banco.getCanales().index(self) + 1}\nTasa de impuestos: {self.impuesto}"
 
     def tieneDivisa(self, divisa):
         return divisa not in self.fondosPorDivisa
 
     def tieneFondosDeDivisa(self, divisa):
-        return self.fondosPorDivisa.get(divisa, 0.0) > 0.0
+        return self.fondosPorDivisa.get(divisa) > 0.0
 
     def finalizarConversion(self, transaccion, montoInicial):
         if transaccion.rechazado:
-            transaccion.tarjetaOrigen.anadirTransaccionRechazada()
+            transaccion.tarjeta_origen.anadirTransaccionRechazada()
         if not transaccion.pendiente:
             return None
         divisaOrigen = transaccion.divisa
         fondosOrigen = self.getFondos(divisaOrigen)
 
-        divisaDestino = transaccion.tarjetaObjetivo.divisa
+        divisaDestino = transaccion.tarjeta_objetivo.divisa
         fondosDestino = self.getFondos(divisaDestino)
 
-        transaccion.tarjetaOrigen.sacarDinero(montoInicial)
+        transaccion.tarjeta_origen.sacarDinero(montoInicial)
         self.setFondos(divisaOrigen, fondosOrigen + montoInicial)
         self.setFondos(divisaDestino, fondosDestino - transaccion.cantidad)
-        transaccion.tarjetaObjetivo.introducirDinero(transaccion.cantidad)
+        transaccion.tarjeta_objetivo.introducirDinero(transaccion.cantidad)
         transaccion.pendiente = False
 
         return transaccion
@@ -67,16 +70,16 @@ class Canal:
     @staticmethod
     def finalizarTransaccion(transaccion, retirar):
         if transaccion.rechazado:
-            transaccion.tarjetaOrigen.anadirTransaccionRechazada()
+            transaccion.tarjeta_origen.anadirTransaccionRechazada()
 
         if not transaccion.pendiente:
             return None
 
         if retirar:
-            transaccion.tarjetaOrigen.sacarDinero(transaccion.cantidad)
+            transaccion.tarjeta_origen.sacarDinero(transaccion.cantidad)
             transaccion.canal.setFondos(transaccion.divisa, transaccion.canal.getFondos(transaccion.divisa) - transaccion.cantidad)
         else:
-            transaccion.tarjetaObjetivo.introducirDinero(transaccion.cantidad)
+            transaccion.tarjeta_objetivo.introducirDinero(transaccion.cantidad)
             transaccion.canal.setFondos(transaccion.divisa, transaccion.canal.getFondos(transaccion.divisa) + transaccion.cantidad)
         transaccion.pendiente = False
 

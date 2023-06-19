@@ -1,17 +1,23 @@
+from typing import List
+from Divisa import Divisa
+from Canal import Canal
+from Tarjeta import Tarjeta
 
 class Transaccion:
     transacciones = []
 
-    def __init__(self, cliente_origen, cliente_objetivo, tarjeta_origen, tarjeta_objetivo, cantidad, validez = None, factura = None, mensaje = None, retornable = True, pendiente = False):
+    def __init__(self, cliente_origen, cliente_objetivo, tarjeta_origen, tarjeta_objetivo, cantidad, validez = None, factura = None, mensaje = None, retornable = True, pendiente = False, impuestoRetorno = None, canal = None, rechazado = False):
         self.cliente_objetivo = cliente_objetivo
         self.cliente_origen = cliente_origen
         self.tarjeta_origen = tarjeta_origen
         self.tarjeta_objetivo = tarjeta_objetivo
         self.cantidad = cantidad
-        if not pendiente:
+        self.impuestoRetorno = impuestoRetorno
+        self.canal = canal
+        if not pendiente and rechazado is None:
             self.rechazado = not tarjeta_origen.transaccion(cantidad, tarjeta_objetivo)
         else:
-            self.rechazado = False
+            self.rechazado = rechazado
         self.pendiente = pendiente
         self.retornable = retornable
         self.validez = validez
@@ -164,4 +170,16 @@ class Transaccion:
             transaccion.rechazado = False
             transaccion.pendiente = False
             transaccion.tarjeta_objetivo.deshacerTransaccion(transaccion.cantidad, transaccion.tarjeta_origen)
+        return transaccion
+    
+    @staticmethod
+    def crearTransaccion(divisas: List[Divisa], montoInicial: float, montosFinales: List[float], canal: Canal, tarjetas: List[Tarjeta], cliente):
+        divisaDestino = divisas[1]
+        montoFinal = montosFinales[0]
+        impuestoRetorno = montosFinales[1]
+        tarjetaOrigen = tarjetas[0]
+        tarjetaDestino = tarjetas[1]
+        rechazado = montoFinal > canal.getFondos(divisaDestino) or not tarjetaOrigen.puedeTransferir(montoInicial)
+        transaccion = Transaccion(cliente, None, tarjetaOrigen, tarjetaDestino, montoFinal, None, None, None, True, True,  impuestoRetorno, canal, rechazado)
+        transaccion.pendiente = not rechazado
         return transaccion

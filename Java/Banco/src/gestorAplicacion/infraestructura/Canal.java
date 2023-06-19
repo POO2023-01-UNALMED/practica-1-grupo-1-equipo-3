@@ -46,6 +46,7 @@ public class Canal implements Serializable {
 			this.fondosPorDivisa.put(divisa, fondo);
 		}
 	}
+	
 
 	/**
 	 * Constructor de la clase Canal sin fondos inicializados.
