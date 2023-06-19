@@ -1,6 +1,6 @@
 from enum import Enum
-from typing import List
-from typing import Tuple
+from typing import List, Any
+
 
 class Divisa(Enum):
     LIBRA_ESTERLINA = 1.25
@@ -24,7 +24,7 @@ class Divisa(Enum):
         return False
 
     @staticmethod
-    def convertir_divisas(divisas: List['Divisa'], canal, monto: float) -> Tuple[float, float]:
+    def convertir_divisas(divisas: List['Divisa'], canal, monto: float) -> tuple[float | Any, ...]:
         divisa_origen = divisas[0]
         divisa_destino = divisas[1]
 
@@ -46,6 +46,7 @@ class Divisa(Enum):
         montos.append(impuesto)
 
         return tuple(montos)
+
     @staticmethod
     def encontrarDivisa(nomDivisa: str):
         for d in Divisa:

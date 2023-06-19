@@ -1,16 +1,16 @@
 from typing import List
-from enum import Enum
+
 from Canal import Canal
-from Divisa import Divisa
 from Cliente import Cliente
+from Divisa import Divisa
 from Tarjeta import Tarjeta
 from Transaccion import Transaccion
 
-class Banco():
+
+class Banco:
     serialVersionUID = 1
     clientes = []
     canales = []
-
 
     @staticmethod
     def ordenarCanalesPorImpuestos(canales: List[Canal]):
@@ -70,15 +70,16 @@ class Banco():
     @staticmethod
     def generarPeticion(transaccion: Transaccion, mensaje: str) -> None:
         transaccion.setRetornable(False)
-        Transaccion(cliente_origen=transaccion.cliente_origen, cliente_objetivo=transaccion.cliente_objetivo, tarjeta_origen=transaccion.tarjeta_origen, tarjeta_objetivo=transaccion.tarjeta_objetivo, cantidad=transaccion.cantidad, mensaje=mensaje, retornable=False, pendiente=True)
-
+        Transaccion(cliente_origen=transaccion.cliente_origen, cliente_objetivo=transaccion.cliente_objetivo,
+                    tarjeta_origen=transaccion.tarjeta_origen, tarjeta_objetivo=transaccion.tarjeta_objetivo,
+                    cantidad=transaccion.cantidad, mensaje=mensaje, retornable=False, pendiente=True)
 
     @staticmethod
     def encontrarCliente(nomCliente) -> Cliente:
         for c in Banco.clientes:
             if c.getNombre() == nomCliente:
                 return c
-    
+
     @staticmethod
     def encontrarCanal(canal) -> Canal:
         for c in Banco.canales:

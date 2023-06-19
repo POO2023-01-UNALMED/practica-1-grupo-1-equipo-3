@@ -2,6 +2,7 @@ from abc import ABC, abstractmethod
 from BorrarTarjeta import BorrarTarjeta
 import pickle
 
+
 class Tarjeta(ABC):
     tarjetas = []
 
@@ -89,6 +90,7 @@ class Tarjeta(ABC):
                 retorno.append(t)
         return retorno
 
+
 class TarjetaDebito(Tarjeta):
     def _init_(self, noTarjeta, divisa, saldo):
         super()._init_(noTarjeta, divisa)
@@ -122,6 +124,6 @@ class TarjetaDebito(Tarjeta):
         if self.saldo >= cantidad and isinstance(t, TarjetaDebito):
             self.saldo -= round(100 * cantidad * t.divisa.getValor() / self.divisa.getValor()) / 100
             t.setSaldo(t.getSaldo() + cantidad)
-    
+
     def getDivisa(self):
         return self.divisa
