@@ -50,15 +50,31 @@ class Transaccion:
         self.tarjeta_origen = tarjeta_origen
         self.tarjeta_objetivo = tarjeta_objetivo
         self.cantidad = cantidad
+        self.impuestoRetorno = impuestoRetorno
+        self.canal = canal
+        if not pendiente and rechazado is None:
+            self.rechazado = not tarjeta_origen.transaccion(cantidad, tarjeta_objetivo)
+        else:
+            self.rechazado = rechazado
+        self.pendiente = pendiente
+        self.retornable = retornable
         self.validez = validez
         self.factura = factura
         self.mensaje = mensaje
-        self.retornable = retornable
-        self.pendiente = pendiente
-        self.impuestoRetorno = impuestoRetorno
-        self.canal = canal
-        self.rechazado = rechazado
         self.divisa = tarjeta_origen.getDivisa()
+        if retirar is not None: #Condición que se activa únicamente en el contexto de la funcionalidad retirar o depositar dinero
+            if retirar:
+                self.clienteOrigen = cliente_origen
+                self.tarjetaOrigen = tarjeta_origen
+            else:
+                self.clienteObjetivo = cliente_origen
+                self.tarjetaObjetivo = tarjeta_origen
+            self.cantidad = cantidad
+            self.impuesto = cantidad * (canal.getImpuesto() / 100)
+            self.canal = canal
+            self.divisa = tarjeta_origen.getDivisa()
+            self.rechazado = rechazado
+            retornable = False
 
         # Agregar la transacción a la lista de transacciones
         Transaccion.transacciones.append(self)
@@ -267,13 +283,28 @@ class Transaccion:
             else:
                 return f"Transacción Rechazada\nTotal: {(self.cantidad)} {self.tarjeta_objetivo.getDivisa().name}\nTarjeta de origen: #{self.tarjeta_origen.getNoTarjeta()}\nTarjeta de destino: #{self.tarjeta_objetivo.getNoTarjeta()}\nProveniente de: {self.cliente_origen.getNombre()}\n"
         elif self.pendiente:
-            return f"Transacción Pendiente\nTotal: {(self.cantidad)} {self.tarjeta_origen.getDivisa().name}\nTarjeta de origen: #{self.tarjeta_origen.getNoTarjeta()}\nTarjeta de destino: #{self.tarjeta_objetivo.getNoTarjeta()}\nProveniente de: {self.cliente_origen.getNombre()}"
-        elif self.validez:
-            return (
-                f"Transacción Aprobada\nTotal: {(self.cantidad)} {self.tarjeta_origen.getDivisa().name}\nTarjeta de origen: #{self.tarjeta_origen.getNoTarjeta()}\nTarjeta de destino: #{self.tarjeta_objetivo.getNoTarjeta()}\nProveniente de: {self.cliente_origen.getNombre()}\nValidez: {self.validez}\nMensaje: {self.mensaje}"
-            )
+            return f"Transacción Pendiente\nTotal: {(self.cantidad)} {self.tarjeta_origen.getDivisa().name}\nTarjeta de origen: #{self.tarjeta_origen.getNoTarjeta()}\nTarjeta de destino: #{self.tarjeta_objetivo.getNoTarjeta()}"
         else:
-            return f"Transacción Realizada\nTotal: {(self.cantidad)} {self.tarjeta_origen.getDivisa().name}\nTarjeta de origen: #{self.tarjeta_origen.getNoTarjeta()}\nTarjeta de destino: #{self.tarjeta_objetivo.getNoTarjeta()}\nProveniente de: {self.cliente_origen.getNombre()}\nMensaje: {self.mensaje}"
+            return f"Transacción Completada\nTotal: {(self.cantidad)} {self.tarjeta_origen.getDivisa().name}\nTarjeta de origen: #{self.tarjeta_origen.getNoTarjeta()}\nTarjeta de destino: #{self.tarjeta_objetivo.getNoTarjeta()}"
+
+    def __repr__(self):
+        return self.__str__()
+
+    def encontrarTransaccion(transaccion):
+        for t in Transaccion.transacciones:
+            if t.retornable and t.__str__() == transaccion:
+                return t
+
+    @staticmethod
+    def completarTransaccion(transaccion, respuesta):
+        if not respuesta:
+            transaccion.rechazado = True
+            transaccion.pendiente = False
+        else:
+            transaccion.rechazado = False
+            transaccion.pendiente = False
+            transaccion.tarjeta_objetivo.deshacerTransaccion(transaccion.cantidad, transaccion.tarjeta_origen)
+        return transaccion
 
     @staticmethod
     def crearTransaccion(divisas: List[Divisa], montoInicial: float, montosFinales: List[float], canal: Canal, tarjetas: List[Tarjeta], cliente):
@@ -283,10 +314,10 @@ class Transaccion:
         tarjetaOrigen = tarjetas[0]
         tarjetaDestino = tarjetas[1]
         rechazado = montoFinal > canal.getFondos(divisaDestino) or not tarjetaOrigen.puedeTransferir(montoInicial)
-        transaccion = Transaccion(cliente_origen=cliente, cliente_objetivo=None, tarjeta_origen=tarjetaOrigen, tarjeta_objetivo= tarjetaDestino, cantidad= montoFinal, validez=None, factura=None, mensaje=None, retornable=False, pendiente=True, impuestoRetorno=impuestoRetorno, canal=canal, rechazado=rechazado)
+        transaccion = Transaccion(cliente, None, tarjetaOrigen, tarjetaDestino, montoFinal, None, None, None, True, True,  impuestoRetorno, canal, rechazado)
         transaccion.pendiente = not rechazado
         return transaccion
-    
+
     @staticmethod
     def crearTrans(cliente, tarjeta, monto, canal, retirar):
         impuesto = monto * (canal.getImpuesto() / 100)
@@ -296,6 +327,6 @@ class Transaccion:
             rechazado = monto > canal.getFondos(tarjeta.getDivisa()) or not tarjeta.puedeTransferir(monto)
         else:
             rechazado = not tarjeta.puedeTransferir(monto)
-        transaccion = Transaccion(cliente, None, tarjeta, None, monto, validez=None, factura=None,mensaje=None, retornable=False, pendiente=True, impuestoRetorno=impuesto, canal=canal, retirar=retirar, rechazado=rechazado)
+        transaccion = Transaccion(cliente_origen=cliente, cliente_objetivo=None, tarjeta_origen=tarjeta, tarjeta_objetivo=None, cantidad=monto, validez=None, factura=None, mensaje=None, retornable=False, pendiente=True, impuestoRetorno=None, canal=canal, rechazado=rechazado, retirar=retirar )
         transaccion.pendiente = not rechazado
         return transaccion

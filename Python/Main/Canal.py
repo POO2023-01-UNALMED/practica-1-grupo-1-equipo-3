@@ -84,6 +84,8 @@ class Canal:
 
     @staticmethod
     def seleccionarCanal(divisa, retirar):
+        from Banco import \
+            Banco  # Es necesario importar aquí, de otra manera, podría causar un error por import circular
         """
         Método estático para seleccionar el canal adecuado para una transacción de acuerdo a la divisa y la operación (retirar o no).
         Retorna una lista de canales que cumplen con los requisitos.

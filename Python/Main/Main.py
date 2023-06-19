@@ -169,7 +169,7 @@ setup()
 root = tk.Tk()
 
 root.title("Banco Nacho")
-root.iconbitmap("assets/logo-unal.ico")  # Favicon de la apliación
+root.iconbitmap("Python/assets/logo-unal.ico")  # Favicon de la apliación
 
 
 # Creación de la ventana de inicio

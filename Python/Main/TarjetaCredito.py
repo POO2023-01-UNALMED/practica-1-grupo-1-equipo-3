@@ -78,6 +78,10 @@ class TarjetaCredito(Tarjeta):
                 )
         return tarjetas
 
+    @staticmethod
+    def anadirTarjetaCredito(tarjeta: "TarjetaCredito", cliente: Cliente) -> None:
+        cliente.getTarjetasCredito().append(tarjeta)
+        
     def getEspacio(self) -> float:
         return self.CREDITOMAXIMO - self.credito
 
@@ -87,3 +91,4 @@ class TarjetaCredito(Tarjeta):
 
     def getDivisa(self):
         return super().getDivisa()
+    
