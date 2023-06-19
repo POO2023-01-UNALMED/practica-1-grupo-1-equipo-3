@@ -1,9 +1,10 @@
 from typing import List
-from typing import Tuple
+
+from Cliente import Cliente
 from Tarjeta import Tarjeta
 from TarjetaDebito import TarjetaDebito
 from Transaccion import Transaccion
-from Cliente import Cliente
+
 
 class Factura:
     def __init__(self, cliente, total: float, transfeRestantes: int, tarjetaDestino):
@@ -37,13 +38,20 @@ class Factura:
 
     def __str__(self):
         if self.facturaPagada and not self.facturaVencida:
-            retorno = "Factura pagada ANTES de vencer\nTarjeta objetivo: " + str(self.TARJETADESTINO.getNoTarjeta()) + "\n"
+            retorno = "Factura pagada ANTES de vencer\nTarjeta objetivo: " + str(
+                self.TARJETADESTINO.getNoTarjeta()) + "\n"
         elif self.facturaPagada:
-            retorno = "Factura pagada DESPUÉS de vencer\nTarjeta objetivo: " + str(self.TARJETADESTINO.getNoTarjeta()) + "\n"
+            retorno = "Factura pagada DESPUÉS de vencer\nTarjeta objetivo: " + str(
+                self.TARJETADESTINO.getNoTarjeta()) + "\n"
         elif self.facturaVencida:
-            retorno = "Factura vencida por pagar.1\nTarjeta objetivo: " + str(self.TARJETADESTINO.getNoTarjeta()) + " faltan " + str(self.TOTAL-self.valorPagado) + " " + self.DIVISA.name() + " por pagar\n"
+            retorno = "Factura vencida por pagar.1\nTarjeta objetivo: " + str(
+                self.TARJETADESTINO.getNoTarjeta()) + " faltan " + str(
+                self.TOTAL - self.valorPagado) + " " + self.DIVISA.name() + " por pagar\n"
         else:
-            retorno = "Factura no vencida por pagar.\nTarjeta objetivo: {} faltan {} {} por pagar en {} transferencias\n".format(self.TARJETADESTINO.getNoTarjeta(), self.TOTAL- self.valorPagado, self.DIVISA.name, self.transfeRestantes)
+            retorno = "Factura no vencida por pagar.\nTarjeta objetivo: {} faltan {} {} por pagar en {} " \
+                      "transferencias\n".format(
+                self.TARJETADESTINO.getNoTarjeta(), self.TOTAL - self.valorPagado, self.DIVISA.name,
+                self.transfeRestantes)
         return retorno
 
     def generarTransaccion(self, monto: float, tarjetaOrigen) -> 'Transaccion':
@@ -56,7 +64,8 @@ class Factura:
         return Transaccion(self.CLIENTE, None, tarjetaOrigen, self.TARJETADESTINO, monto, not validez, self)
 
     @staticmethod
-    def modificarPuntaje(tarjetasBloqueadas: List[Tarjeta], tarjetasActivas: List[Tarjeta], cliente: Cliente, puntaje: int) -> int:
+    def modificarPuntaje(tarjetasBloqueadas: List[Tarjeta], tarjetasActivas: List[Tarjeta], cliente: Cliente,
+                         puntaje: int) -> int:
         for f in cliente.getFacturas():
             if f.facturaVencida:
                 puntaje -= 50

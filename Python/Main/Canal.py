@@ -1,5 +1,6 @@
 from Divisa import Divisa
 
+
 class Canal:
     def __init__(self, tipoCanal, impuesto, *fondos):
         from Banco import Banco
@@ -51,7 +52,8 @@ class Canal:
 
     @staticmethod
     def seleccionarCanal(divisa, retirar):
-        from Banco import Banco # Es necesario importar aquí, de otra manera, podría causar un error por import circular
+        from Banco import \
+            Banco  # Es necesario importar aquí, de otra manera, podría causar un error por import circular
         retorno = []
         if retirar:
             for canal in Banco.getCanales():
@@ -76,10 +78,12 @@ class Canal:
 
         if retirar:
             transaccion.tarjeta_origen.sacarDinero(transaccion.cantidad)
-            transaccion.canal.setFondos(transaccion.divisa, transaccion.canal.getFondos(transaccion.divisa) - transaccion.cantidad)
+            transaccion.canal.setFondos(transaccion.divisa,
+                                        transaccion.canal.getFondos(transaccion.divisa) - transaccion.cantidad)
         else:
             transaccion.tarjeta_objetivo.introducirDinero(transaccion.cantidad)
-            transaccion.canal.setFondos(transaccion.divisa, transaccion.canal.getFondos(transaccion.divisa) + transaccion.cantidad)
+            transaccion.canal.setFondos(transaccion.divisa,
+                                        transaccion.canal.getFondos(transaccion.divisa) + transaccion.cantidad)
         transaccion.pendiente = False
 
         return transaccion
