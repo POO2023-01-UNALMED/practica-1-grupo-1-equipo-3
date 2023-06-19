@@ -656,8 +656,6 @@ def procesoCambiarDivisa(): #Se encarga del proceso de cambiar divisas
             conversion = Divisa.convertir_divisas([divisaOrigen, divisaObjetivo], canalEscogido, cantidad)
             transaccion = Transaccion.crearTransaccion([divisaOrigen, divisaObjetivo], cantidad, conversion, canalEscogido, [tarjetaOrigen, tarjetaObjetivo], clienteActual)
             transaccion = canalEscogido.finalizarConversion(transaccion, cantidad)
-            print(clienteActual.getTarjetas())
-            print(canalEscogido.fondosPorDivisa)
             FF2.forget()
             frameP.pack()
 
@@ -675,7 +673,6 @@ def procesoCambiarDivisa(): #Se encarga del proceso de cambiar divisas
         if len(clienteActual.listarCanales(divisaOrigen, divisaObjetivo)) == 0:
             messagebox.showinfo(title="Error", message="No hay canales disponibles para esta operación")
             return
-        print(clienteActual.listarCanales(divisaOrigen, divisaObjetivo))
         FF2 =FieldFrame(frameProcesos, "", ["Tarjeta de la que saldrá el dinero", "Tarjeta que recibe el dinero", "Monto total a transferir (en las unidades de la divisa original)", "Canal mediante el cual desea hacer la transacción"], "", pasoFinal, [tarjetasOrigen, tajretasObjetivo, None, clienteActual.listarCanales(divisaOrigen, divisaObjetivo)])
         FF2.pack()
         FF.forget()
@@ -683,12 +680,59 @@ def procesoCambiarDivisa(): #Se encarga del proceso de cambiar divisas
     frameP.forget()
     FF.pack()
 
+def procesoRetirarODepositarDinero():
+    def segundoPaso():
+        def pasoFinal():
+            tarjetaEscogida = clienteActual.encontrarTarjeta(FF2.getValores()[0])
+            canalEscogido = Banco.encontrarCanal(FF2.getValores()[1])
+            try:
+                monto = float(FF2.getValores()[2])
+            except ValueError:
+                messagebox.showinfo(title="Error", message="Por favor, ingrese un número válido")
+                return
+            transaccionInicial = Transaccion.crearTrans(clienteActual, tarjetaEscogida, monto, canalEscogido, retirar)
+            if transaccionInicial.rechazado:
+                if not tarjetaEscogida.puedeTransferir(monto):
+                    messagebox.showinfo(title="Error", message="La tarjeta no puede transferir el monto necesario")
+                    return
+                if canalEscogido.getFondos(divisaEscogida) < monto:
+                    messagebox.showinfo(title="Error", message="El canal no tiene suficientes fondos para esta acción")
+                    return
+                return
+            transaccionFinal = Canal.finalizarTransaccion(transaccionInicial, retirar)
+            FF2.forget()
+            frameP.pack()
+        clienteActual = Banco.encontrarCliente(FF.getValores()[0])
+        retirar = False
+        if FF.getValores()[1] == "Retirar":
+            retirar = True
+        divisaEscogida = Divisa.encontrarDivisa(FF.getValores()[2])
+        if divisaEscogida not in Banco.seleccionarDivisa(clienteActual):
+            messagebox.showinfo(title="Error", message="El cliente seleccionado no puede realizar esta operación con la divisa escogida")
+            return
+        tarjetas = clienteActual.seleccionarTarjeta(divisaEscogida, retirar)
+        canales = Canal.seleccionarCanal(divisaEscogida, retirar)
+        if len(tarjetas) == 0:
+            messagebox.showinfo(title="Error", message="El cliente seleccionado no tiene tarjetas que puedan realizar esta operación")
+            return
+        if len(canales) == 0:
+            messagebox.showinfo(title="Error", message="No hay canales disponibles para realizar esta transacción")
+            return
+        FF2 = FieldFrame(frameProcesos, "", ["Escoga la tarjeta mediante la cual desea hacer la operación", "Escoga el canal que desea utilizar", "Escoga el monto total"], "", pasoFinal, [[t for t in tarjetas if retirar or isinstance(t, TarjetaDebito)], canales, None])
+        FF2.pack()
+        FF.forget()
+
+    FF = FieldFrame(frameProcesos, "", ["Elija el usuario", "¿Quiere depositar o retirar?", "Seleccione la divisa con la cual quiere realizar la operación"], "", segundoPaso, [[c.nombre for c in Banco.getClientes()], ["Retirar", "Depositar"], [d.name for d in Divisa]])
+    FF.pack()
+    frameP.forget()
+
 BsolicitarTarjeta = Button(frameP, text="Solicitar tarjeta", command=lambda: procesoSolicitarTarjeta(), padx= 10, pady=10)
 BpagarFactura = Button(frameP, text="Pagar factura", command=lambda: procesoPagarFactura(), padx=10, pady=10)
 BhacerTransaccion = Button(frameP, text="Hacer transaccion", command=lambda: procesoHacerTransaccion(), padx=10, pady=10)
 BdeshacerTransaccion = Button(frameP, text="Deshacer transaccion", command=lambda:procesoDeshacerTransaccion(), padx=10, pady=10)
 BverPeticiones = Button(frameP, text="Ver peticiones", command=lambda:procesoVerPeticiones(), padx=10, pady=10)
-BCambiarDivisa = Button(frameP, text="CambiarDivisa", command=lambda:procesoCambiarDivisa(), padx=10, pady=10)
+BCambiarDivisa = Button(frameP, text="Cambiar Divisas", command=lambda:procesoCambiarDivisa(), padx=10, pady=10)
+BRetirarODepositar = Button(frameP, text="Retirar o depositar dinero", command=lambda:procesoRetirarODepositarDinero(), padx=10, pady=10)
 
 BsolicitarTarjeta.pack()
 BpagarFactura.pack()
@@ -696,6 +740,7 @@ BhacerTransaccion.pack()
 BdeshacerTransaccion.pack()
 BverPeticiones.pack()
 BCambiarDivisa.pack()
+BRetirarODepositar.pack()
 
 notebook.add(frameArchivo, text = "Archivo")
 notebook.add(frameProcesos, text = "Procesos y Consultas")

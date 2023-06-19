@@ -117,3 +117,13 @@ class Cliente():
             canales.append(canal)
         return Banco.ordenarCanalesPorImpuestos(canales)
     
+    def seleccionarTarjeta(self, divisa, retirar):
+        retorno = []
+        for t in self.tarjetasDebito:
+            if t.divisa == divisa:
+                retorno.append(t)
+        if not retirar:
+            for t in self.tarjetasCredito:
+                if t.divisa == divisa:
+                    retorno.append(t)
+        return retorno

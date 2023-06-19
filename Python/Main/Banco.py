@@ -51,7 +51,7 @@ class Banco():
     @staticmethod
     def seleccionarDivisa(cliente: Cliente):
         retorno = []
-        for d in Divisa.values():
+        for d in Divisa:
             for t in cliente.getTarjetas():
                 if t.getDivisa() == d:
                     retorno.append(d)

@@ -6,7 +6,21 @@ from Tarjeta import Tarjeta
 class Transaccion:
     transacciones = []
 
-    def __init__(self, cliente_origen, cliente_objetivo, tarjeta_origen, tarjeta_objetivo, cantidad, validez = None, factura = None, mensaje = None, retornable = True, pendiente = False, impuestoRetorno = None, canal = None, rechazado = False):
+    def __init__(self, cliente_origen, cliente_objetivo, tarjeta_origen, tarjeta_objetivo, cantidad, validez = None, factura = None, mensaje = None, retornable = True, pendiente = False, impuestoRetorno = None, canal = None, rechazado = False, retirar = None):
+        if retirar is not None: #Condición que se activa únicamente en el contexto de la funcionalidad retirar o depositar dinero
+            if retirar:
+                self.cliente_origen = cliente_origen
+                self.tarjeta_origen = tarjeta_origen
+            else:
+                self.cliente_objetivo = cliente_origen
+                self.tarjeta_objetivo = tarjeta_origen
+            self.cantidad = cantidad
+            self.impuesto = cantidad * (canal.getImpuesto() / 100)
+            self.canal = canal
+            self.divisa = tarjeta_origen.getDivisa()
+            self.rechazado = rechazado
+            retornable = False
+            return
         self.cliente_objetivo = cliente_objetivo
         self.cliente_origen = cliente_origen
         self.tarjeta_origen = tarjeta_origen
@@ -24,6 +38,19 @@ class Transaccion:
         self.factura = factura
         self.mensaje = mensaje
         self.divisa = tarjeta_origen.getDivisa()
+        if retirar is not None: #Condición que se activa únicamente en el contexto de la funcionalidad retirar o depositar dinero
+            if retirar:
+                self.clienteOrigen = cliente_origen
+                self.tarjetaOrigen = tarjeta_origen
+            else:
+                self.clienteObjetivo = cliente_origen
+                self.tarjetaObjetivo = tarjeta_origen
+            self.cantidad = cantidad
+            self.impuesto = cantidad * (canal.getImpuesto() / 100)
+            self.canal = canal
+            self.divisa = tarjeta_origen.getDivisa()
+            self.rechazado = rechazado
+            retornable = False
         Transaccion.transacciones.append(self)
 
     @property
@@ -137,11 +164,16 @@ class Transaccion:
         return self.pendiente
 
     def __str__(self):
+        if not hasattr(self, "mensaje"):
+            if hasattr(self, "cliente_origen"):
+                return "Operación de retiro por " + str(self.cantidad)
+            else:
+                return "Operación de depósito por " + str(self.cantidad)
         if self.mensaje and self.pendiente:
             return f"El cliente {self.cliente_origen.getNombre()} quisiera deshacer una transacción por {(self.cantidad)} {self.tarjeta_origen.getDivisa().name} recibidos por la tarjeta #{self.tarjeta_objetivo.getNoTarjeta()}\nSu mensaje es: {self.mensaje}"
         if self.rechazado:
             if not self.tarjeta_objetivo:
-                return f"Transacción Rechazada\nTotal: {(self.cantidad)} {self.tarjeta_origen.getDivisa().name}\nTarjeta: #{self.tarjeta_origen.getNoTarjeta()}"
+                return f"Transacción Rechazada\nTotal: {self.cantidad} {self.tarjeta_origen.getDivisa().name}\nTarjeta: #{self.tarjeta_origen.getNoTarjeta()}"
             if not self.tarjeta_origen:
                 return f"Transacción Rechazada\nTotal: {(self.cantidad)} {self.tarjeta_objetivo.getDivisa().name}\nTarjeta de destino: #{self.tarjeta_objetivo.getNoTarjeta()}"
             if not self.cliente_origen:
@@ -153,8 +185,8 @@ class Transaccion:
         else:
             return f"Transacción Completada\nTotal: {(self.cantidad)} {self.tarjeta_origen.getDivisa().name}\nTarjeta de origen: #{self.tarjeta_origen.getNoTarjeta()}\nTarjeta de destino: #{self.tarjeta_objetivo.getNoTarjeta()}"
 
-    def _repr_(self):
-        return self._str_()
+    def __repr__(self):
+        return self.__str__()
     
     def encontrarTransaccion(transaccion):
         for t in Transaccion.transacciones:
@@ -183,3 +215,17 @@ class Transaccion:
         transaccion = Transaccion(cliente, None, tarjetaOrigen, tarjetaDestino, montoFinal, None, None, None, True, True,  impuestoRetorno, canal, rechazado)
         transaccion.pendiente = not rechazado
         return transaccion
+    
+    @staticmethod
+    def crearTrans(cliente, tarjeta, monto, canal, retirar):
+        impuesto = monto * (canal.getImpuesto() / 100)
+        monto -= impuesto
+        rechazado = False
+        if retirar:
+            rechazado = monto > canal.getFondos(tarjeta.getDivisa()) or not tarjeta.puedeTransferir(monto)
+        else:
+            rechazado = not tarjeta.puedeTransferir(monto)
+        transaccion = Transaccion(cliente_origen=cliente, cliente_objetivo=None, tarjeta_origen=tarjeta, tarjeta_objetivo=None, cantidad=monto, validez=None, factura=None, mensaje=None, retornable=False, pendiente=True, impuestoRetorno=None, canal=canal, rechazado=rechazado, retirar=retirar )
+        transaccion.pendiente = not rechazado
+        return transaccion
+

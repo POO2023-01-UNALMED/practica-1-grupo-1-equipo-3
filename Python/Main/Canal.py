@@ -22,14 +22,13 @@ class Canal:
 
     def __str__(self):
         from Banco import Banco
-        print(len(Banco.getCanales()))
         return f"Canal: {self.tipoCanal} #{Banco.getCanales().index(self) + 1}\nTasa de impuestos: {self.impuesto}"
 
     def tieneDivisa(self, divisa):
         return divisa not in self.fondosPorDivisa
 
     def tieneFondosDeDivisa(self, divisa):
-        return self.fondosPorDivisa.get(divisa) > 0.0
+        return not self.fondosPorDivisa.get(divisa) > 0.0
 
     def finalizarConversion(self, transaccion, montoInicial):
         if transaccion.rechazado:
