@@ -172,7 +172,15 @@ root.iconbitmap("Python/assets/logo-unal.ico")#Favicon de la apliación
 
 #Menu de incio
 def menuDescripcion():
-    pass
+    descripcion = Frame(p1)
+    descripcion.pack(side='top', expand=True, fill='both')
+    labelDes = Label(descripcion, text="Aquí puedes conocer un poco más\nacerca de los desarrolladores de\nBanco Nacho, conocer algunas \nprevisualizaciones de nuestro sistema \ne ingresar a la aplicación de usuarios", pady=8)
+    labelDes.pack(expand=True, fill='both')
+    labelDes.config(bg="#FFF2BC", fg="#856C00", font=("Arial", 12))
+
+    buttonCerrarDes = Button(descripcion, text="Cerrar Descripción", command=lambda: descripcion.pack_forget(), padx= 10, pady=8)
+    buttonCerrarDes.config(bg='#9A0000', fg='white', font=("Arial", 12, "bold"))
+    buttonCerrarDes.pack(expand=True, fill="both")
 
 navbar = Menu(root)
 root.config(menu = navbar)
@@ -239,7 +247,7 @@ labelFotoSystem.bind("<Enter>", cambiarFotoSistema)
 #Boton de ingresar a la aplicacion
 buttonP4 = Button(p4, text="Ingresar a la aplicación", command=lambda : abrirAplicacion())
 buttonP4.pack(side="bottom", expand=True, fill='both')
-buttonP4.config(bg='#193842', fg='white', font=('Arial', 13, 'bold'))
+buttonP4.config(bg='#193842', fg='white', font=('Arial', 13, 'bold'), padx= 10, pady=8)
 
 
 
