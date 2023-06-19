@@ -1,4 +1,5 @@
 import tkinter as tk
+import pickle
 from tkinter import Menu
 from tkinter import PhotoImage
 import math
@@ -26,6 +27,8 @@ def setup():
     cliente3 = Cliente("Marta Martínez", 3)
     cliente4 = Cliente("Sandra Lopez", 4)
     cliente5 = Cliente("Yasuri Yamile", 5)
+    clientes = [cliente1, cliente2, cliente3, cliente4, cliente5]
+    #picklefile = open("src/temp/pcs.pkl", "wb")
 
     tarjetaDebito1 = TarjetaDebito(123456, Divisa.DOLAR, 3000)
     tarjetaDebito2 = TarjetaDebito(234567, Divisa.EURO, 500)
@@ -166,7 +169,7 @@ setup()
 root = tk.Tk()
 
 root.title("Banco Nacho")
-root.iconbitmap("Python/assets/logo-unal.ico")  # Favicon de la apliación
+root.iconbitmap("assets/logo-unal.ico")  # Favicon de la apliación
 
 
 # Creación de la ventana de inicio
