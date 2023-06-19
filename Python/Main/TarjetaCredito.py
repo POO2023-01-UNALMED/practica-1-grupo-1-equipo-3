@@ -29,26 +29,19 @@ class TarjetaCredito(Tarjeta):
 
     def borrar(self) -> str:
         from Banco import Banco
-        for c in Banco.getClientes():  # En caso de que queramos borrar, necesitamos quitar la tarjeta de todas los clientes que la tienen
+        for c in Banco.getClientes():
+            # En caso de que queramos borrar, necesitamos quitar la tarjeta de todos los clientes que la tienen
             c.getTarjetasCredito().remove(self)
         return "La tarjeta de crédito #{} será borrada, ya que tiene demasiadas transacciones rechazadas".format(self.noTarjeta)
 
     def deshacerTransaccion(self, cantidad: float, t: Tarjeta) -> None:
         if self.CREDITOMAXIMO - self.credito >= cantidad and isinstance(t, TarjetaDebito):
             # Deshacer una transacción desde una tarjeta de débito
-            self.credito += (
-                int(100 * cantidad * t.divisa.getValor() / self.divisa.getValor()) / 100
-            )
+            self.credito += int(100 * cantidad * t.divisa.getValor() / self.divisa.getValor()) / 100
             t.setSaldo(t.getSaldo() + cantidad)
-        elif (
-            self.CREDITOMAXIMO - self.credito >= cantidad
-            and isinstance(t, TarjetaCredito)
-            and t.getEspacio() >= cantidad
-        ):
+        elif self.CREDITOMAXIMO - self.credito >= cantidad and isinstance(t, TarjetaCredito) and t.getEspacio() >= cantidad:
             # Deshacer una transacción desde otra tarjeta de crédito
-            self.credito += (
-                int(100 * cantidad * t.divisa.getValor() / self.divisa.getValor()) / 100
-            )
+            self.credito += int(100 * cantidad * t.divisa.getValor() / self.divisa.getValor()) / 100
             t.setCredito(cantidad)
 
     def puedeTransferir(self, monto: float) -> bool:
@@ -91,10 +84,6 @@ class TarjetaCredito(Tarjeta):
     def setCredito(self, credito: float) -> None:
         if credito >= 0:
             self.credito = credito
-
-    @staticmethod
-    def anadirTarjetaCredito(tarjeta: "TarjetaCredito", cliente: Cliente) -> None:
-        cliente.getTarjetasCredito().append(tarjeta)
 
     def getDivisa(self):
         return super().getDivisa()

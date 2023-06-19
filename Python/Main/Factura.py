@@ -1,5 +1,4 @@
 from typing import List
-
 from Cliente import Cliente
 from Tarjeta import Tarjeta
 from TarjetaDebito import TarjetaDebito
@@ -8,6 +7,15 @@ from Transaccion import Transaccion
 
 class Factura:
     def __init__(self, cliente, total: float, transfeRestantes: int, tarjetaDestino):
+        """
+        Crea una instancia de Factura.
+
+        Args:
+            cliente (Cliente): Cliente asociado a la factura.
+            total (float): Monto total de la factura.
+            transfeRestantes (int): Número de transferencias restantes.
+            tarjetaDestino (Tarjeta): Tarjeta de destino de la factura.
+        """
         self.CLIENTE = cliente
         self.DIVISA = tarjetaDestino.getDivisa()
         self.TOTAL = total
@@ -19,24 +27,66 @@ class Factura:
         cliente.agregarFactura(self)
 
     def getTransfeRestantes(self) -> int:
+        """
+        Obtiene el número de transferencias restantes de la factura.
+
+        Returns:
+            int: Número de transferencias restantes.
+        """
         return self.transfeRestantes
 
     def isFacturaVencida(self) -> bool:
+        """
+        Verifica si la factura está vencida.
+
+        Returns:
+            bool: True si la factura está vencida, False en caso contrario.
+        """
         return self.facturaVencida
 
     def isFacturaPagada(self) -> bool:
+        """
+        Verifica si la factura está pagada.
+
+        Returns:
+            bool: True si la factura está pagada, False en caso contrario.
+        """
         return not self.facturaPagada
 
     def getPendiente(self) -> float:
+        """
+        Obtiene el monto pendiente de la factura.
+
+        Returns:
+            float: Monto pendiente.
+        """
         return self.TOTAL - self.valorPagado
 
     def getTOTAL(self) -> float:
+        """
+        Obtiene el monto total de la factura.
+
+        Returns:
+            float: Monto total de la factura.
+        """
         return self.TOTAL
 
     def getDIVISA(self):
+        """
+        Obtiene la divisa de la factura.
+
+        Returns:
+            Divisa: Divisa de la factura.
+        """
         return self.DIVISA
 
     def __str__(self):
+        """
+        Devuelve una representación en forma de cadena de la factura.
+
+        Returns:
+            str: Representación en forma de cadena de la factura.
+        """
         if self.facturaPagada and not self.facturaVencida:
             retorno = "Factura pagada ANTES de vencer\nTarjeta objetivo: " + str(
                 self.TARJETADESTINO.getNoTarjeta()) + "\n"
@@ -44,7 +94,7 @@ class Factura:
             retorno = "Factura pagada DESPUÉS de vencer\nTarjeta objetivo: " + str(
                 self.TARJETADESTINO.getNoTarjeta()) + "\n"
         elif self.facturaVencida:
-            retorno = "Factura vencida por pagar.1\nTarjeta objetivo: " + str(
+            retorno = "Factura vencida por pagar.\nTarjeta objetivo: " + str(
                 self.TARJETADESTINO.getNoTarjeta()) + " faltan " + str(
                 self.TOTAL - self.valorPagado) + " " + self.DIVISA.name() + " por pagar\n"
         else:
@@ -55,6 +105,16 @@ class Factura:
         return retorno
 
     def generarTransaccion(self, monto: float, tarjetaOrigen) -> 'Transaccion':
+        """
+        Genera una transacción asociada a la factura.
+
+        Args:
+            monto (float): Monto de la transacción.
+            tarjetaOrigen (Tarjeta): Tarjeta de origen de la transacción.
+
+        Returns:
+            Transaccion: La transacción generada.
+        """
         validez = tarjetaOrigen.puedeTransferir(monto) and tarjetaOrigen.getDivisa() == self.TARJETADESTINO.getDivisa()
         if validez:
             self.transfeRestantes -= 1
@@ -66,6 +126,18 @@ class Factura:
     @staticmethod
     def modificarPuntaje(tarjetasBloqueadas: List[Tarjeta], tarjetasActivas: List[Tarjeta], cliente: Cliente,
                          puntaje: int) -> int:
+        """
+        Modifica el puntaje del cliente en función de las tarjetas, facturas y transacciones.
+
+        Args:
+            tarjetasBloqueadas (List[Tarjeta]): Lista de tarjetas bloqueadas.
+            tarjetasActivas (List[Tarjeta]): Lista de tarjetas activas.
+            cliente (Cliente): Cliente asociado.
+            puntaje (int): Puntaje actual.
+
+        Returns:
+            int: Puntaje modificado.
+        """
         for f in cliente.getFacturas():
             if f.facturaVencida:
                 puntaje -= 50

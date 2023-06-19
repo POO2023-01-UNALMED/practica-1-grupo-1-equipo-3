@@ -6,6 +6,20 @@ class FieldFrame(Frame):
 
     def __init__(self, ventana, tituloCriterios, criterios, tituloValores, funcionAceptar=None, opciones=None,
                  valores=None, habilitado=None):
+        """
+        Crea una instancia de FieldFrame, que es un marco con campos de entrada y botones asociados.
+
+        Args:
+            ventana (Tk): Ventana principal donde se ubicará el FieldFrame.
+            tituloCriterios (str): Título para la columna de criterios.
+            criterios (List[str]): Lista de criterios.
+            tituloValores (str): Título para la columna de valores.
+            funcionAceptar (callable): Función a ejecutar cuando se presione el botón "Aceptar".
+            opciones (List[List[str]]): Lista de opciones para los campos de selección (OptionMenu).
+            valores (List[str]): Valores iniciales para los campos de entrada.
+            habilitado (List[bool]): Lista de booleanos para habilitar/deshabilitar los campos de entrada.
+
+        """
         super().__init__(ventana, highlightthickness=2, highlightbackground="black")
         tituloC = Label(self, text=tituloCriterios)
         tituloV = Label(self, text=tituloValores)
@@ -62,6 +76,13 @@ class FieldFrame(Frame):
         self.Vals = Vals
 
     def getValores(self):
+        """
+        Obtiene los valores ingresados en los campos de entrada.
+
+        Returns:
+            List[str]: Lista de valores ingresados.
+
+        """
         retorno = []
         for i in range(len(self.entrys)):
             if isinstance(self.entrys[i], Entry):
