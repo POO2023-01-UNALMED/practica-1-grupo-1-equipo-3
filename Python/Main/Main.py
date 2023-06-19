@@ -22,13 +22,20 @@ from Transaccion import Transaccion
 
 
 def setup():
+    global cliente1
+    global cliente2
+    global cliente3
+    global cliente4
+    global cliente5
+    global clientes
+    global clientesPickle
     cliente1 = Cliente("Dario Gomez", 1)
     cliente2 = Cliente("Esteban Betancur", 2)
     cliente3 = Cliente("Marta Martínez", 3)
     cliente4 = Cliente("Sandra Lopez", 4)
     cliente5 = Cliente("Yasuri Yamile", 5)
     clientes = [cliente1, cliente2, cliente3, cliente4, cliente5]
-    #picklefile = open("src/temp/pcs.pkl", "wb")
+    clientesPickle = open("Python/Main/Clientes.pkl", "wb")
 
     tarjetaDebito1 = TarjetaDebito(123456, Divisa.DOLAR, 3000)
     tarjetaDebito2 = TarjetaDebito(234567, Divisa.EURO, 500)
@@ -496,6 +503,8 @@ def procesoSolicitarTarjeta():  # Esta función se encarga de la funcionalidad "
     frameP.forget()
     FF.tkraise()
     FF.pack()
+    clientes = [cliente1, cliente2, cliente3, cliente4, cliente5]
+    pickle.dump(clientes, clientesPickle)
 
 
 def procesoPagarFactura():  # Esta función se encarga de la funcionalidad "Pagar factura"
@@ -541,6 +550,8 @@ def procesoPagarFactura():  # Esta función se encarga de la funcionalidad "Paga
     FF = FieldFrame(frameProcesos, "", ["Seleccione el usuario"], "", segundoPaso, [[c.getNombre() for c in clientes]])
     frameP.forget()
     FF.pack()
+    clientes = [cliente1, cliente2, cliente3, cliente4, cliente5]
+    pickle.dump(clientes, clientesPickle)
 
 
 def procesoHacerTransaccion():  # Se encarga de crear una transacción entre usuarios
@@ -601,6 +612,8 @@ def procesoHacerTransaccion():  # Se encarga de crear una transacción entre usu
                     [[c.getNombre() for c in Banco.getClientes()]])
     FF.pack()
     frameP.forget()
+    clientes = [cliente1, cliente2, cliente3, cliente4, cliente5]
+    pickle.dump(clientes, clientesPickle)
 
 
 def procesoDeshacerTransaccion():  # Se encarga de crear una petición para la funcionalidad deshacer transacción
@@ -629,6 +642,8 @@ def procesoDeshacerTransaccion():  # Se encarga de crear una petición para la f
     FF = FieldFrame(frameProcesos, "", ["Escoga el cliente"], "", paso2, [[c.getNombre() for c in Banco.getClientes()]])
     frameP.forget()
     FF.pack()
+    clientes = [cliente1, cliente2, cliente3, cliente4, cliente5]
+    pickle.dump(clientes, clientesPickle)
 
 
 def procesoVerPeticiones():  # Se encarga de que el cliente pueda ver las peticiones que hay a su nombre (y conceder o negarlas, si quiere)
@@ -694,6 +709,8 @@ def procesoVerPeticiones():  # Se encarga de que el cliente pueda ver las petici
     FF = FieldFrame(frameProcesos, "", ["Escoga el usuario cuyas peticiones desea ver"], "", paso2, [[c.getNombre() for c in Banco.getClientes()]])
     FF.pack()
     frameP.forget()
+    clientes = [cliente1, cliente2, cliente3, cliente4, cliente5]
+    pickle.dump(clientes, clientesPickle)
 
 
 def procesoCambiarDivisa():  # Se encarga del proceso de cambiar divisas
@@ -733,6 +750,8 @@ def procesoCambiarDivisa():  # Se encarga del proceso de cambiar divisas
     FF = FieldFrame(frameProcesos, "", ["Cliente que hace la conversión", "Divisa que desea convertir", "Divisa que desea recibir"], "", paso2, [[c.nombre for c in Banco.getClientes()], [d.name for d in Divisa], [d.name for d in Divisa]])
     frameP.forget()
     FF.pack()
+    clientes = [cliente1, cliente2, cliente3, cliente4, cliente5]
+    pickle.dump(clientes, clientesPickle)
 
 
 def procesoRetirarODepositarDinero():
@@ -780,6 +799,8 @@ def procesoRetirarODepositarDinero():
     FF = FieldFrame(frameProcesos, "", ["Elija el usuario", "¿Quiere depositar o retirar?", "Seleccione la divisa con la cual quiere realizar la operación"], "", segundoPaso, [[c.nombre for c in Banco.getClientes()], ["Retirar", "Depositar"], [d.name for d in Divisa]])
     FF.pack()
     frameP.forget()
+    clientes = [cliente1, cliente2, cliente3, cliente4, cliente5]
+    pickle.dump(clientes, clientesPickle)
 
 
 def procesoVerTarjetas():
