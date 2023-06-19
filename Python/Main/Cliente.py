@@ -18,8 +18,7 @@ class Cliente:
         from TarjetaCredito import TarjetaCredito
         retorno = []
         for t in Transaccion.getTransacciones():
-            if t.getClienteOrigen() == self and not t.rechazado and isinstance(t.getTarjetaOrigen(),
-                                                                               TarjetaCredito) and not t.pendiente:
+            if t.getClienteOrigen() == self and not t.rechazado and isinstance(t.getTarjetaOrigen(),TarjetaCredito) and not t.pendiente:
                 retorno.append(t)
         return retorno
 
