@@ -275,3 +275,14 @@ class Transaccion:
         else:
             return f"Transacción Realizada\nTotal: {(self.cantidad)} {self.tarjeta_origen.getDivisa().name}\nTarjeta de origen: #{self.tarjeta_origen.getNoTarjeta()}\nTarjeta de destino: #{self.tarjeta_objetivo.getNoTarjeta()}\nProveniente de: {self.cliente_origen.getNombre()}\nMensaje: {self.mensaje}"
 
+    @staticmethod
+    def crearTransaccion(divisas: List[Divisa], montoInicial: float, montosFinales: List[float], canal: Canal, tarjetas: List[Tarjeta], cliente):
+        divisaDestino = divisas[1]
+        montoFinal = montosFinales[0]
+        impuestoRetorno = montosFinales[1]
+        tarjetaOrigen = tarjetas[0]
+        tarjetaDestino = tarjetas[1]
+        rechazado = montoFinal > canal.getFondos(divisaDestino) or not tarjetaOrigen.puedeTransferir(montoInicial)
+        transaccion = Transaccion(cliente, tarjetaOrigen, tarjetaDestino, montoFinal, impuestoRetorno, canal, rechazado)
+        transaccion.pendiente = not rechazado
+        return transaccion

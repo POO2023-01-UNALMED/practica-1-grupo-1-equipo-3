@@ -705,8 +705,7 @@ def procesoCambiarDivisa():  # Se encarga del proceso de cambiar divisas
                 messagebox.showinfo(title="Error", message="Por favor, ingrese un número válido")
                 return
             conversion = Divisa.convertir_divisas([divisaOrigen, divisaObjetivo], canalEscogido, cantidad)
-            transaccion = Transaccion.crearTransaccion([divisaOrigen, divisaObjetivo], cantidad, conversion,
-                                                       canalEscogido, [tarjetaOrigen, tarjetaObjetivo], clienteActual)
+            transaccion = Transaccion.crearTransaccion([divisaOrigen, divisaObjetivo], cantidad, conversion, canalEscogido, [tarjetaOrigen, tarjetaObjetivo], clienteActual)
             transaccion = canalEscogido.finalizarConversion(transaccion, cantidad)
             FF2.forget()
             frameP.pack()
