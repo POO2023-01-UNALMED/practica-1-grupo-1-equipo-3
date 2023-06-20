@@ -26,7 +26,7 @@ class TarjetaCredito(Tarjeta):
             return False
 
     def borrar(self) -> str:
-        from Banco import Banco
+        from Banco.src.gestorAplicacion.infraestructura.Banco import Banco
         for c in Banco.getClientes():
             # En caso de que queramos borrar, necesitamos quitar la tarjeta de todos los clientes que la tienen
             c.getTarjetasCredito().remove(self)
@@ -58,7 +58,7 @@ class TarjetaCredito(Tarjeta):
 
     @staticmethod
     def tarjetasDisponibles(puntaje: int, divisa: Divisa) -> List["TarjetaCredito"]:
-        from Banco import Banco
+        from Banco.src.gestorAplicacion.infraestructura.Banco import Banco
         reqCredMax = {0: 100.0, 50: 500.0, 100: 1000.0, 150: 2000.0, 200: 3000.0}
         reqInteres = {0: 10.0, 50: 7.0, 100: 5.0, 150: 4.0, 200: 3.0}
 
