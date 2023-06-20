@@ -21,21 +21,20 @@ from TarjetaDebito import TarjetaDebito
 from Transaccion import Transaccion
 
 clientesPickle = open("Python/Main/Clientes.pkl", "wb")
-cliente1 = Cliente("Dario Gomez", 1)
-cliente2 = Cliente("Esteban Betancur", 2)
-cliente3 = Cliente("Marta Martínez", 3)
-cliente4 = Cliente("Sandra Lopez", 4)
-cliente5 = Cliente("Yasuri Yamile", 5)
 
-#picklefileread = open("Python/Main/Clientes.pkl", "rb")
-#clientesdeserializados = pickle.load(picklefileread)
 
+picklefileread = open("Python/Main/Clientes.pkl", "rb")
+clientesdeserializados = pickle.load(picklefileread)
+cliente1 = clientesdeserializados[0]
+cliente2 = clientesdeserializados[1]
+cliente3 = clientesdeserializados[2]
+cliente4 = clientesdeserializados[3]
+cliente5 = clientesdeserializados[4]
+picklefileread.close()
 
 
 
 def setup():
-
-    # picklefileread.close()
     tarjetaDebito1 = TarjetaDebito(123456, Divisa.DOLAR, 3000)
     tarjetaDebito2 = TarjetaDebito(234567, Divisa.EURO, 500)
     tarjetaDebito3 = TarjetaDebito(345678, Divisa.RUBLO_RUSO, 10000)
