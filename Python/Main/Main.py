@@ -132,6 +132,7 @@ def setup():
     cliente5.agregarTarjetasDebito(tarjetaDebito12, tarjetaDebito44, tarjetaDebito46, tarjetaDebito48, tarjetaDebito50)
     cliente5.agregarTarjetasCredito(tarjetaCredito14, tarjetaCredito16, tarjetaCredito24, tarjetaCredito30, tarjetaCredito29)
 
+
     factura1 = Factura(cliente1, 1000000.0, 12, tarjetaDebito16)
     factura2 = Factura(cliente2, 9000000.0, 36, tarjetaDebito28)
     factura3 = Factura(cliente3, 56.0, 4, tarjetaDebito29)
