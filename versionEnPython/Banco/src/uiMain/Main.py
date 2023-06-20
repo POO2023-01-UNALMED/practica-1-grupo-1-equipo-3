@@ -310,7 +310,7 @@ labelDario.config(bg="#EBFDFF", fg="#213555", font=("Arial", 12))
 
 # Carlos
 labelCarlos = Label(p2,
-                    text="Carlos Guarin\n18 años\njpulgarina@unal.edu.co\nCarrera: Ingeniería de Sistemas e informática\nLema: 'Programar es muy bonito, \npero cuando las cosas funcionan :D'",
+                    text="Carlos Daniel Guarin Ortiz\n19 años\nCaguarin@unal.edu.co\nCarrera: Carrera: ciencias de la computación\nLema: 'Lema:muy poquito tiempo, \npara la segunda entrega'",
                     pady=4)
 labelCarlos.config(bg="#EBFDFF", fg="#213555", font=("Arial", 12))
 
@@ -320,9 +320,9 @@ p6.pack(side="bottom", expand=True, fill='both')
 
 # fotos de Jose Miguel / Estas son inicializadas como las primeras en mostrarse
 fotoJose1 = PhotoImage(file="versionEnPython/assets/jose.png").subsample(2, 2)
-fotoJose2 = PhotoImage(file="versionEnPython/assets/jose.png").subsample(2, 2)
-fotoJose3 = PhotoImage(file="versionEnPython/assets/jose.png").subsample(2, 2)
-fotoJose4 = PhotoImage(file="versionEnPython/assets/jose.png").subsample(2, 2)
+fotoJose2 = PhotoImage(file="versionEnPython/assets/jose2.png").subsample(2, 2)
+fotoJose3 = PhotoImage(file="versionEnPython/assets/jose3.png").subsample(2, 2)
+fotoJose4 = PhotoImage(file="versionEnPython/assets/jose4.png").subsample(2, 2)
 labelFotoJose1 = Label(p6, image=fotoJose1)
 labelFotoJose2 = Label(p6, image=fotoJose2)
 labelFotoJose3 = Label(p6, image=fotoJose3)
@@ -343,10 +343,10 @@ labelFotoDario3 = Label(p6, image=fotoDario3)
 labelFotoDario4 = Label(p6, image=fotoDario4)
 
 # fotos de Carlos
-fotoCarlos1 = PhotoImage(file="versionEnPython/assets/incognito.png").subsample(2, 2)
-fotoCarlos2 = PhotoImage(file="versionEnPython/assets/incognito.png").subsample(2, 2)
-fotoCarlos3 = PhotoImage(file="versionEnPython/assets/incognito.png").subsample(2, 2)
-fotoCarlos4 = PhotoImage(file="versionEnPython/assets/incognito.png").subsample(2, 2)
+fotoCarlos1 = PhotoImage(file="versionEnPython/assets/carlos1.png").subsample(2, 2)
+fotoCarlos2 = PhotoImage(file="versionEnPython/assets/carlos2.png").subsample(2, 2)
+fotoCarlos3 = PhotoImage(file="versionEnPython/assets/carlos3.png").subsample(2, 2)
+fotoCarlos4 = PhotoImage(file="versionEnPython/assets/carlos4.png").subsample(2, 2)
 labelFotoCarlos1 = Label(p6, image=fotoCarlos1)
 labelFotoCarlos2 = Label(p6, image=fotoCarlos2)
 labelFotoCarlos3 = Label(p6, image=fotoCarlos3)
