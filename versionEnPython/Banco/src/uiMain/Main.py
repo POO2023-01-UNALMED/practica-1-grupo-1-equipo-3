@@ -572,7 +572,6 @@ def procesoSolicitarTarjeta():
     nomDivisas = []
     for D in Divisa:
         nomDivisas.append(D.name)
-    print(nomClientes)
     # Crear un FieldFrame para capturar los criterios del cliente y divisa de la tarjeta
     FF = FieldFrame(frameProcesos, "Criterios", ["Cliente", "Divisa de la tarjeta"], "Valores", segundoPaso, [nomClientes, nomDivisas])
     frameP.forget()
