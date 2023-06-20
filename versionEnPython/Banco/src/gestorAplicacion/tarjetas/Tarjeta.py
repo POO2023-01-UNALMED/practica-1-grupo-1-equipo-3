@@ -270,7 +270,7 @@ class TarjetaDebito(Tarjeta):
             str: Representación de la tarjeta.
 
         """
-        from Banco import Banco
+        from Banco.src.gestorAplicacion.infraestructura.Banco import Banco
         return f"Tipo de tarjeta: Débito\nNúmero de tarjeta: {self.getNoTarjeta()}\nSaldo: {Banco.formatearNumero(self.saldo)} {self.divisa.name()}"
 
     def transaccion(self, cantidad, tarjeta):
@@ -300,7 +300,7 @@ class TarjetaDebito(Tarjeta):
             str: Mensaje indicando que la tarjeta será borrada.
 
         """
-        from Banco import Banco
+        from Banco.src.gestorAplicacion.infraestructura.Banco import Banco
         for c in Banco.getClientes():
             c.getTarjetasDebito().remove(self)
         return f"La tarjeta de crédito #{self.noTarjeta} será borrada, ya que tiene demasiadas transacciones rechazadas"

@@ -8,7 +8,7 @@ class Canal:
         Los fondos por divisa se establecen en un diccionario donde las claves son objetos de la clase Divisa y los valores son los montos.
         El canal se agrega automáticamente a la lista de canales en la clase Banco.
         """
-        from Banco import Banco
+        from Banco.src.gestorAplicacion.infraestructura.Banco import Banco
         self.tipoCanal = tipoCanal
         self.impuesto = impuesto
         self.fondosPorDivisa = {}
@@ -39,7 +39,7 @@ class Canal:
         """
         Método especial que retorna una representación en cadena del objeto Canal.
         """
-        from Banco import Banco
+        from Banco.src.gestorAplicacion.infraestructura.Banco import Banco
         return f"Canal: {self.tipoCanal} #{Banco.getCanales().index(self) + 1}\nTasa de impuestos: {self.impuesto}"
 
     def tieneDivisa(self, divisa):
@@ -84,13 +84,11 @@ class Canal:
 
     @staticmethod
     def seleccionarCanal(divisa, retirar):
-        from Banco import \
-            Banco  # Es necesario importar aquí, de otra manera, podría causar un error por import circular
+        from Banco.src.gestorAplicacion.infraestructura.Banco import Banco  # Es necesario importar aquí, de otra manera, podría causar un error por import circular
         """
         Método estático para seleccionar el canal adecuado para una transacción de acuerdo a la divisa y la operación (retirar o no).
         Retorna una lista de canales que cumplen con los requisitos.
         """
-        from Banco import Banco
         retorno = []
         if retirar:
             for canal in Banco.getCanales():

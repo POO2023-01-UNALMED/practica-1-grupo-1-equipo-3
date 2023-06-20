@@ -10,7 +10,7 @@ class Cliente:
             nombre (str): Nombre del cliente.
             noDeIdentificacion (int): Número de identificación del cliente.
         """
-        from Banco import Banco
+        from Banco.src.gestorAplicacion.infraestructura.Banco import Banco
         self.nombre = nombre
         self.Id = noDeIdentificacion
         self.tarjetasDebito = []
@@ -225,7 +225,7 @@ class Cliente:
         Returns:
             list: Lista de canales disponibles ordenados por impuestos.
         """
-        from Banco import Banco
+        from Banco.src.gestorAplicacion.infraestructura.Banco import Banco
         divisaOrigen = divisao
         divisaDestino = divisad
         canales = []

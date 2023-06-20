@@ -11,7 +11,7 @@ class TarjetaDebito(Tarjeta):
         self.saldo = saldo
 
     def __str__(self):
-        from Banco import Banco
+        from Banco.src.gestorAplicacion.infraestructura.Banco import Banco
         return "Tipo de tarjeta: Débito\nNúmero de tarjeta: {}\nSaldo: {} {}\n".format(
             self.noTarjeta, math.trunc(self.saldo), self.divisa.name
         )
@@ -35,7 +35,7 @@ class TarjetaDebito(Tarjeta):
             return False
 
     def borrar(self) -> str:
-        from Banco import Banco
+        from Banco.src.gestorAplicacion.infraestructura.Banco import Banco
         for c in Banco.getClientes():
             # En caso de que queramos borrar, necesitamos quitar la tarjeta de todos los clientes que la tienen
             c.getTarjetasDebito().remove(self)

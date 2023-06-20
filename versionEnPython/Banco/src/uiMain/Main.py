@@ -174,7 +174,8 @@ def setup():
     corresponsal2.setFondos(Divisa.DOLAR, 15000.0)
     corresponsal2.setFondos(Divisa.EURO, 8000.0)
     corresponsal2.setFondos(Divisa.RUBLO_RUSO, 350000.0)
-# setup()
+
+setup()
 
 #Serializacion
 # pickleFile = open("Python/Main/clientes.pkl", "wb")
@@ -304,7 +305,7 @@ labelJose.config(bg="#EBFDFF", fg="#213555", font=("Arial", 12))
 
 # Dario Alexander
 labelDario = Label(p2,
-                   text="Dario Alexander Penagos Von Werde\n18 años\njpulgarina@unal.edu.co\nCarrera: Ingeniería de Sistemas e informática\nLema: 'Programar es muy bonito, \npero cuando las cosas funcionan :D'",
+                   text="Dario Alexander Penagos Von Werde\n20 años\ndpenagosv@unal.edu.co\nCarrera: Ciencias de la computación\nLema: 'Estudiar es muy bonito, \npero cuando las cosas se entienden :D'",
                    pady=4)
 labelDario.config(bg="#EBFDFF", fg="#213555", font=("Arial", 12))
 
@@ -333,10 +334,10 @@ labelFotoJose3.grid(row=1, column=0)
 labelFotoJose4.grid(row=1, column=1)
 
 # fotos de Dario Alexander
-fotoDario1 = PhotoImage(file="versionEnPython/assets/incognito.png").subsample(2, 2)
-fotoDario2 = PhotoImage(file="versionEnPython/assets/incognito.png").subsample(2, 2)
-fotoDario3 = PhotoImage(file="versionEnPython/assets/incognito.png").subsample(2, 2)
-fotoDario4 = PhotoImage(file="versionEnPython/assets/incognito.png").subsample(2, 2)
+fotoDario1 = PhotoImage(file="versionEnPython/assets/Imagen_UnalDario.png").subsample(2, 2)
+fotoDario2 = PhotoImage(file="versionEnPython/assets/il_nommeDario.png").subsample(2, 2)
+fotoDario3 = PhotoImage(file="versionEnPython/assets/logo_UnalDario.png").subsample(2, 2)
+fotoDario4 = PhotoImage(file="versionEnPython/assets/doggerDario.png").subsample(2, 2)
 labelFotoDario1 = Label(p6, image=fotoDario1)
 labelFotoDario2 = Label(p6, image=fotoDario2)
 labelFotoDario3 = Label(p6, image=fotoDario3)
@@ -551,10 +552,9 @@ def procesoSolicitarTarjeta():
     nomDivisas = []
     for D in Divisa:
         nomDivisas.append(D.name)
-
+    print(nomClientes)
     # Crear un FieldFrame para capturar los criterios del cliente y divisa de la tarjeta
-    FF = FieldFrame(frameProcesos, "Criterios", ["Cliente", "Divisa de la tarjeta"], "Valores", segundoPaso,
-                    [nomClientes, nomDivisas])
+    FF = FieldFrame(frameProcesos, "Criterios", ["Cliente", "Divisa de la tarjeta"], "Valores", segundoPaso, [nomClientes, nomDivisas])
     frameP.forget()
     FF.tkraise()
     FF.pack()
