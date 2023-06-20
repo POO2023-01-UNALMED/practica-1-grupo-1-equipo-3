@@ -939,7 +939,8 @@ def procesoCambiarDivisa():
             transaccion = Transaccion.crearTransaccion([divisaOrigen, divisaObjetivo], cantidad, conversion,
                                                        canalEscogido, [tarjetaOrigen, tarjetaObjetivo], clienteActual)
             transaccion = canalEscogido.finalizarConversion(transaccion, cantidad)
-
+            if transaccion.rechazado:
+                messagebox.showinfo(title="Error", message="La operación no se pudo completar")
             FF2.forget()
             frameP.pack()
 
@@ -1174,16 +1175,23 @@ BRetirarODepositar = Button(frameP, text="Retirar o depositar dinero", command=l
 BVerTarjetas = Button(frameP, text="Ver tarjetas de un cliente", command=lambda: procesoVerTarjetas())
 BVerFacturas = Button(frameP, text="Ver facturas de un cliente", command=lambda: procesoVerFacturas())
 
+label1 = Label(frameP, text="Funcionalidades", padx = 20, pady=20)
+label2 = Label(frameP, text="Servicios", padx = 20, pady=20)
 
-BsolicitarTarjeta.pack()
-BpagarFactura.pack()
-BhacerTransaccion.pack()
-BdeshacerTransaccion.pack()
-BverPeticiones.pack()
-BCambiarDivisa.pack()
-BRetirarODepositar.pack()
-BVerTarjetas.pack()
-BVerFacturas.pack()
+label1.grid(column=0, row=0)
+label2.grid(column=1, row=0)
+
+BpagarFactura.grid(column = 0, row = 1)
+BCambiarDivisa.grid(column=0, row=2)
+BRetirarODepositar.grid(column=0, row=3)
+BsolicitarTarjeta.grid(column=0, row=4)
+BdeshacerTransaccion.grid(column=0, row=5)
+BverPeticiones.grid(column=0, row=6)
+
+
+BhacerTransaccion.grid(column=1, row=1)
+BVerTarjetas.grid(column=1, row=2)
+BVerFacturas.grid(column=1, row=3)
 
 frameP.pack()
 
