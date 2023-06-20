@@ -1041,7 +1041,7 @@ def procesoRetirarODepositarDinero():
                                                 "Escoga el monto total"], "", pasoFinal,
                             [[t for t in tarjetas if retirar or isinstance(t, TarjetaDebito)], canales, None])
         except TypeError:
-            messagebox.showingo(title="Error", message="El cliente escogido no tiene las tarjetas apropiadas para hacer este tipo de transacción")
+            messagebox.showinfo(title="Error", message="El cliente escogido no tiene las tarjetas apropiadas para hacer este tipo de transacción")
             FF.forget()
             frameP.pack()
         FF2.pack()
