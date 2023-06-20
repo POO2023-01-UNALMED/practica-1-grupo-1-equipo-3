@@ -553,13 +553,15 @@ def procesoSolicitarTarjeta():
             frameFinal.forget()
             frameP.tkraise()
             frameP.pack()
+            return
+        def funcRechazar():
+            frameFinal.forget()
+            frameP.pack()
 
         # Mostrar las tarjetas disponibles con sus respectivos botones de selección
-        for i in range(len(tarjetasDisponibles)):
-            Labels.append(Label(frameFinal, text=tarjetasDisponibles[i], padx=10, pady=10).grid(column=0, row=i + 3))
-            Buttons.append(
-                Button(frameFinal, text="Escoger", command=lambda: funcFinal(i)).grid(column=2, row=i + 3, padx=10,
-                                                                                      pady=10))
+        Label(frameFinal, text=tarjetasDisponibles[len(tarjetasDisponibles)-1], padx=10, pady=10).grid(column=0, row=2)
+        Button(frameFinal, text="Aceptar", command=lambda: funcFinal(len(tarjetasDisponibles)-1)).grid(column=2, row=2, padx=10, pady=10)
+        Button(frameFinal, text="Rechazar", command=lambda: funcRechazar()).grid(column=2, row=3, padx=10, pady=10)
         frameFinal.pack()
 
     # Obtener la lista de clientes y divisas para mostrar en los campos de selección
@@ -570,7 +572,6 @@ def procesoSolicitarTarjeta():
     nomDivisas = []
     for D in Divisa:
         nomDivisas.append(D.name)
-    print(nomClientes)
     # Crear un FieldFrame para capturar los criterios del cliente y divisa de la tarjeta
     FF = FieldFrame(frameProcesos, "Criterios", ["Cliente", "Divisa de la tarjeta"], "Valores", segundoPaso, [nomClientes, nomDivisas])
     frameP.forget()

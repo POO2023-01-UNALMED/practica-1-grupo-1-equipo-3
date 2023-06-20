@@ -214,7 +214,6 @@ class Transaccion:
         """
         retorno = []
         for t in Transaccion.transacciones:
-            print(t)
             if (
                     t.cliente_origen == cliente_origen
                     and t.cliente_objetivo is not None
