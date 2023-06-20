@@ -1,7 +1,7 @@
 from typing import List
 from Cliente import Cliente
-from Tarjeta import Tarjeta
-from TarjetaDebito import TarjetaDebito
+from tarjetas.Tarjeta import Tarjeta
+from tarjetas.TarjetaDebito import TarjetaDebito
 from Transaccion import Transaccion
 
 

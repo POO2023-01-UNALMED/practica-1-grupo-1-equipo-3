@@ -1,15 +1,13 @@
 from typing import List
 from random import randint
-from Divisa import Divisa
+from entidades_de_negocio.Divisa import Divisa
 from Tarjeta import Tarjeta
 from TarjetaDebito import TarjetaDebito
-from Cliente import Cliente
+from entidades_de_negocio.Cliente import Cliente
 import math
 
 
 class TarjetaCredito(Tarjeta):
-    serialVersionUID = 1
-
     def __init__(self, noTarjeta: int, divisa: Divisa, creditoMaximo: float, interes: float):
         super().__init__(noTarjeta, divisa)
         self.CREDITOMAXIMO = creditoMaximo

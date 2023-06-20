@@ -1,13 +1,11 @@
 from typing import List
 from random import randint
 from Tarjeta import Tarjeta
-from Divisa import Divisa
+from entidades_de_negocio.Divisa import Divisa
 import math
 
 
 class TarjetaDebito(Tarjeta):
-    serialVersionUID = 1
-
     def __init__(self, noTarjeta: int, divisa: Divisa, saldo: float):
         super().__init__(noTarjeta, divisa)
         self.saldo = saldo

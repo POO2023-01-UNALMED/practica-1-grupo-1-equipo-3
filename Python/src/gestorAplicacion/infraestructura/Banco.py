@@ -1,14 +1,13 @@
 from typing import List
 
 from Canal import Canal
-from Cliente import Cliente
-from Divisa import Divisa
-from Tarjeta import Tarjeta
-from Transaccion import Transaccion
+from entidades_de_negocio.Cliente import Cliente
+from entidades_de_negocio.Divisa import Divisa
+from tarjetas.Tarjeta import Tarjeta
+from entidades_de_negocio.Transaccion import Transaccion
 
 
 class Banco:
-    serialVersionUID = 1  # Identificador de versión de la clase
     clientes = []  # Lista para almacenar los objetos de la clase "Cliente"
     canales = []  # Lista para almacenar los objetos de la clase "Canal"
 
@@ -131,3 +130,6 @@ class Banco:
         for c in Banco.canales:
             if c.__str__() == canal:
                 return c
+
+    def __str__(self):
+        return f"Banco\nNúmero de clientes: {len(self.clientes)}\nNúmero de canales: {len(self.canales)}"

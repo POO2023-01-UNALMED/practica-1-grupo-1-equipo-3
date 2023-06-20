@@ -1,4 +1,4 @@
-from Divisa import Divisa
+from entidades_de_negocio.Divisa import Divisa
 
 
 class Canal:

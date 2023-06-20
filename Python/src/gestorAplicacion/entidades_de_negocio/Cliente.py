@@ -1,3 +1,4 @@
+from tarjetas.TarjetaCredito import TarjetaCredito
 from Transaccion import Transaccion
 
 
@@ -34,7 +35,6 @@ class Cliente:
         Returns:
             list: Lista de transacciones de crédito realizadas por el cliente.
         """
-        from TarjetaCredito import TarjetaCredito
         retorno = []
         for t in Transaccion.getTransacciones():
             if t.getClienteOrigen() == self and not t.rechazado and isinstance(t.getTarjetaOrigen(),TarjetaCredito) and not t.pendiente:

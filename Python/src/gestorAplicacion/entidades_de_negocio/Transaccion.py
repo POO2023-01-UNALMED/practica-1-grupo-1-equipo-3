@@ -1,7 +1,7 @@
 from typing import List
 from Divisa import Divisa
-from Canal import Canal
-from Tarjeta import Tarjeta
+from infraestructura.Canal import Canal
+from tarjetas.Tarjeta import Tarjeta
 
 
 class Transaccion:
