@@ -27,6 +27,10 @@ from Banco.src.gestorAplicacion.tarjetas.TarjetaDebito import TarjetaDebito
 from Banco.src.gestorAplicacion.Entidades_de_negocio.Transaccion import Transaccion
 from Banco.src.baseDatos.Serializador import Serializador
 from Banco.src.baseDatos.Deserializador import Deserializador
+from Banco.src.gestorAplicacion.Errores.ErrorInput import ErrorInput
+from Banco.src.gestorAplicacion.Errores.ErrorOpciones import ErrorOpciones
+
+
 
 
 clientes = []
@@ -607,9 +611,12 @@ def procesoPagarFactura():
             tarjetaEscogida = clienteActual.encontrarTarjeta(FF2.getValores()[1])
 
             try:
-                monto = float(FF2.getValores()[2])  # Convertir el monto a un valor float
-            except:
-                messagebox.showinfo(title="Error", message="Por favor, ingrese una cantidad de dinero válida")
+                try:
+                    monto = float(FF2.getValores()[2])  # Convertir el monto a un valor float
+                except:
+                    raise ErrorInput
+            except ErrorInput as error:
+                messagebox.showinfo(title="Error", message=error.__str__())
                 return
 
             # Verificar que la tarjeta escogida sea válida para la transacción
@@ -640,8 +647,8 @@ def procesoPagarFactura():
             FF2 = FieldFrame(frameProcesos, "", ["Seleccione la factura", "Seleccione la tarjeta",
                                                  "Ingrese la cantidad de dinero que desea transferir"], "", ultimoPaso,
                              [facturas, tarjetas, None])
-        except TypeError:
-            messagebox.showinfo(title="Error", message="Usted no tiene facturas disponibles por pagar")
+        except ErrorOpciones as error:
+            messagebox.showinfo(title="Error", message=error.__str__())
             return
 
         FF.forget()
@@ -683,7 +690,10 @@ def procesoHacerTransaccion():
                 try:
                     tarjetaObjetivo = clienteObjetivo.encontrarTarjeta(FF3.getValores()[0])
                     monto = float(FF3.getValores()[1])  # Convertir el monto a un valor float
-                except ValueError:
+                except ErrorOpciones as error:
+                    messagebox.showinfo(title="Error", message=error.__str__())
+                    return
+                except error:
                     messagebox.showinfo(title="Error", message="Por favor, ingrese una cantidad válida")
                     return
 
@@ -713,9 +723,8 @@ def procesoHacerTransaccion():
             try:
                 FF3 = FieldFrame(frameProcesos, "", ["Tarjeta que recibe la transacción", "Monto a transferir"], "",
                                  ultimoPaso, [[t.__str__() for t in clienteObjetivo.getTarjetasDebito()], None])
-            except TypeError:
-                messagebox.showinfo(title="Error",
-                                    message="El cliente escogido no dispone de tarjetas que puedan recibir esta transacción")
+            except ErrorOpciones as error:
+                messagebox.showinfo(title="Error", message=error.__str__())
                 FF2.forget()
                 frameP.pack()
                 return
@@ -730,9 +739,8 @@ def procesoHacerTransaccion():
             FF2 = FieldFrame(frameProcesos, "", ["Usuario que recibe la transacción", "Tarjeta de origen"], "", paso3,
                              [[c.getNombre() for c in Banco.getClientes()],
                               [t.__str__() for t in clienteActual.getTarjetas()]])
-        except TypeError:
-            messagebox.showinfo(title="Error",
-                                message="El cliente escogido no dispone de tarjetas de las que pueda salir la transacción")
+        except ErrorOpciones as error:
+            messagebox.showinfo(title="Error", message=error.__str__())
             FF.forget()
             frameP.pack()
             return
@@ -779,12 +787,9 @@ def procesoDeshacerTransaccion():
         clienteActual = Banco.encontrarCliente(FF.getValores()[0])
 
         try:
-            FF2 = FieldFrame(frameProcesos, "", ["Escoga la transacción que desea deshacer",
-                                                 "Ingrese el mensaje que desea que vea el cliente que recibió la transacción"],
-                             "", pasoFinal, [Transaccion.encontrar_transacciones(clienteActual), None])
-        except TypeError:
-            messagebox.showinfo(title="Error",
-                                message="El cliente escogido no dispone de transferencias que se puedan deshacer")
+            FF2 = FieldFrame(frameProcesos, "", ["Escoga la transacción que desea deshacer","Ingrese el mensaje que desea que vea el cliente que recibió la transacción"], "", pasoFinal, [Transaccion.encontrar_transacciones(clienteActual), None])
+        except ErrorOpciones as error:
+            messagebox.showinfo(title="Error", message=error.__str__())
             FF.forget()
             frameP.pack()
             return
@@ -931,9 +936,12 @@ def procesoCambiarDivisa():
             canalEscogido = Banco.encontrarCanal(FF2.getValores()[3])
 
             try:
-                cantidad = float(FF2.getValores()[2])
-            except ValueError:
-                messagebox.showinfo(title="Error", message="Por favor, ingrese un número válido")
+                try:
+                    cantidad = float(FF2.getValores()[2])
+                except:
+                    raise ErrorInput
+            except ErrorInput as error:
+                messagebox.showinfo(title="Error", message=error.__str__())
                 return
 
             conversion = Divisa.convertir_divisas([divisaOrigen, divisaObjetivo], canalEscogido, cantidad)
@@ -1002,18 +1010,25 @@ def procesoRetirarODepositarDinero():
             tarjetaEscogida = clienteActual.encontrarTarjeta(FF2.getValores()[0])
             canalEscogido = Banco.encontrarCanal(FF2.getValores()[1])
             try:
-                monto = float(FF2.getValores()[2])
-            except ValueError:
-                messagebox.showinfo(title="Error", message="Por favor, ingrese un número válido")
+                try:
+                    monto = float(FF2.getValores()[2])
+                except:
+                    raise ErrorInput
+            except ErrorInput as error:
+                messagebox.showinfo(title="Error", message=error.__str__())
                 return
             transaccionInicial = Transaccion.crearTrans(clienteActual, tarjetaEscogida, monto, canalEscogido, retirar)
             if transaccionInicial.rechazado:
                 if not tarjetaEscogida.puedeTransferir(monto):
                     messagebox.showinfo(title="Error", message="La tarjeta no puede transferir el monto necesario")
+                    FF2.forget()
+                    frameP.pack()
                     return
 
                 if canalEscogido.getFondos(divisaEscogida) < monto:
                     messagebox.showinfo(title="Error", message="El canal no tiene suficientes fondos para esta acción")
+                    FF2.forget()
+                    frameP.pack()
                     return
 
                 return
@@ -1041,8 +1056,8 @@ def procesoRetirarODepositarDinero():
                                                 "Escoga el canal que desea utilizar",
                                                 "Escoga el monto total"], "", pasoFinal,
                             [[t for t in tarjetas if retirar or isinstance(t, TarjetaDebito)], canales, None])
-        except TypeError:
-            messagebox.showinfo(title="Error", message="El cliente escogido no tiene las tarjetas apropiadas para hacer este tipo de transacción")
+        except ErrorOpciones as error:
+            messagebox.showinfo(title="Error", message=error.__str__())
             FF.forget()
             frameP.pack()
         FF2.pack()

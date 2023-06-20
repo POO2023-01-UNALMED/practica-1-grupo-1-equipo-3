@@ -1,5 +1,6 @@
 from tkinter import *
 from tkinter import messagebox
+from Banco.src.gestorAplicacion.Errores.ErrorOpciones import ErrorOpciones
 
 
 class FieldFrame(Frame):
@@ -28,6 +29,12 @@ class FieldFrame(Frame):
         labels = []
         entrys = []
         Vals = [None] * len(criterios)
+        if opciones is not None:
+            for array in opciones:
+                if array is not None:
+                    if len(array) == 0:
+                        raise ErrorOpciones
+            
         for i in range(len(criterios)):
             labels.append(Label(self, text=criterios[i]))
             if not opciones is None:

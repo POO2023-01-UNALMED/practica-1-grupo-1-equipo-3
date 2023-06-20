@@ -340,7 +340,7 @@ class Transaccion:
         if retirar:
             rechazado = monto > canal.getFondos(tarjeta.getDivisa()) or not tarjeta.puedeTransferir(monto)
         else:
-            rechazado = not tarjeta.puedeTransferir(monto)
+            rechazado = False
         transaccion = Transaccion(cliente_origen=cliente, cliente_objetivo=None, tarjeta_origen=tarjeta, tarjeta_objetivo=None, cantidad=monto, validez=None, factura=None, mensaje=None, retornable=False, pendiente=True, impuestoRetorno=None, canal=canal, rechazado=rechazado, retirar=retirar )
         transaccion.pendiente = not rechazado
         return transaccion
