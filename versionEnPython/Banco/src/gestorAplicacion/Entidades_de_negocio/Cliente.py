@@ -1,5 +1,3 @@
-from Banco.src.gestorAplicacion.tarjetas.TarjetaCredito import TarjetaCredito
-
 from Banco.src.gestorAplicacion.Entidades_de_negocio.Transaccion import Transaccion
 
 
@@ -36,6 +34,7 @@ class Cliente:
         Returns:
             list: Lista de transacciones de crédito realizadas por el cliente.
         """
+        from Banco.src.gestorAplicacion.tarjetas.TarjetaCredito import TarjetaCredito
         retorno = []
         for t in Transaccion.getTransacciones():
             if t.getClienteOrigen() == self and not t.rechazado and isinstance(t.getTarjetaOrigen(),TarjetaCredito) and not t.pendiente:

@@ -8,6 +8,13 @@ from tkinter import messagebox, Frame, Button, Label
 from tkinter.ttk import Notebook
 import math
 
+import os
+import sys
+fpath = os.path.join(os.path.dirname(__file__), 'versionEnPython')
+fpath = fpath.split(sep="\Banco")[0]
+fpath = fpath.replace("\\", "/")
+sys.path.append(fpath)
+
 # Modulos propios de la apllicación
 from Banco.src.gestorAplicacion.infraestructura.Banco import Banco
 from Banco.src.gestorAplicacion.infraestructura.Canal import Canal
@@ -189,7 +196,7 @@ def setup():
 root = tk.Tk()
 
 root.title("Banco Nacho")
-root.iconbitmap("Python/assets/logo-unal.ico")  # Favicon de la apliación
+root.iconbitmap("versionEnPython/assets/logo-unal.ico")  # Favicon de la apliación
 # root.protocol("WM_DELETE_WINDOW", serializacion)
 
 # Creación de la ventana de inicio
