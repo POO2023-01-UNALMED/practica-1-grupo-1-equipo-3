@@ -252,9 +252,9 @@ p4.pack(expand=True, fill='both')
 
 # Fotos de p4
 # Fotos del sistema
-fotoSystem1 = PhotoImage(file="Python/assets/system1.png")
-fotoSystem2 = PhotoImage(file="Python/assets/system2.png")
-fotoSystem3 = PhotoImage(file="Python/assets/system3.png")
+fotoSystem1 = PhotoImage(file="versionEnPython/assets/system1.png")
+fotoSystem2 = PhotoImage(file="versionEnPython/assets/system2.png")
+fotoSystem3 = PhotoImage(file="versionEnPython/assets/system3.png")
 
 # Inicializamos el valor de image con la primera foto
 labelFotoSystem = Label(p4, image=fotoSystem1)
@@ -319,10 +319,10 @@ p6 = Frame(p2)
 p6.pack(side="bottom", expand=True, fill='both')
 
 # fotos de Jose Miguel / Estas son inicializadas como las primeras en mostrarse
-fotoJose1 = PhotoImage(file="Python/assets/jose.png").subsample(2, 2)
-fotoJose2 = PhotoImage(file="Python/assets/jose.png").subsample(2, 2)
-fotoJose3 = PhotoImage(file="Python/assets/jose.png").subsample(2, 2)
-fotoJose4 = PhotoImage(file="Python/assets/jose.png").subsample(2, 2)
+fotoJose1 = PhotoImage(file="versionEnPython/assets/jose.png").subsample(2, 2)
+fotoJose2 = PhotoImage(file="versionEnPython/assets/jose.png").subsample(2, 2)
+fotoJose3 = PhotoImage(file="versionEnPython/assets/jose.png").subsample(2, 2)
+fotoJose4 = PhotoImage(file="versionEnPython/assets/jose.png").subsample(2, 2)
 labelFotoJose1 = Label(p6, image=fotoJose1)
 labelFotoJose2 = Label(p6, image=fotoJose2)
 labelFotoJose3 = Label(p6, image=fotoJose3)
@@ -333,20 +333,20 @@ labelFotoJose3.grid(row=1, column=0)
 labelFotoJose4.grid(row=1, column=1)
 
 # fotos de Dario Alexander
-fotoDario1 = PhotoImage(file="Python/assets/incognito.png").subsample(2, 2)
-fotoDario2 = PhotoImage(file="Python/assets/incognito.png").subsample(2, 2)
-fotoDario3 = PhotoImage(file="Python/assets/incognito.png").subsample(2, 2)
-fotoDario4 = PhotoImage(file="Python/assets/incognito.png").subsample(2, 2)
+fotoDario1 = PhotoImage(file="versionEnPython/assets/incognito.png").subsample(2, 2)
+fotoDario2 = PhotoImage(file="versionEnPython/assets/incognito.png").subsample(2, 2)
+fotoDario3 = PhotoImage(file="versionEnPython/assets/incognito.png").subsample(2, 2)
+fotoDario4 = PhotoImage(file="versionEnPython/assets/incognito.png").subsample(2, 2)
 labelFotoDario1 = Label(p6, image=fotoDario1)
 labelFotoDario2 = Label(p6, image=fotoDario2)
 labelFotoDario3 = Label(p6, image=fotoDario3)
 labelFotoDario4 = Label(p6, image=fotoDario4)
 
 # fotos de Carlos
-fotoCarlos1 = PhotoImage(file="Python/assets/incognito.png").subsample(2, 2)
-fotoCarlos2 = PhotoImage(file="Python/assets/incognito.png").subsample(2, 2)
-fotoCarlos3 = PhotoImage(file="Python/assets/incognito.png").subsample(2, 2)
-fotoCarlos4 = PhotoImage(file="Python/assets/incognito.png").subsample(2, 2)
+fotoCarlos1 = PhotoImage(file="versionEnPython/assets/incognito.png").subsample(2, 2)
+fotoCarlos2 = PhotoImage(file="versionEnPython/assets/incognito.png").subsample(2, 2)
+fotoCarlos3 = PhotoImage(file="versionEnPython/assets/incognito.png").subsample(2, 2)
+fotoCarlos4 = PhotoImage(file="versionEnPython/assets/incognito.png").subsample(2, 2)
 labelFotoCarlos1 = Label(p6, image=fotoCarlos1)
 labelFotoCarlos2 = Label(p6, image=fotoCarlos2)
 labelFotoCarlos3 = Label(p6, image=fotoCarlos3)
@@ -418,7 +418,7 @@ labelCarlos.bind("<Button-1>", cambiarHojaVida)
 # Creación de la ventana de usuario
 ventanaAplicacion = Toplevel(root)
 ventanaAplicacion.title("Banco Nacho App")
-ventanaAplicacion.iconbitmap("Python/assets/logo-unal.ico")  # Favicon de la apliación
+ventanaAplicacion.iconbitmap("versionEnPython/assets/logo-unal.ico")  # Favicon de la apliación
 ventanaAplicacion.withdraw()  # Ocultando la ventana hasta que sea llamada
 
 notebook = Notebook(ventanaAplicacion)
