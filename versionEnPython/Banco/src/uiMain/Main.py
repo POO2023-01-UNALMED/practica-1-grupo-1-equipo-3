@@ -195,10 +195,13 @@ def setup():
 #Inicializando variables de Banco a partir de la deserializacion
 Banco.setClientes(Deserializador.DeserializarClientes())
 Banco.setCanales(Deserializador.DeserializarCanales())
+# Transaccion.setTransacciones(Deserializador.DeserializarCanales())
 
 def serializacionAlCerrar():
     Serializador.SerializarClientes(Banco.getClientes())
     Serializador.SerializarCanales(Banco.getCanales())
+    Serializador.SerializarTransacciones(Transaccion.getTransacciones())
+
     root.quit()
 
 root = tk.Tk()

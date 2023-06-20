@@ -114,6 +114,21 @@ class Transaccion:
         self.retornable = ret
 
     @staticmethod
+    def setTransacciones(transacciones) -> None:
+        """
+        Método estático que recibe una lista de clientes y la asigna al atributo de clase "clientes".
+        """
+        Transaccion.transacciones = transacciones
+
+    @staticmethod
+    def agregarTransacciones(transacciones) -> None:
+        """
+        Método estático que recibe una lista de clientes y la asigna al atributo de clase "clientes".
+        """
+        for transaccion in transacciones:
+            Transaccion.transacciones.append(transaccion)
+
+    @staticmethod
     def encontrar_transacciones(cliente_origen, divisa):
         """
         Encuentra todas las transacciones que cumplan con los criterios de búsqueda dados.
