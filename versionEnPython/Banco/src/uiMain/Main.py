@@ -327,7 +327,7 @@ labelDario.config(bg="#EBFDFF", fg="#213555", font=("Arial", 12))
 
 # Carlos
 labelCarlos = Label(p2,
-                    text="Carlos Daniel Guarin Ortiz\n19 años\nCaguarin@unal.edu.co\nCarrera: Carrera: ciencias de la computación\nLema: 'Lema:muy poquito tiempo, \npara la segunda entrega'",
+                    text="Carlos Daniel Guarin Ortiz\n19 años\nCaguarin@unal.edu.co\nCarrera: ciencias de la computación\nLema:muy poquito tiempo, \npara la segunda entrega'",
                     pady=4)
 labelCarlos.config(bg="#EBFDFF", fg="#213555", font=("Arial", 12))
 
@@ -997,73 +997,106 @@ def procesoRetirarODepositarDinero():
     Esta función se encarga del proceso de retirar o depositar dinero.
     Permite al cliente seleccionar una tarjeta y un canal para realizar la operación.
     """
+
     def segundoPaso():
         """
         Función que se activa cuando el usuario oprime "Aceptar" en el segundo paso del proceso.
         Permite al cliente ingresar los detalles de la transacción, como la tarjeta y el monto a retirar o depositar.
         """
+
         def pasoFinal():
             """
             Función que se activa cuando el usuario oprime "Aceptar" en el último paso del proceso.
             Realiza la transacción de retirar o depositar dinero y finaliza la transacción correspondiente.
             """
+
+            # Obtener la tarjeta y el canal seleccionados por el usuario
             tarjetaEscogida = clienteActual.encontrarTarjeta(FF2.getValores()[0])
             canalEscogido = Banco.encontrarCanal(FF2.getValores()[1])
+
             try:
-                try:
-                    monto = float(FF2.getValores()[2])
-                except:
-                    raise ErrorInput
-            except ErrorInput as error:
-                messagebox.showinfo(title="Error", message=error.__str__())
+                # Convertir el monto ingresado a un número float
+                monto = float(FF2.getValores()[2])
+            except ValueError:
+                # Mostrar mensaje de error si el monto ingresado no es un número válido
+                messagebox.showinfo(title="Error", message="Por favor, ingrese un número válido")
                 return
+
+            # Crear la transacción inicial y verificar si es rechazada
             transaccionInicial = Transaccion.crearTrans(clienteActual, tarjetaEscogida, monto, canalEscogido, retirar)
+
             if transaccionInicial.rechazado:
                 if not tarjetaEscogida.puedeTransferir(monto):
+                    # Mostrar mensaje de error si la tarjeta no puede transferir el monto necesario
                     messagebox.showinfo(title="Error", message="La tarjeta no puede transferir el monto necesario")
                     FF2.forget()
                     frameP.pack()
                     return
 
                 if canalEscogido.getFondos(divisaEscogida) < monto:
+                    # Mostrar mensaje de error si el canal no tiene suficientes fondos para la acción
                     messagebox.showinfo(title="Error", message="El canal no tiene suficientes fondos para esta acción")
                     FF2.forget()
                     frameP.pack()
                     return
 
                 return
+
+            # Finalizar la transacción y mostrar el frame principal
             transaccionFinal = Canal.finalizarTransaccion(transaccionInicial, retirar)
             FF2.forget()
             frameP.pack()
+
+        # Obtener el cliente seleccionado y si desea retirar o depositar dinero
         clienteActual = Banco.encontrarCliente(FF.getValores()[0])
         retirar = False
         if FF.getValores()[1] == "Retirar":
             retirar = True
+
+        # Obtener la divisa seleccionada
         divisaEscogida = Divisa.encontrarDivisa(FF.getValores()[2])
+
         if divisaEscogida not in Banco.seleccionarDivisa(clienteActual):
+            # Mostrar mensaje de error si el cliente no puede realizar la operación con la divisa seleccionada
             messagebox.showinfo(title="Error", message="El cliente seleccionado no puede realizar esta operación con la divisa escogida")
             return
+
+        # Obtener las tarjetas y los canales disponibles para la operación
         tarjetas = clienteActual.seleccionarTarjeta(divisaEscogida, retirar)
         canales = Canal.seleccionarCanal(divisaEscogida, retirar)
+
         if len(tarjetas) == 0:
+            # Mostrar mensaje de error si el cliente no tiene tarjetas para realizar la operación
             messagebox.showinfo(title="Error", message="El cliente seleccionado no tiene tarjetas que puedan realizar esta operación")
             return
+
         if len(canales) == 0:
+            # Mostrar mensaje de error si no hay canales disponibles para la operación
             messagebox.showinfo(title="Error", message="No hay canales disponibles para realizar esta transacción")
             return
+
         try:
+            # Mostrar el campo para seleccionar la tarjeta, el canal y el monto
             FF2 = FieldFrame(frameProcesos, "", ["Escoga la tarjeta mediante la cual desea hacer la operación",
                                                 "Escoga el canal que desea utilizar",
                                                 "Escoga el monto total"], "", pasoFinal,
                             [[t for t in tarjetas if retirar or isinstance(t, TarjetaDebito)], canales, None])
         except ErrorOpciones as error:
+            # Mostrar mensaje de error si hay un problema con las opciones disponibles
             messagebox.showinfo(title="Error", message=error.__str__())
             FF.forget()
             frameP.pack()
+
         FF2.pack()
         FF.forget()
 
     # Mostrar el campo para seleccionar el cliente, si desea retirar o depositar y la divisa
+    FF = FieldFrame(frameProcesos, "", ["Cliente que realiza la operación", "Acción a realizar", "Divisa"], "", segundoPaso,
+                    [[c.nombre for c in Banco.getClientes()], ["Retirar", "Depositar"], [d.name for d in Divisa]])
+
+    frameP.forget()
+    FF.pack()
+
     FF = FieldFrame(frameProcesos, "", ["Elija el usuario", "¿Quiere depositar o retirar?",
                                         "Seleccione la divisa con la cual quiere realizar la operación"], "", segundoPaso,
                     [[c.nombre for c in Banco.getClientes()], ["Retirar", "Depositar"], [d.name for d in Divisa]])
@@ -1092,19 +1125,25 @@ def procesoVerTarjetas():
             frameInfo.forget()
             frameP.pack()
 
+        # Obtener el cliente seleccionado
         clienteActual = Banco.encontrarCliente(FF.getValores()[0])
+
+        # Obtener las tarjetas asociadas al cliente
         tarjetas = clienteActual.getTarjetas()
 
         FF.forget()
 
+        # Mostrar título de las tarjetas del cliente seleccionado
         labelPrincipal = Label(frameInfo, text="Tarjetas del usuario escogido")
         labelPrincipal.grid(row=0, column=1, pady=10)
 
         labels = []
         for i in range(len(tarjetas)):
+            # Mostrar cada tarjeta en un Label separado
             labels.append(Label(frameInfo, text=tarjetas[i].__str__()))
             labels[i].grid(column=i % 3, row=math.floor(i / 3) + 1)
 
+        # Agregar botón "Volver" para regresar al paso anterior
         botonVolver = Button(frameInfo, text="Volver", command=lambda: funcVolver())
         botonVolver.grid(column=1, row=math.floor(len(tarjetas) / 3) + 3)
 
@@ -1112,9 +1151,11 @@ def procesoVerTarjetas():
     frameInfo.pack()
     frameP.forget()
 
+    # Mostrar el campo para seleccionar el cliente
     FF = FieldFrame(frameInfo, "", ["Escoga el cliente cuyas tarjetas desea ver"], "", pasoDos,
                     [[c.nombre for c in Banco.getClientes()]])
     FF.pack()
+
 
 
 def procesoVerFacturas():
@@ -1137,19 +1178,25 @@ def procesoVerFacturas():
             frameInfo.forget()
             frameP.pack()
 
+        # Obtener el cliente seleccionado
         clienteActual = Banco.encontrarCliente(FF.getValores()[0])
+
+        # Obtener las facturas asociadas al cliente
         facturas = clienteActual.getFacturas()
 
         FF.forget()
 
+        # Mostrar título de las facturas del cliente seleccionado
         labelPrincipal = Label(frameInfo, text="Facturas del usuario escogido")
         labelPrincipal.grid(row=0, column=1, pady=10)
 
         labels = []
         for i in range(len(facturas)):
+            # Mostrar cada factura en un Label separado
             labels.append(Label(frameInfo, text=facturas[i].__str__()))
             labels[i].grid(column=i % 3, row=math.floor(i / 3) + 1)
 
+        # Agregar botón "Volver" para regresar al paso anterior
         botonVolver = Button(frameInfo, text="Volver", command=lambda: funcVolver())
         botonVolver.grid(column=1, row=math.floor(len(facturas) / 3) + 3)
 
@@ -1157,11 +1204,10 @@ def procesoVerFacturas():
     frameInfo.pack()
     frameP.forget()
 
+    # Mostrar el campo para seleccionar el cliente
     FF = FieldFrame(frameInfo, "", ["Escoga el cliente cuyas facturas desea ver"], "", pasoDos,
                     [[c.nombre for c in Banco.getClientes()]])
     FF.pack()
-
-
 
 
 # Pestana de Procesos y consultas
