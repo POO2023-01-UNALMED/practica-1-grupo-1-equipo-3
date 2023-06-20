@@ -988,30 +988,24 @@ def procesoRetirarODepositarDinero():
     Esta función se encarga del proceso de retirar o depositar dinero.
     Permite al cliente seleccionar una tarjeta y un canal para realizar la operación.
     """
-
     def segundoPaso():
         """
         Función que se activa cuando el usuario oprime "Aceptar" en el segundo paso del proceso.
         Permite al cliente ingresar los detalles de la transacción, como la tarjeta y el monto a retirar o depositar.
         """
-
         def pasoFinal():
             """
             Función que se activa cuando el usuario oprime "Aceptar" en el último paso del proceso.
             Realiza la transacción de retirar o depositar dinero y finaliza la transacción correspondiente.
             """
-
             tarjetaEscogida = clienteActual.encontrarTarjeta(FF2.getValores()[0])
             canalEscogido = Banco.encontrarCanal(FF2.getValores()[1])
-
             try:
                 monto = float(FF2.getValores()[2])
             except ValueError:
                 messagebox.showinfo(title="Error", message="Por favor, ingrese un número válido")
                 return
-
             transaccionInicial = Transaccion.crearTrans(clienteActual, tarjetaEscogida, monto, canalEscogido, retirar)
-
             if transaccionInicial.rechazado:
                 if not tarjetaEscogida.puedeTransferir(monto):
                     messagebox.showinfo(title="Error", message="La tarjeta no puede transferir el monto necesario")
@@ -1022,42 +1016,34 @@ def procesoRetirarODepositarDinero():
                     return
 
                 return
-
             transaccionFinal = Canal.finalizarTransaccion(transaccionInicial, retirar)
-
             FF2.forget()
             frameP.pack()
-
         clienteActual = Banco.encontrarCliente(FF.getValores()[0])
         retirar = False
-
         if FF.getValores()[1] == "Retirar":
             retirar = True
-
         divisaEscogida = Divisa.encontrarDivisa(FF.getValores()[2])
-
         if divisaEscogida not in Banco.seleccionarDivisa(clienteActual):
-            messagebox.showinfo(title="Error",
-                                message="El cliente seleccionado no puede realizar esta operación con la divisa escogida")
+            messagebox.showinfo(title="Error", message="El cliente seleccionado no puede realizar esta operación con la divisa escogida")
             return
-
         tarjetas = clienteActual.seleccionarTarjeta(divisaEscogida, retirar)
         canales = Canal.seleccionarCanal(divisaEscogida, retirar)
-
         if len(tarjetas) == 0:
-            messagebox.showinfo(title="Error",
-                                message="El cliente seleccionado no tiene tarjetas que puedan realizar esta operación")
+            messagebox.showinfo(title="Error", message="El cliente seleccionado no tiene tarjetas que puedan realizar esta operación")
             return
-
         if len(canales) == 0:
             messagebox.showinfo(title="Error", message="No hay canales disponibles para realizar esta transacción")
             return
-
-        FF2 = FieldFrame(frameProcesos, "", ["Escoga la tarjeta mediante la cual desea hacer la operación",
-                                             "Escoga el canal que desea utilizar",
-                                             "Escoga el monto total"], "", pasoFinal,
-                         [[t for t in tarjetas if retirar or isinstance(t, TarjetaDebito)], canales, None])
-
+        try:
+            FF2 = FieldFrame(frameProcesos, "", ["Escoga la tarjeta mediante la cual desea hacer la operación",
+                                                "Escoga el canal que desea utilizar",
+                                                "Escoga el monto total"], "", pasoFinal,
+                            [[t for t in tarjetas if retirar or isinstance(t, TarjetaDebito)], canales, None])
+        except TypeError:
+            messagebox.showingo(title="Error", message="El cliente escogido no tiene las tarjetas apropiadas para hacer este tipo de transacción")
+            FF.forget()
+            frameP.pack()
         FF2.pack()
         FF.forget()
 
