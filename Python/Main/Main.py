@@ -456,21 +456,46 @@ buttonAplicacion = Button(frameAy, text="Ver desarrolladores", command=lambda: m
 buttonAplicacion.pack()
 
 
-def procesoSolicitarTarjeta():  # Esta función se encarga de la funcionalidad "solicitar tarjeta de crédito"
-    def segundoPaso():  # Función que se activa cuando el usuario oprime "Aceptar"
+def procesoSolicitarTarjeta():
+    """
+    Esta función se encarga de la funcionalidad "solicitar tarjeta de crédito".
+    Realiza un proceso para solicitar una tarjeta de crédito al cliente.
+    """
+
+    def segundoPaso():
+        """
+        Función que se activa cuando el usuario oprime "Aceptar" en el segundo paso del proceso.
+        Realiza las validaciones necesarias y muestra las tarjetas disponibles para el cliente.
+        """
+
+        # Validar que los campos relevantes estén completos
         if FF.getValores()[0] == "" or FF.getValores()[1] == "":
             messagebox.showinfo(title="Error", message="Por favor, ingrese los valores relevantes en todos los campos")
             return
+
+        # Obtener el cliente actual y la divisa escogida
         clienteActual = Banco.encontrarCliente(FF.getValores()[0])
         divisaEscogida = Divisa.encontrarDivisa(FF.getValores()[1])
+
+        # Obtener el historial de créditos del cliente
         Historial = clienteActual.revisarHistorialDeCreditos()
+
+        # Calcular el puntaje tentativo del cliente
         puntajeTentativo = Banco.calcularPuntaje(Historial)
+
+        # Obtener las tarjetas bloqueadas y las tarjetas activas del cliente
         tarjetasBloqueadas = Tarjeta.TarjetasBloqueadas(clienteActual)
         tarjetasActivas = Tarjeta.TarjetasNoBloqueadas(clienteActual)
+
+        # Modificar el puntaje definitivo del cliente
         puntajeDefinitivo = Factura.modificarPuntaje(tarjetasBloqueadas=tarjetasBloqueadas,
                                                      tarjetasActivas=tarjetasActivas, cliente=clienteActual,
                                                      puntaje=puntajeTentativo)
+
+        # Obtener las tarjetas de crédito disponibles para el cliente con el puntaje definitivo y la divisa escogida
         tarjetasDisponibles = TarjetaCredito.tarjetasDisponibles(puntaje=puntajeDefinitivo, divisa=divisaEscogida)
+
+        # Crear un nuevo frame para mostrar las tarjetas disponibles
         frameFinal = Frame(frameProcesos)
         Enunciado = Label(frameFinal, text="Escoga la tarjeta que quiere", padx=10, pady=10)
         Enunciado.grid(column=1, row=0)
@@ -479,12 +504,19 @@ def procesoSolicitarTarjeta():  # Esta función se encarga de la funcionalidad "
         Labels = []
 
         def funcFinal(i: int):
+            """
+            Función que se ejecuta cuando se escoge una tarjeta. Añade la tarjeta de crédito al cliente.
+
+            Args:
+                i (int): Índice de la tarjeta escogida en la lista de tarjetas disponibles.
+            """
             tarjetaEscogida = tarjetasDisponibles[i]
             TarjetaCredito.anadirTarjetaCredito(cliente=clienteActual, tarjeta=tarjetaEscogida)
             frameFinal.forget()
             frameP.tkraise()
             frameP.pack()
 
+        # Mostrar las tarjetas disponibles con sus respectivos botones de selección
         for i in range(len(tarjetasDisponibles)):
             Labels.append(Label(frameFinal, text=tarjetasDisponibles[i], padx=10, pady=10).grid(column=0, row=i + 3))
             Buttons.append(
@@ -492,6 +524,7 @@ def procesoSolicitarTarjeta():  # Esta función se encarga de la funcionalidad "
                                                                                       pady=10))
         frameFinal.pack()
 
+    # Obtener la lista de clientes y divisas para mostrar en los campos de selección
     clientes = Banco.getClientes()
     nomClientes = []
     for c in clientes:
@@ -499,6 +532,8 @@ def procesoSolicitarTarjeta():  # Esta función se encarga de la funcionalidad "
     nomDivisas = []
     for D in Divisa:
         nomDivisas.append(D.name)
+
+    # Crear un FieldFrame para capturar los criterios del cliente y divisa de la tarjeta
     FF = FieldFrame(frameProcesos, "Criterios", ["Cliente", "Divisa de la tarjeta"], "Valores", segundoPaso,
                     [nomClientes, nomDivisas])
     frameP.forget()
@@ -506,35 +541,64 @@ def procesoSolicitarTarjeta():  # Esta función se encarga de la funcionalidad "
     FF.pack()
 
 
-def procesoPagarFactura():  # Esta función se encarga de la funcionalidad "Pagar factura"
+def procesoPagarFactura():
+    """
+    Esta función se encarga de la funcionalidad "Pagar factura".
+    Realiza un proceso para que un cliente pague una factura.
+    """
+
     def segundoPaso():
+        """
+        Función que se activa cuando el usuario oprime "Aceptar" en el segundo paso del proceso.
+        Realiza las validaciones necesarias y muestra los campos para completar el pago de la factura.
+        """
+
         def ultimoPaso():
+            """
+            Función que se activa cuando el usuario oprime "Aceptar" en el último paso del proceso.
+            Realiza las validaciones finales y realiza la transacción de pago de la factura.
+            """
+
+            # Validar que todos los campos relevantes estén completos
             if FF2.getValores()[0] == "" or FF2.getValores()[1] == "" or FF2.getValores()[2] == "":
                 messagebox.showinfo(title="Error",
                                     message="Por favor, ingrese los valores relevantes en todos los campos")
                 return
+
+            # Obtener la factura y tarjeta escogida por el usuario
             facturaEscogida = clienteActual.encontrarFacturas(FF2.getValores()[0])
             tarjetaEscogida = clienteActual.encontrarTarjeta(FF2.getValores()[1])
+
             try:
-                monto = float(FF2.getValores()[2])
+                monto = float(FF2.getValores()[2])  # Convertir el monto a un valor float
             except:
                 messagebox.showinfo(title="Error", message="Por favor, ingrese una cantidad de dinero válida")
                 return
+
+            # Verificar que la tarjeta escogida sea válida para la transacción
             if not tarjetaEscogida in clienteActual.listarTarjetas(facturaEscogida):
                 messagebox.showinfo(title="Error", message="La tarjeta escogida no es válida para esta transacción")
                 return
+
+            # Generar la transacción de pago de la factura
             transaccon = facturaEscogida.generarTransaccion(monto, tarjetaEscogida)
+
             if transaccon.rechazado:
                 messagebox.showinfo(title="Error", message="La transacción ha sido rechazada")
+
             FF2.forget()
             frameP.pack()
 
+        # Validar que el campo del usuario esté completo
         if FF.getValores()[0] == "":
             messagebox.showinfo(title="Error", message="Por favor, ingrese los valores relevantes en todos los campos")
             return
+
+        # Obtener el cliente actual y sus facturas y tarjetas asociadas
         clienteActual = Banco.encontrarCliente(FF.getValores()[0])
         facturas = clienteActual.mostrarFacturas()
         tarjetas = clienteActual.getTarjetas()
+
         try:
             FF2 = FieldFrame(frameProcesos, "", ["Seleccione la factura", "Seleccione la tarjeta",
                                                  "Ingrese la cantidad de dinero que desea transferir"], "", ultimoPaso,
@@ -542,26 +606,53 @@ def procesoPagarFactura():  # Esta función se encarga de la funcionalidad "Paga
         except TypeError:
             messagebox.showinfo(title="Error", message="Usted no tiene facturas disponibles por pagar")
             return
+
         FF.forget()
         FF2.pack()
 
+    # Obtener la lista de clientes para mostrar en el campo de selección
     clientes = Banco.getClientes()
+
+    # Crear un FieldFrame para capturar el cliente que desea pagar una factura
     FF = FieldFrame(frameProcesos, "", ["Seleccione el usuario"], "", segundoPaso, [[c.getNombre() for c in clientes]])
     frameP.forget()
     FF.pack()
 
 
-def procesoHacerTransaccion():  # Se encarga de crear una transacción entre usuarios
+def procesoHacerTransaccion():
+    """
+    Esta función se encarga de la funcionalidad "Hacer transacción".
+    Realiza un proceso para que un cliente realice una transacción a otro cliente.
+    """
+
     def paso2():
+        """
+        Función que se activa cuando el usuario oprime "Aceptar" en el segundo paso del proceso.
+        Realiza las validaciones necesarias y muestra los campos para completar la transacción.
+        """
+
         def paso3():
+            """
+            Función que se activa cuando el usuario oprime "Aceptar" en el tercer paso del proceso.
+            Realiza las validaciones necesarias y muestra los campos para completar la transacción.
+            """
+
             def ultimoPaso():
+                """
+                Función que se activa cuando el usuario oprime "Aceptar" en el último paso del proceso.
+                Realiza las validaciones finales y crea la transacción entre los clientes.
+                """
+
                 try:
                     tarjetaObjetivo = clienteObjetivo.encontrarTarjeta(FF3.getValores()[0])
-                    monto = float(FF3.getValores()[1])
+                    monto = float(FF3.getValores()[1])  # Convertir el monto a un valor float
                 except ValueError:
                     messagebox.showinfo(title="Error", message="Por favor, ingrese una cantidad válida")
                     return
+
+                # Crear la transacción entre los clientes
                 trans = Transaccion(clienteActual, clienteObjetivo, tarjetaEscogida, tarjetaObjetivo, monto)
+
                 if trans.rechazado:
                     if monto > tarjetaEscogida.getSaldo():
                         messagebox.showinfo(title="Error",
@@ -574,11 +665,14 @@ def procesoHacerTransaccion():  # Se encarga de crear una transacción entre usu
                         FF3.forget()
                         frameP.pack()
                         return
+
                 FF3.forget()
                 frameP.pack()
 
+            # Obtener el cliente objetivo y la tarjeta escogida por el cliente actual
             clienteObjetivo = Banco.encontrarCliente(FF2.getValores()[0])
             tarjetaEscogida = clienteActual.encontrarTarjeta(FF2.getValores()[1])
+
             try:
                 FF3 = FieldFrame(frameProcesos, "", ["Tarjeta que recibe la transacción", "Monto a transferir"], "",
                                  ultimoPaso, [[t.__str__() for t in clienteObjetivo.getTarjetasDebito()], None])
@@ -588,10 +682,13 @@ def procesoHacerTransaccion():  # Se encarga de crear una transacción entre usu
                 FF2.forget()
                 frameP.pack()
                 return
+
             FF3.pack()
             FF2.forget()
 
+        # Obtener el cliente actual
         clienteActual = Banco.encontrarCliente(FF.getValores()[0])
+
         try:
             FF2 = FieldFrame(frameProcesos, "", ["Usuario que recibe la transacción", "Tarjeta de origen"], "", paso3,
                              [[c.getNombre() for c in Banco.getClientes()],
@@ -602,27 +699,50 @@ def procesoHacerTransaccion():  # Se encarga de crear una transacción entre usu
             FF.forget()
             frameP.pack()
             return
+
         FF2.pack()
         FF.forget()
 
+    # Mostrar el campo para seleccionar el cliente que hace la transacción
     FF = FieldFrame(frameProcesos, "", ["Usuario que hace la transacción"], "", paso2,
                     [[c.getNombre() for c in Banco.getClientes()]])
     FF.pack()
     frameP.forget()
 
 
-def procesoDeshacerTransaccion():  # Se encarga de crear una petición para la funcionalidad deshacer transacción
+def procesoDeshacerTransaccion():
+    """
+    Esta función se encarga de la funcionalidad "Deshacer transacción".
+    Realiza un proceso para que un cliente solicite deshacer una transacción realizada previamente.
+    """
+
     def paso2():
+        """
+        Función que se activa cuando el usuario oprime "Aceptar" en el segundo paso del proceso.
+        Realiza las validaciones necesarias y muestra los campos para completar la solicitud de deshacer transacción.
+        """
+
         def pasoFinal():
+            """
+            Función que se activa cuando el usuario oprime "Aceptar" en el último paso del proceso.
+            Realiza las validaciones finales y genera una petición para deshacer la transacción seleccionada.
+            """
+
+            # Obtener la transacción a deshacer y el mensaje de solicitud ingresado
             transaccionADeshacer = Transaccion.encontrarTransaccion(FF2.getValores()[0])
             mensaje = FF2.getValores()[1]
+
+            # Generar la petición para deshacer la transacción
             Banco.generarPeticion(transaccionADeshacer, mensaje)
+
             FF2.forget()
             frameP.pack()
 
+        # Obtener el cliente actual
         clienteActual = Banco.encontrarCliente(FF.getValores()[0])
+
         try:
-            FF2 = FieldFrame(frameProcesos, "", ["Escoga la tranacción que desea deshacer",
+            FF2 = FieldFrame(frameProcesos, "", ["Escoga la transacción que desea deshacer",
                                                  "Ingrese el mensaje que desea que vea el cliente que recibió la transacción"],
                              "", pasoFinal, [Transaccion.encontrar_transacciones(clienteActual), None])
         except TypeError:
@@ -631,18 +751,40 @@ def procesoDeshacerTransaccion():  # Se encarga de crear una petición para la f
             FF.forget()
             frameP.pack()
             return
+
         FF.forget()
         FF2.pack()
 
+    # Mostrar el campo para seleccionar el cliente que realiza la solicitud de deshacer transacción
     FF = FieldFrame(frameProcesos, "", ["Escoga el cliente"], "", paso2, [[c.getNombre() for c in Banco.getClientes()]])
     frameP.forget()
     FF.pack()
 
 
-def procesoVerPeticiones():  # Se encarga de que el cliente pueda ver las peticiones que hay a su nombre (y conceder o negarlas, si quiere)
+
+def procesoVerPeticiones():
+    """
+    Esta función se encarga de la funcionalidad "Ver peticiones".
+    Permite al cliente ver las peticiones que hay a su nombre y conceder o negarlas según corresponda.
+    """
+
     def paso2():
+        """
+        Función que se activa cuando el usuario oprime "Aceptar" en el segundo paso del proceso.
+        Muestra las peticiones pendientes del cliente seleccionado y permite al cliente conceder o negar cada una.
+        """
+
         def funcBotones(i):
+            """
+            Función que se activa cuando se hace clic en una transacción específica.
+            Muestra los detalles de la transacción y los botones para conceder o negar la petición.
+            """
+
             def funcVolver():
+                """
+                Función que se activa cuando se hace clic en el botón "Volver".
+                Vuelve a la pantalla principal del proceso.
+                """
                 labelPrincipal.destroy()
                 labelTransaccion.destroy()
                 botonVolver.destroy()
@@ -651,6 +793,10 @@ def procesoVerPeticiones():  # Se encarga de que el cliente pueda ver las petici
                 frameP.pack()
 
             def funcNegar():
+                """
+                Función que se activa cuando se hace clic en el botón "Negar la petición".
+                Niega la petición y actualiza el estado de la transacción correspondiente.
+                """
                 transNueva = Transaccion.completarTransaccion(transaccion=transaccionActual, respuesta=False)
                 Transaccion.getTransacciones()[Transaccion.getTransacciones().index(transaccionActual)] = transNueva
                 labelPrincipal.destroy()
@@ -661,6 +807,10 @@ def procesoVerPeticiones():  # Se encarga de que el cliente pueda ver las petici
                 frameP.pack()
 
             def funcAceptar():
+                """
+                Función que se activa cuando se hace clic en el botón "Conceder la petición".
+                Concede la petición y actualiza el estado de la transacción correspondiente.
+                """
                 transNueva = Transaccion.completarTransaccion(transaccion=transaccionActual, respuesta=True)
                 Transaccion.getTransacciones()[Transaccion.getTransacciones().index(transaccionActual)] = transNueva
                 labelPrincipal.destroy()
@@ -673,20 +823,31 @@ def procesoVerPeticiones():  # Se encarga de que el cliente pueda ver las petici
             enunciado.forget()
             for w in frameProcesos.winfo_children():
                 w.forget()
+
+            # Obtener la transacción actual
             transaccionActual = transacciones[i]
-            labelPrincipal = Label(frameProcesos, text="Escoga lo que quiere hacer con la siguiente transacción", padx=10, pady=10)
+
+            # Mostrar los detalles de la transacción y los botones para conceder o negar la petición
+            labelPrincipal = Label(frameProcesos, text="Escoga lo que quiere hacer con la siguiente transacción",
+                                   padx=10, pady=10)
             labelPrincipal.grid(column=1, row=0)
             labelTransaccion = Label(frameProcesos, text=transaccionActual, padx=10, pady=10)
             labelTransaccion.grid(column=1, row=1)
             botonVolver = Button(frameProcesos, text="Volver", command=lambda: funcVolver(), padx=10, pady=10)
             botonVolver.grid(column=0, row=3)
-            botonNegar = Button(frameProcesos, text="Negar la petición", padx=10, pady=10, command=lambda: funcNegar())
+            botonNegar = Button(frameProcesos, text="Negar la petición", padx=10, pady=10,
+                                command=lambda: funcNegar())
             botonNegar.grid(column=1, row=3)
-            botonConceder = Button(frameProcesos, text="Conceder la petición", padx=10, pady=10, command=lambda: funcAceptar())
+            botonConceder = Button(frameProcesos, text="Conceder la petición", padx=10, pady=10,
+                                   command=lambda: funcAceptar())
             botonConceder.grid(column=2, row=3)
 
+        # Obtener el cliente actual
         clienteActual = Banco.encontrarCliente(FF.getValores()[0])
+
+        # Obtener las transacciones pendientes del cliente
         transacciones = clienteActual.verPeticiones()
+
         if len(transacciones) == 0:
             messagebox.showinfo(title="Error", message="El cliente escogido no tiene peticiones actualmente")
             FF.forget()
@@ -696,144 +857,275 @@ def procesoVerPeticiones():  # Se encarga de que el cliente pueda ver las petici
         FF.forget()
         enunciado = Label(frameProcesos, text="Escoga la transacción que quiere tratar, o 'volver' para salir")
         enunciado.pack()
+
+        # Mostrar botones para cada transacción pendiente
         for i in range(len(transacciones)):
             botones.append(
                 Button(frameProcesos, text=transacciones[i], padx=10, pady=100, command=lambda: funcBotones(i)).pack())
-    FF = FieldFrame(frameProcesos, "", ["Escoga el usuario cuyas peticiones desea ver"], "", paso2, [[c.getNombre() for c in Banco.getClientes()]])
+
+    # Mostrar el campo para seleccionar el cliente cuyas peticiones se desea ver
+    FF = FieldFrame(frameProcesos, "", ["Escoga el usuario cuyas peticiones desea ver"], "", paso2,
+                    [[c.getNombre() for c in Banco.getClientes()]])
     FF.pack()
     frameP.forget()
 
 
-def procesoCambiarDivisa():  # Se encarga del proceso de cambiar divisas
+
+def procesoCambiarDivisa():
+    """
+    Esta función se encarga del proceso de cambiar divisas.
+    Permite al cliente realizar una conversión de divisas entre dos tarjetas y a través de un canal específico.
+    """
+
     def paso2():
+        """
+        Función que se activa cuando el usuario oprime "Aceptar" en el segundo paso del proceso.
+        Permite al cliente ingresar los detalles de la transacción, como las tarjetas y la cantidad a transferir.
+        """
+
         def pasoFinal():
+            """
+            Función que se activa cuando el usuario oprime "Aceptar" en el último paso del proceso.
+            Realiza la conversión de divisas y genera una transacción correspondiente.
+            """
+
             tarjetaOrigen = clienteActual.encontrarTarjeta(FF2.getValores()[0])
             tarjetaObjetivo = clienteActual.encontrarTarjeta(FF2.getValores()[1])
             canalEscogido = Banco.encontrarCanal(FF2.getValores()[3])
+
             try:
                 cantidad = float(FF2.getValores()[2])
             except ValueError:
                 messagebox.showinfo(title="Error", message="Por favor, ingrese un número válido")
                 return
+
             conversion = Divisa.convertir_divisas([divisaOrigen, divisaObjetivo], canalEscogido, cantidad)
-            transaccion = Transaccion.crearTransaccion([divisaOrigen, divisaObjetivo], cantidad, conversion, canalEscogido, [tarjetaOrigen, tarjetaObjetivo], clienteActual)
+            transaccion = Transaccion.crearTransaccion([divisaOrigen, divisaObjetivo], cantidad, conversion,
+                                                       canalEscogido, [tarjetaOrigen, tarjetaObjetivo], clienteActual)
             transaccion = canalEscogido.finalizarConversion(transaccion, cantidad)
+
             FF2.forget()
             frameP.pack()
 
         clienteActual = Banco.encontrarCliente(FF.getValores()[0])
         divisaOrigen = Divisa.encontrarDivisa(FF.getValores()[1])
         divisaObjetivo = Divisa.encontrarDivisa(FF.getValores()[2])
+
         if divisaOrigen == divisaObjetivo:
             messagebox.showinfo(title="Error", message="Debe escoger dos divisas diferentes para hacer la conversión")
             return
+
         tarjetasOrigen = clienteActual.tarjetasConDivisa(divisaOrigen, True)
-        tajretasObjetivo = clienteActual.tarjetasConDivisa(divisaObjetivo, False)
-        if len(tarjetasOrigen) == 0 or len(tajretasObjetivo) == 0:
-            messagebox.showinfo(title="Error", message="El cliente escogido no dispone de tarjetas que pueda utilizar en esta operación")
+        tarjetasObjetivo = clienteActual.tarjetasConDivisa(divisaObjetivo, False)
+
+        if len(tarjetasOrigen) == 0 or len(tarjetasObjetivo) == 0:
+            messagebox.showinfo(title="Error",
+                                message="El cliente escogido no dispone de tarjetas que pueda utilizar en esta operación")
             return
-        if len(clienteActual.listarCanales(divisaOrigen, divisaObjetivo)) == 0:
+
+        canalesDisponibles = clienteActual.listarCanales(divisaOrigen, divisaObjetivo)
+
+        if len(canalesDisponibles) == 0:
             messagebox.showinfo(title="Error", message="No hay canales disponibles para esta operación")
             return
-        FF2 = FieldFrame(frameProcesos, "", ["Tarjeta de la que saldrá el dinero", "Tarjeta que recibe el dinero", "Monto total a transferir (en las unidades de la divisa original)","Canal mediante el cual desea hacer la transacción"], "", pasoFinal,[tarjetasOrigen, tajretasObjetivo, None,clienteActual.listarCanales(divisaOrigen, divisaObjetivo)])
+
+        FF2 = FieldFrame(frameProcesos, "", ["Tarjeta de la que saldrá el dinero",
+                                             "Tarjeta que recibe el dinero",
+                                             "Monto total a transferir (en las unidades de la divisa original)",
+                                             "Canal mediante el cual desea hacer la transacción"], "", pasoFinal,
+                         [tarjetasOrigen, tarjetasObjetivo, None, canalesDisponibles])
+
         FF2.pack()
         FF.forget()
-    FF = FieldFrame(frameProcesos, "", ["Cliente que hace la conversión", "Divisa que desea convertir", "Divisa que desea recibir"], "", paso2, [[c.nombre for c in Banco.getClientes()], [d.name for d in Divisa], [d.name for d in Divisa]])
+
+    # Mostrar el campo para seleccionar el cliente que realiza la conversión y las divisas involucradas
+    FF = FieldFrame(frameProcesos, "", ["Cliente que hace la conversión", "Divisa que desea convertir",
+                                        "Divisa que desea recibir"], "", paso2,
+                    [[c.nombre for c in Banco.getClientes()], [d.name for d in Divisa], [d.name for d in Divisa]])
+
     frameP.forget()
     FF.pack()
 
 
 
+
 def procesoRetirarODepositarDinero():
+    """
+    Esta función se encarga del proceso de retirar o depositar dinero.
+    Permite al cliente seleccionar una tarjeta y un canal para realizar la operación.
+    """
+
     def segundoPaso():
+        """
+        Función que se activa cuando el usuario oprime "Aceptar" en el segundo paso del proceso.
+        Permite al cliente ingresar los detalles de la transacción, como la tarjeta y el monto a retirar o depositar.
+        """
+
         def pasoFinal():
+            """
+            Función que se activa cuando el usuario oprime "Aceptar" en el último paso del proceso.
+            Realiza la transacción de retirar o depositar dinero y finaliza la transacción correspondiente.
+            """
+
             tarjetaEscogida = clienteActual.encontrarTarjeta(FF2.getValores()[0])
             canalEscogido = Banco.encontrarCanal(FF2.getValores()[1])
+
             try:
                 monto = float(FF2.getValores()[2])
             except ValueError:
                 messagebox.showinfo(title="Error", message="Por favor, ingrese un número válido")
                 return
+
             transaccionInicial = Transaccion.crearTrans(clienteActual, tarjetaEscogida, monto, canalEscogido, retirar)
+
             if transaccionInicial.rechazado:
                 if not tarjetaEscogida.puedeTransferir(monto):
                     messagebox.showinfo(title="Error", message="La tarjeta no puede transferir el monto necesario")
                     return
+
                 if canalEscogido.getFondos(divisaEscogida) < monto:
                     messagebox.showinfo(title="Error", message="El canal no tiene suficientes fondos para esta acción")
                     return
+
                 return
+
             transaccionFinal = Canal.finalizarTransaccion(transaccionInicial, retirar)
+
             FF2.forget()
             frameP.pack()
 
         clienteActual = Banco.encontrarCliente(FF.getValores()[0])
         retirar = False
+
         if FF.getValores()[1] == "Retirar":
             retirar = True
+
         divisaEscogida = Divisa.encontrarDivisa(FF.getValores()[2])
+
         if divisaEscogida not in Banco.seleccionarDivisa(clienteActual):
-            messagebox.showinfo(title="Error",  message="El cliente seleccionado no puede realizar esta operación con la divisa escogida")
+            messagebox.showinfo(title="Error",
+                                message="El cliente seleccionado no puede realizar esta operación con la divisa escogida")
             return
+
         tarjetas = clienteActual.seleccionarTarjeta(divisaEscogida, retirar)
         canales = Canal.seleccionarCanal(divisaEscogida, retirar)
+
         if len(tarjetas) == 0:
-            messagebox.showinfo(title="Error", message="El cliente seleccionado no tiene tarjetas que puedan realizar esta operación")
+            messagebox.showinfo(title="Error",
+                                message="El cliente seleccionado no tiene tarjetas que puedan realizar esta operación")
             return
+
         if len(canales) == 0:
             messagebox.showinfo(title="Error", message="No hay canales disponibles para realizar esta transacción")
             return
-        FF2 = FieldFrame(frameProcesos, "", ["Escoga la tarjeta mediante la cual desea hacer la operación", "Escoga el canal que desea utilizar", "Escoga el monto total"], "",pasoFinal, [[t for t in tarjetas if retirar or isinstance(t, TarjetaDebito)], canales, None])
+
+        FF2 = FieldFrame(frameProcesos, "", ["Escoga la tarjeta mediante la cual desea hacer la operación",
+                                             "Escoga el canal que desea utilizar",
+                                             "Escoga el monto total"], "", pasoFinal,
+                         [[t for t in tarjetas if retirar or isinstance(t, TarjetaDebito)], canales, None])
+
         FF2.pack()
         FF.forget()
-    FF = FieldFrame(frameProcesos, "", ["Elija el usuario", "¿Quiere depositar o retirar?", "Seleccione la divisa con la cual quiere realizar la operación"], "", segundoPaso, [[c.nombre for c in Banco.getClientes()], ["Retirar", "Depositar"], [d.name for d in Divisa]])
+
+    # Mostrar el campo para seleccionar el cliente, si desea retirar o depositar y la divisa
+    FF = FieldFrame(frameProcesos, "", ["Elija el usuario", "¿Quiere depositar o retirar?",
+                                        "Seleccione la divisa con la cual quiere realizar la operación"], "", segundoPaso,
+                    [[c.nombre for c in Banco.getClientes()], ["Retirar", "Depositar"], [d.name for d in Divisa]])
+
     FF.pack()
     frameP.forget()
+
 
 
 def procesoVerTarjetas():
+    """
+    Esta función se encarga del proceso de visualizar las tarjetas de un cliente.
+    Permite al usuario seleccionar un cliente y muestra las tarjetas asociadas a ese cliente.
+    """
+
     def pasoDos():
+        """
+        Función que se activa cuando el usuario oprime "Aceptar" en el segundo paso del proceso.
+        Muestra las tarjetas asociadas al cliente seleccionado.
+        """
+
         def funcVolver():
+            """
+            Función que se activa cuando el usuario oprime "Volver".
+            Regresa al paso anterior del proceso.
+            """
             frameInfo.forget()
             frameP.pack()
+
         clienteActual = Banco.encontrarCliente(FF.getValores()[0])
         tarjetas = clienteActual.getTarjetas()
+
         FF.forget()
+
         labelPrincipal = Label(frameInfo, text="Tarjetas del usuario escogido")
-        labelPrincipal.grid(row = 0, column=1, pady=10)
-        labels=[]
+        labelPrincipal.grid(row=0, column=1, pady=10)
+
+        labels = []
         for i in range(len(tarjetas)):
             labels.append(Label(frameInfo, text=tarjetas[i].__str__()))
-            labels[i].grid(column=i%3, row=math.floor(i/3)+1)
+            labels[i].grid(column=i % 3, row=math.floor(i / 3) + 1)
+
         botonVolver = Button(frameInfo, text="Volver", command=lambda: funcVolver())
-        botonVolver.grid(column=1, row=math.floor(len(tarjetas)/3)+3)
+        botonVolver.grid(column=1, row=math.floor(len(tarjetas) / 3) + 3)
+
     frameInfo = Frame(frameProcesos)
     frameInfo.pack()
     frameP.forget()
-    FF = FieldFrame(frameInfo, "", ["Escoga el cliente cuyas tarjetas desea ver"], "", pasoDos, [[c.nombre for c in Banco.getClientes()]])
+
+    FF = FieldFrame(frameInfo, "", ["Escoga el cliente cuyas tarjetas desea ver"], "", pasoDos,
+                    [[c.nombre for c in Banco.getClientes()]])
     FF.pack()
 
+
 def procesoVerFacturas():
+    """
+    Esta función se encarga del proceso de visualizar las facturas de un cliente.
+    Permite al usuario seleccionar un cliente y muestra las facturas asociadas a ese cliente.
+    """
+
     def pasoDos():
+        """
+        Función que se activa cuando el usuario oprime "Aceptar" en el segundo paso del proceso.
+        Muestra las facturas asociadas al cliente seleccionado.
+        """
+
         def funcVolver():
+            """
+            Función que se activa cuando el usuario oprime "Volver".
+            Regresa al paso anterior del proceso.
+            """
             frameInfo.forget()
             frameP.pack()
+
         clienteActual = Banco.encontrarCliente(FF.getValores()[0])
         facturas = clienteActual.getFacturas()
+
         FF.forget()
+
         labelPrincipal = Label(frameInfo, text="Facturas del usuario escogido")
-        labelPrincipal.grid(row = 0, column=1, pady=10)
-        labels=[]
+        labelPrincipal.grid(row=0, column=1, pady=10)
+
+        labels = []
         for i in range(len(facturas)):
             labels.append(Label(frameInfo, text=facturas[i].__str__()))
-            labels[i].grid(column=i%3, row=math.floor(i/3)+1)
+            labels[i].grid(column=i % 3, row=math.floor(i / 3) + 1)
+
         botonVolver = Button(frameInfo, text="Volver", command=lambda: funcVolver())
-        botonVolver.grid(column=1, row=math.floor(len(facturas)/3)+3)
+        botonVolver.grid(column=1, row=math.floor(len(facturas) / 3) + 3)
+
     frameInfo = Frame(frameProcesos)
     frameInfo.pack()
     frameP.forget()
-    FF = FieldFrame(frameInfo, "", ["Escoga el cliente cuyas facturas desea ver"], "", pasoDos, [[c.nombre for c in Banco.getClientes()]])
+
+    FF = FieldFrame(frameInfo, "", ["Escoga el cliente cuyas facturas desea ver"], "", pasoDos,
+                    [[c.nombre for c in Banco.getClientes()]])
     FF.pack()
+
 
 
 
