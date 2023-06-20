@@ -1,9 +1,9 @@
 from typing import List
 from random import randint
-from entidades_de_negocio.Divisa import Divisa
-from Tarjeta import Tarjeta
-from TarjetaDebito import TarjetaDebito
-from entidades_de_negocio.Cliente import Cliente
+from Banco.src.gestorAplicacion.Entidades_de_negocio.Divisa import Divisa
+from Banco.src.gestorAplicacion.tarjetas.Tarjeta import Tarjeta
+from Banco.src.gestorAplicacion.tarjetas.TarjetaDebito import TarjetaDebito
+from Banco.src.gestorAplicacion.Entidades_de_negocio.Cliente import Cliente
 import math
 
 

@@ -1,10 +1,10 @@
 from typing import List
 
-from Canal import Canal
-from entidades_de_negocio.Cliente import Cliente
-from entidades_de_negocio.Divisa import Divisa
-from tarjetas.Tarjeta import Tarjeta
-from entidades_de_negocio.Transaccion import Transaccion
+from Banco.src.gestorAplicacion.infraestructura.Canal import Canal
+from Banco.src.gestorAplicacion.Entidades_de_negocio.Cliente import Cliente
+from Banco.src.gestorAplicacion.Entidades_de_negocio.Divisa import Divisa
+from Banco.src.gestorAplicacion.tarjetas.Tarjeta import Tarjeta
+from Banco.src.gestorAplicacion.Entidades_de_negocio.Transaccion import Transaccion
 
 
 class Banco:

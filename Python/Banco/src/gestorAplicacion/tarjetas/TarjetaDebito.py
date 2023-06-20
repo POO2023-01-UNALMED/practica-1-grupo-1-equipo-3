@@ -1,7 +1,7 @@
 from typing import List
 from random import randint
-from Tarjeta import Tarjeta
-from entidades_de_negocio.Divisa import Divisa
+from Banco.src.gestorAplicacion.tarjetas.Tarjeta import Tarjeta
+from Banco.src.gestorAplicacion.Entidades_de_negocio.Divisa import Divisa
 import math
 
 

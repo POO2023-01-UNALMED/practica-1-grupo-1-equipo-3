@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from BorrarTarjeta import BorrarTarjeta
+from Banco.src.gestorAplicacion.tarjetas.BorrarTarjeta import BorrarTarjeta
 import pickle
 
 

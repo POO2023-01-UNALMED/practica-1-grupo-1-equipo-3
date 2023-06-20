@@ -1,5 +1,6 @@
-from tarjetas.TarjetaCredito import TarjetaCredito
-from Transaccion import Transaccion
+from Banco.src.gestorAplicacion.tarjetas.TarjetaCredito import TarjetaCredito
+
+from Banco.src.gestorAplicacion.Entidades_de_negocio.Transaccion import Transaccion
 
 
 class Cliente:

@@ -1,4 +1,4 @@
-from entidades_de_negocio.Divisa import Divisa
+from Banco.src.gestorAplicacion.Entidades_de_negocio.Divisa import Divisa
 
 
 class Canal:

@@ -1,8 +1,8 @@
 from typing import List
-from Cliente import Cliente
-from tarjetas.Tarjeta import Tarjeta
-from tarjetas.TarjetaDebito import TarjetaDebito
-from Transaccion import Transaccion
+from Banco.src.gestorAplicacion.Entidades_de_negocio.Cliente import Cliente
+from Banco.src.gestorAplicacion.tarjetas.Tarjeta import Tarjeta
+from Banco.src.gestorAplicacion.tarjetas.TarjetaDebito import TarjetaDebito
+from Banco.src.gestorAplicacion.Entidades_de_negocio.Transaccion import Transaccion
 
 
 class Factura:

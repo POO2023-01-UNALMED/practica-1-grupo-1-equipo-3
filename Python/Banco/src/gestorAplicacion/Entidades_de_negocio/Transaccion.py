@@ -1,7 +1,7 @@
 from typing import List
-from Divisa import Divisa
-from infraestructura.Canal import Canal
-from tarjetas.Tarjeta import Tarjeta
+from Banco.src.gestorAplicacion.Entidades_de_negocio.Divisa import Divisa
+from Banco.src.gestorAplicacion.infraestructura.Canal import Canal
+from Banco.src.gestorAplicacion.tarjetas.Tarjeta import Tarjeta
 
 
 class Transaccion:
