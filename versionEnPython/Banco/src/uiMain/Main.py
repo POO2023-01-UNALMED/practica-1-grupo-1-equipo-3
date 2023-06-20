@@ -253,9 +253,11 @@ p4.pack(expand=True, fill='both')
 
 # Fotos de p4
 # Fotos del sistema
-fotoSystem1 = PhotoImage(file="versionEnPython/assets/system1.png")
-fotoSystem2 = PhotoImage(file="versionEnPython/assets/system2.png")
-fotoSystem3 = PhotoImage(file="versionEnPython/assets/system3.png")
+fotoSystem1 = PhotoImage(file="versionEnPython/assets/PantallazoApp1.png")
+fotoSystem2 = PhotoImage(file="versionEnPython/assets/PantallazoApp2.png")
+fotoSystem3 = PhotoImage(file="versionEnPython/assets/PantallazoApp3.png")
+fotoSystem4 = PhotoImage(file="versionEnPython/assets/PantallazoApp4.png")
+fotoSystem5 = PhotoImage(file="versionEnPython/assets/PantallazoApp5.png")
 
 # Inicializamos el valor de image con la primera foto
 labelFotoSystem = Label(p4, image=fotoSystem1)
