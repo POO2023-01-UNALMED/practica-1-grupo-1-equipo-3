@@ -553,13 +553,15 @@ def procesoSolicitarTarjeta():
             frameFinal.forget()
             frameP.tkraise()
             frameP.pack()
+            return
+        def funcRechazar():
+            frameFinal.forget()
+            frameP.pack()
 
         # Mostrar las tarjetas disponibles con sus respectivos botones de selección
-        for i in range(len(tarjetasDisponibles)):
-            Labels.append(Label(frameFinal, text=tarjetasDisponibles[i], padx=10, pady=10).grid(column=0, row=i + 3))
-            Buttons.append(
-                Button(frameFinal, text="Escoger", command=lambda: funcFinal(i)).grid(column=2, row=i + 3, padx=10,
-                                                                                      pady=10))
+        Label(frameFinal, text=tarjetasDisponibles[len(tarjetasDisponibles)-1], padx=10, pady=10).grid(column=0, row=2)
+        Button(frameFinal, text="Aceptar", command=lambda: funcFinal(len(tarjetasDisponibles)-1)).grid(column=2, row=2, padx=10, pady=10)
+        Button(frameFinal, text="Rechazar", command=lambda: funcRechazar()).grid(column=2, row=3, padx=10, pady=10)
         frameFinal.pack()
 
     # Obtener la lista de clientes y divisas para mostrar en los campos de selección
@@ -1041,7 +1043,7 @@ def procesoRetirarODepositarDinero():
                                                 "Escoga el monto total"], "", pasoFinal,
                             [[t for t in tarjetas if retirar or isinstance(t, TarjetaDebito)], canales, None])
         except TypeError:
-            messagebox.showingo(title="Error", message="El cliente escogido no tiene las tarjetas apropiadas para hacer este tipo de transacción")
+            messagebox.showinfo(title="Error", message="El cliente escogido no tiene las tarjetas apropiadas para hacer este tipo de transacción")
             FF.forget()
             frameP.pack()
         FF2.pack()
