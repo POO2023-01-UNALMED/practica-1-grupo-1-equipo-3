@@ -9,16 +9,16 @@ from tkinter.ttk import Notebook
 import math
 
 # Modulos propios de la apllicación
-from gestorAplicacion.infraestructura.Canal import Banco
-from gestorAplicacion.infraestructura.Canal import Canal
-from gestorAplicacion.entidades_de_negocio.Cliente import Cliente
-from gestorAplicacion.entidades_de_negocio.Divisa import Divisa
-from gestorAplicacion.entidades_de_negocio.Factura import Factura
+from Banco.src.gestorAplicacion.infraestructura.Banco import Banco
+from Banco.src.gestorAplicacion.infraestructura.Canal import Canal
+from Banco.src.gestorAplicacion.Entidades_de_negocio.Cliente import Cliente
+from Banco.src.gestorAplicacion.Entidades_de_negocio.Divisa import Divisa
+from Banco.src.gestorAplicacion.Entidades_de_negocio.Factura import Factura
 from FieldFrame import FieldFrame
-from gestorAplicacion.tarjetas.Tarjeta import Tarjeta
-from gestorAplicacion.tarjetas.TarjetaCredito import TarjetaCredito
-from gestorAplicacion.tarjetas.TarjetaDebito import TarjetaDebito
-from gestorAplicacion.entidades_de_negocio.Transaccion import Transaccion
+from Banco.src.gestorAplicacion.tarjetas.Tarjeta import Tarjeta
+from Banco.src.gestorAplicacion.tarjetas.TarjetaCredito import TarjetaCredito
+from Banco.src.gestorAplicacion.tarjetas.TarjetaDebito import TarjetaDebito
+from Banco.src.gestorAplicacion.Entidades_de_negocio.Transaccion import Transaccion
 
 clientes = []
 def setup():
