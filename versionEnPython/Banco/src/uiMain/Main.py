@@ -1,5 +1,4 @@
 import tkinter as tk
-import pickle
 from tkinter import Menu
 from tkinter import PhotoImage
 import math
@@ -26,8 +25,12 @@ from Banco.src.gestorAplicacion.tarjetas.Tarjeta import Tarjeta
 from Banco.src.gestorAplicacion.tarjetas.TarjetaCredito import TarjetaCredito
 from Banco.src.gestorAplicacion.tarjetas.TarjetaDebito import TarjetaDebito
 from Banco.src.gestorAplicacion.Entidades_de_negocio.Transaccion import Transaccion
+from Banco.src.baseDatos.Serializador import Serializador
+from Banco.src.baseDatos.Deserializador import Deserializador
+
 
 clientes = []
+canales = []
 def setup():
     cliente1 = Cliente("Dario Gomez", 1)
     clientes.append(cliente1)
@@ -157,47 +160,52 @@ def setup():
 
     cajero1 = Canal("Cajero", 0.5)
     cajero1.setFondos(Divisa.PESO_COLOMBIANO, 12000000)
+    canales.append(cajero1)
 
     corresponsal1 = Canal("Corresponsal Bancario", 1.0)
     corresponsal1.setFondos(Divisa.DOLAR, 20000)
     corresponsal1.setFondos(Divisa.EURO, 10000)
     corresponsal1.setFondos(Divisa.PESO_COLOMBIANO, 40000000)
+    canales.append(corresponsal1)
 
     cajero2 = Canal("Cajero", 1.0)
     cajero2.setFondos(Divisa.DOLAR, 8000)
+    canales.append(cajero2)
 
     sucursalFisica2 = Canal("Sucursal Física", 1.5, 4000.0, 6000.0, 2000.0, 150000.0, 8000000.0, 6700000.0)
+    canales.append(sucursalFisica2)
 
     sucursalVirtual1 = Canal("Sucursal en Línea", 2.5, 5100.0, 8900.0, 0.0, 120000.0, 370000.0, 80545000.0)
+    canales.append(sucursalFisica1)
 
     corresponsal2 = Canal("Corresponsal Bancario", 0.8)
     corresponsal2.setFondos(Divisa.DOLAR, 15000.0)
     corresponsal2.setFondos(Divisa.EURO, 8000.0)
     corresponsal2.setFondos(Divisa.RUBLO_RUSO, 350000.0)
-setup()
+    canales.append(corresponsal2)
 
-#Serializacion
-# pickleFile = open("Python/Main/clientes.pkl", "wb")
-# banco = [Banco]
-# pickle.dump(banco, pickleFile)
-# print(banco[0].getClientes()[0].getNombre())
-# pickleFile.close()
-#deserializacion
-# pickleFile = open("Python/Main/clientes.pkl", "rb")
-# banco = pickle.load(pickleFile)
-# pickleFile.close()
-# print(banco[0].canales)
 
-# def serializacion(event):
-#     pickleFile = open("Python/Main/clientes.pkl", "wb")
-#     pickle.dump(clientes, pickleFile)
-#     pickleFile.close()
+#Serializacion Inicial (solo se ejecuta una vez)
+# setup()
+# Serializador.SerializarClientes(clientes)
+# Serializador.SerializarCanales(canales)
+
+
+#LO QUE YA FUNCIONA NO SE TOCA
+#Inicializando variables de Banco a partir de la deserializacion
+Banco.setClientes(Deserializador.DeserializarClientes())
+Banco.setCanales(Deserializador.DeserializarCanales())
+
+def serializacionAlCerrar():
+    Serializador.SerializarClientes(Banco.getClientes())
+    Serializador.SerializarCanales(Banco.getCanales())
+    root.quit()
 
 root = tk.Tk()
 
 root.title("Banco Nacho")
 root.iconbitmap("versionEnPython/assets/logo-unal.ico")  # Favicon de la apliación
-# root.protocol("WM_DELETE_WINDOW", serializacion)
+root.protocol("WM_DELETE_WINDOW", serializacionAlCerrar)
 
 # Creación de la ventana de inicio
 
@@ -417,11 +425,17 @@ labelJose.bind("<Button-1>", cambiarHojaVida)
 labelDario.bind("<Button-1>", cambiarHojaVida)
 labelCarlos.bind("<Button-1>", cambiarHojaVida)
 
+def cerrarAplicacionUsuario():
+    root.deiconify()
+    ventanaAplicacion.withdraw()
+
 # Creación de la ventana de usuario
 ventanaAplicacion = Toplevel(root)
 ventanaAplicacion.title("Banco Nacho App")
 ventanaAplicacion.iconbitmap("versionEnPython/assets/logo-unal.ico")  # Favicon de la apliación
 ventanaAplicacion.withdraw()  # Ocultando la ventana hasta que sea llamada
+
+ventanaAplicacion.protocol("WM_DELETE_WINDOW", cerrarAplicacionUsuario)
 
 notebook = Notebook(ventanaAplicacion)
 notebook.pack(pady=10, expand=True)
